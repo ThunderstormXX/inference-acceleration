@@ -36,6 +36,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mode", choices=("baseline", "mtp"), default="mtp")
     parser.add_argument("--count", type=int, default=5)
+    parser.add_argument("--start-index", type=int, default=0)
+    parser.add_argument("--trace-generation", action="store_true", help="Save request trajectories for offline replay")
     parser.add_argument("--max-new-tokens", type=int, default=128)
     parser.add_argument("--warmup", type=int, default=1)
     parser.add_argument("--block-size", type=int, choices=range(2, 6), default=MTPConfig.block_size)
@@ -48,7 +50,8 @@ def main() -> int:
     label = args.label or ("mtp-baseline" if args.mode == "baseline" else f"mtp-k{args.block_size}")
     if not label or not all(char.isalnum() or char in "-_" for char in label):
         parser.error("label may contain letters, digits, - and _ only")
-    common = dict(count=args.count, max_new_tokens=args.max_new_tokens, warmup=args.warmup,
+    common = dict(count=args.count, start_index=args.start_index, trace_generation=args.trace_generation,
+                  max_new_tokens=args.max_new_tokens, warmup=args.warmup,
                   model_path=args.model_path, dataset_path=args.dataset_path,
                   prefill_step_size=args.prefill_step_size, label=label, wired_memory=True)
     if args.mode == "baseline":

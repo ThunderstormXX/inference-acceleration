@@ -11,6 +11,8 @@ class BenchmarkConfig:
     model_path: str = str(ROOT / "models/qwen3.5-9b-mlx-4bit")
     dataset_path: str = str(ROOT / "data/raw/deepscaler-100.jsonl")
     count: int = 100
+    start_index: int = 0
+    trace_generation: bool = False
     max_new_tokens: int = 128
     max_prompt_tokens: int = 2048
     prefill_step_size: int = 512
@@ -23,14 +25,20 @@ class BenchmarkConfig:
     wired_memory: bool = False
 
     def __post_init__(self):
+        if type(self.trace_generation) is not bool:
+            raise ValueError("trace_generation must be a boolean")
+        if type(self.start_index) is not int or self.start_index < 0:
+            raise ValueError("start_index must be a nonnegative integer")
         if type(self.user_initiated) is not bool:
             raise ValueError("user_initiated must be a boolean")
         if type(self.wired_memory) is not bool:
             raise ValueError("wired_memory must be a boolean")
         if self.wired_memory and self.backend not in ("mlx", "mlx-vlm", "mlx-dflash", "mlx-mtp"):
             raise ValueError("--wired-memory is supported only by MLX, MLX-VLM, MLX-DFlash and MLX-MTP")
-        if not 1 <= self.count <= 100:
-            raise ValueError("count must be between 1 and 100")
+        if type(self.count) is not int or not 1 <= self.count <= 100:
+            raise ValueError("count must be an integer between 1 and 100")
+        if self.start_index + self.count > 100:
+            raise ValueError("start_index + count must not exceed 100")
         if self.max_new_tokens < 2:
             raise ValueError("At least 2 output tokens are needed to measure decode")
         if self.max_prompt_tokens < 1 or self.prefill_step_size < 1 or self.warmup < 0:

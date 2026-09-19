@@ -2,6 +2,7 @@
 import fcntl
 import hashlib
 import json
+import os
 import time
 import traceback
 from contextlib import ExitStack
@@ -54,6 +55,10 @@ class BenchmarkRunner:
                     status["model_manifest"] = json.loads(model_manifest.read_text())
                     status["model_manifest_sha256"] = sha256_file(model_manifest)
                 backend = (self._backend_factory or create_backend)(self.config)
+                if getattr(self.config, "trace_generation", False):
+                    if not hasattr(backend, "trace_generation"):
+                        raise ValueError("Generation tracing is supported only by the MLX/MLX-VLM/MTP adapters")
+                    backend.trace_generation = True
                 backend.load()
                 status["backend"] = backend.metadata()
                 samples = PromptDataset(self.config, backend.tokenizer).load()
@@ -79,9 +84,14 @@ class BenchmarkRunner:
                                 or len(generated) != measurement["generated_tokens"]
                                 or any(type(token) is not int or token < 0 for token in generated)):
                             raise ValueError("Backend must return one nonnegative integer ID per generated token")
+                        if getattr(self.config, "trace_generation", False):
+                            from inference_lab.visualization.recording import validate_generation_trace
+                            validate_generation_trace(measurement)
                         measurement.update(index=sample.index, prompt_token_sha256=sample.token_sha256)
                         output.write(json.dumps(measurement, ensure_ascii=False) + "\n")
                         output.flush()
+                        if getattr(self.config, "trace_generation", False):
+                            os.fsync(output.fileno())
                         rows.append(measurement)
                         pp = measurement["prompt_tokens"] / measurement["prefill_seconds"]
                         tg = measurement["decode_tokens"] / measurement["decode_seconds"]

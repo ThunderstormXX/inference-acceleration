@@ -20,6 +20,7 @@ class SpeculativeReport:
 
     PROTOCOL = ("count", "max_new_tokens", "max_prompt_tokens", "prefill_step_size",
                 "warmup", "prompt_mode", "chain_prefix_tokens", "kv_bits", "user_initiated")
+    OPTIONAL_PROTOCOL_DEFAULTS = {"start_index": 0, "trace_generation": False}
     MLX_PACKAGES = ("mlx", "mlx-lm", "mlx-metal")
     BACKEND_FAMILIES = {"mlx": ("mlx-dflash", "spec-baseline"),
                         "mlx-vlm": ("mlx-mtp", "mtp-baseline")}
@@ -156,6 +157,13 @@ class SpeculativeReport:
                 self._counters(row)
         if len(set(indices)) != count:
             raise ValueError("Duplicate prompt indices")
+        start_index = config.get("start_index", 0)
+        if type(start_index) is not int or start_index < 0:
+            raise ValueError("Invalid config.start_index")
+        if indices != list(range(start_index, start_index + count)):
+            raise ValueError("Prompt indices do not match the configured contiguous dataset slice")
+        if type(config.get("trace_generation", False)) is not bool:
+            raise ValueError("Invalid config.trace_generation")
         if summary.get("prompt_tokens_sha256") != self._hash([prompt["prompt_tokens"] for prompt in prompts]):
             raise ValueError("Combined input token hash differs from summary")
         source = {"directory": str(directory), "files": files, "config": config,
@@ -212,6 +220,9 @@ class SpeculativeReport:
                     differences.append(key)
             for key in self.PROTOCOL:
                 if run["summary"]["config"][key] != baseline["summary"]["config"][key]:
+                    differences.append(f"config.{key}")
+            for key, default in self.OPTIONAL_PROTOCOL_DEFAULTS.items():
+                if run["summary"]["config"].get(key, default) != baseline["summary"]["config"].get(key, default):
                     differences.append(f"config.{key}")
             left = [(p["index"], p["prompt_tokens"]) for p in baseline["prompts"]]
             right = [(p["index"], p["prompt_tokens"]) for p in run["prompts"]]

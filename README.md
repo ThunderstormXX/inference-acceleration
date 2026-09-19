@@ -25,7 +25,7 @@ The animation replays **real recorded events** from one selected math prompt. Bl
 | Time to the last displayed token, including prefill | 4.169 s | **3.914 s** |
 | Output token IDs | 128 | **128, exactly matching** |
 
-MTP finishes this fragment **0.256 s earlier**: a **1.065×** ratio of completion times. This is a selected illustration, not the five-prompt benchmark below. Other trial prompts did not show a speedup; [the demo notes](docs/generation-demo.md) disclose those trials and explain the timing instrumentation. The displayed text is a reasoning fragment, not a complete solution.
+MTP finishes this fragment **0.256 s earlier**: a **1.065×** ratio of completion times. This is a selected illustration, not an estimate of the dataset-wide speedup. Other trial prompts did not show a speedup; [the demo notes](docs/generation-demo.md) disclose those trials and explain the timing instrumentation. The displayed text is a reasoning fragment, not a complete solution.
 
 Inspect the [prompt](configs/demos/seating-puzzle.txt), [event trace](docs/examples/mtp-trace.json) and [trace provenance](docs/examples/mtp-trace.provenance.json).
 
@@ -68,14 +68,20 @@ bash scripts/download/model.sh
 bash scripts/download/dataset.sh     # exactly 100 rows
 bash scripts/download/mtp.sh         # the separate MTP head
 
-# Matched baseline and native MTP, five prompts each
-bash scripts/benchmark/mtp.sh --mode baseline --count 5 --max-new-tokens 512
-bash scripts/benchmark/mtp.sh --mode mtp --count 5 --max-new-tokens 512
+# Full matched series: 100 prompts × 2048 tokens per runtime, with event logs
+bash scripts/benchmark/mtp_series.sh \
+  --count 100 --max-new-tokens 2048 --chunk-size 5 \
+  --label mtp-long2048
 ```
 
-Each benchmark creates `artifacts/runs/<UTC>-<backend>-<label>/` with its measurements. Compare the two output directories:
+The series alternates baseline→MTP and MTP→baseline in five-prompt blocks, with a fresh process and one unmeasured warmup for every block. It saves its progress in `artifacts/series/mtp-long2048/manifest.json`; add `--resume` to the same command after an interruption. Completed blocks are checked and reused. Each request saves its complete output and actual event timestamps, including draft proposals and verification. The 2048-token budget ignores EOS; it does not imply a complete solution.
+
+For a shorter experiment, run the two roles separately:
 
 ```bash
+bash scripts/benchmark/mtp.sh --mode baseline --count 5 --max-new-tokens 512 --trace-generation
+bash scripts/benchmark/mtp.sh --mode mtp --count 5 --max-new-tokens 512 --trace-generation
+
 bash scripts/report/speculative.sh \
   --baseline artifacts/runs/<baseline-run> \
   --speculative artifacts/runs/<mtp-run> \
@@ -83,6 +89,16 @@ bash scripts/report/speculative.sh \
 ```
 
 ### Recreate the animation
+
+Select any original dataset index **0–99** after the full series finishes. This reads the saved trajectory and loads only the local tokenizer; no model inference is repeated:
+
+```bash
+bash scripts/demo/from_logs.sh \
+  --series artifacts/series/mtp-long2048 --index 42 \
+  --output artifacts/demos/sample-042
+```
+
+Long text scrolls automatically. Add `--max-visible-tokens 128` for a short prefix, `--rates 0.25` to slow both lanes equally, or `--trace-only` to export the enriched events for your own renderer. Each GIF retains actual timings; differing outputs are shown with an explicit mismatch banner.
 
 Render the published event trace without loading the model:
 
@@ -105,7 +121,7 @@ bash scripts/demo/render.sh \
   --output artifacts/demos/mtp-race
 ```
 
-The renderer checks exact output token-ID agreement before producing the GIF. It preserves relative timing, draft rejections and corrections. See [recording details](docs/generation-demo.md).
+The trace renderer requires exact output token-ID agreement by default (`--allow-mismatch` explicitly shows differing trajectories). Both entry points preserve relative timing, draft rejections and corrections, and stop the displayed text before its first EOS. Full raw logs remain intact. See [recording details](docs/generation-demo.md).
 
 ### Try the other runtimes
 

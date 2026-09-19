@@ -139,13 +139,21 @@ round-loop API. Its verification, cache rollback and proposal math are unchanged
             raise ValueError("max_new_tokens must be a positive integer")
         self._draft.reset(self._model)
         try:
+            if self.trace_generation:
+                from inference_lab.visualization.recording import GenerationRecorder
+                from inference_lab.visualization.trace import MTPTraceObserver
+                recorder = GenerationRecorder(self, clock=perf_counter, speculative=True)
+                observer = MTPTraceObserver(self, recorder, synchronize_first=False,
+                                            suppress_detokenization=False, record_first=False)
+                with observer.observe():
+                    return self._measure_mtp(prompt_tokens, max_new_tokens, recorder=recorder)
             return self._measure_mtp(prompt_tokens, max_new_tokens)
         finally:
             # Avoid retaining a previous request's drafter KV/seed during the
             # next prompt's prefill or carrying history across independent rows.
             self._draft.reset(self._model)
 
-    def _measure_mtp(self, prompt_tokens: list[int], max_new_tokens: int) -> dict[str, Any]:
+    def _measure_mtp(self, prompt_tokens: list[int], max_new_tokens: int, recorder=None) -> dict[str, Any]:
         mx = self._mx
         cache = self._make_prompt_cache(self._model)
         prompt = mx.array(prompt_tokens, dtype=mx.uint32)
@@ -159,6 +167,8 @@ round-loop API. Its verification, cache rollback and proposal math are unchanged
         generated = []
         try:
             started = perf_counter()
+            if recorder is not None:
+                recorder.start_at(started)
             with mx.stream(self._generation_stream):
                 position = 0
                 while position < len(prompt_tokens) - 1:
@@ -192,8 +202,11 @@ round-loop API. Its verification, cache rollback and proposal math are unchanged
                 raise RuntimeError("MTP speculative work leaked into prefill")
             generated.append(first)
             mx.synchronize()
+            if recorder is not None:
+                recorder.commit([first], round=0, accepted_count=0, draft_count=0,
+                                rejected_token_ids=[], emitted_draft_count=0, emitted_target_count=1)
             prefill_seconds = perf_counter() - started
-            decode_started = perf_counter()
+            decode_started = started + prefill_seconds if recorder is not None else perf_counter()
             if max_new_tokens > 1:
                 for next_token, _ in stream:
                     if type(next_token) is not int or next_token < 0:
@@ -226,6 +239,8 @@ round-loop API. Its verification, cache rollback and proposal math are unchanged
             "timing_method": "perf_counter + MLX phase synchronization; full prompt hidden-state capture and first target token in prefill; MTP head prefill, stock round loop and final cache materialization in decode",
         }
         result.update(counters)
+        if recorder is not None:
+            result["generation_trace"] = recorder.finish_measurement(result)
         return result
 
     def metadata(self) -> dict[str, Any]:
@@ -249,6 +264,11 @@ round-loop API. Its verification, cache rollback and proposal math are unchanged
             "draft_prefill_phase": "decode, after the first target token is available",
             "acceptance_accounting": "stock accept_lens/draft_lens; all verified matching drafts including capped final proposals, bonus excluded",
             "timed_text_detokenization": False,
+            "generation_timing_policy": (
+                "instrumented stock MTP; proposal host read and event recording included in phase times; "
+                "cache commit timestamps denote native host enqueue; final GPU sync included"
+                if self.trace_generation else "uninstrumented generation"
+            ),
             "greedy_parity": "must be validated against same-environment MLXVLMBackend",
         })
         return metadata

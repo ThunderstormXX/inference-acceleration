@@ -44,6 +44,7 @@ class MLXBackend:
         self.prefill_step_size = prefill_step_size
         self.kv_bits = kv_bits
         self.wired_memory = wired_memory
+        self.trace_generation = False
         self._mx: Any = None
         self._model: Any = None
         self._tokenizer: Any = None
@@ -146,7 +147,13 @@ class MLXBackend:
         mx.clear_cache()
         mx.reset_peak_memory()
 
+        recorder = None
+        if self.trace_generation:
+            from inference_lab.visualization.recording import GenerationRecorder
+            recorder = GenerationRecorder(self, clock=perf_counter)
         prefill_start = perf_counter()
+        if recorder is not None:
+            recorder.start_at(prefill_start)
         # Only cache state is evaluated for these chunks. This lets MLX discard
         # the unused vocabulary projection for all but the final prompt token.
         position = 0
@@ -161,12 +168,14 @@ class MLXBackend:
         mx.eval(token, [entry.state for entry in cache])
         mx.synchronize()
         first_token_id = int(token.item())
+        if recorder is not None:
+            recorder.commit([first_token_id])
         prefill_seconds = perf_counter() - prefill_start
 
         generated = [first_token_id]
         decode_seconds = 0.0
         if max_new_tokens > 1:
-            decode_start = perf_counter()
+            decode_start = prefill_start + prefill_seconds if recorder is not None else perf_counter()
             for step in range(max_new_tokens - 1):
                 next_token = self._next_token(token, cache)
                 mx.async_eval(next_token)
@@ -175,17 +184,21 @@ class MLXBackend:
                 # has already been recorded at the prefill boundary.
                 if step:
                     generated.append(int(token.item()))
+                    if recorder is not None:
+                        recorder.commit([generated[-1]])
                 token = next_token
                 if (step + 1) % 256 == 0:
                     mx.clear_cache()
             generated.append(int(token.item()))
+            if recorder is not None:
+                recorder.commit([generated[-1]])
             mx.eval([entry.state for entry in cache])
             mx.synchronize()
             decode_seconds = perf_counter() - decode_start
 
         peak_memory_gb = float(mx.get_peak_memory()) / 1_000_000_000
         output_text = self.tokenizer.decode(generated, skip_special_tokens=False)
-        return {
+        result = {
             "prompt_tokens": len(prompt_tokens),
             "generated_tokens": len(generated),
             "decode_tokens": len(generated) - 1,
@@ -196,6 +209,10 @@ class MLXBackend:
             "peak_memory_gb": peak_memory_gb,
             "timing_method": "perf_counter + MLX phase synchronization; first token in prefill",
         }
+
+        if recorder is not None:
+            result["generation_trace"] = recorder.finish_measurement(result)
+        return result
 
     def metadata(self) -> dict[str, Any]:
         """Describe the actual execution policy alongside benchmark results."""
@@ -208,6 +225,11 @@ class MLXBackend:
         quantization = self._model_config.get("quantization") or {}
         return {
             "framework": "mlx-lm",
+            "trace_generation": self.trace_generation,
+            "generation_timing_policy": (
+                "instrumented; host token-availability events included in phase times; no display enrichment"
+                if self.trace_generation else "uninstrumented generation"
+            ),
             "versions": packages,
             "device": "metal",
             "device_info": dict(self._mx.device_info()) if self._mx is not None else None,

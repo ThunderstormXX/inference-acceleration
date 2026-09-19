@@ -134,7 +134,12 @@ class EventRecorder:
 class MTPTraceObserver:
     """Scoped observers around unchanged stock proposal/verification functions."""
 
-    def __init__(self, backend: Any, recorder: EventRecorder, module: Any = None):
+    def __init__(self, backend: Any, recorder: EventRecorder, module: Any = None, *,
+                 synchronize_first: bool = True, suppress_detokenization: bool = True,
+                 record_first: bool = True):
+        self.synchronize_first = synchronize_first
+        self.suppress_detokenization = suppress_detokenization
+        self.record_first = record_first
         self.backend = backend
         self.recorder = recorder
         self.module = module
@@ -218,13 +223,17 @@ class MTPTraceObserver:
             try:
                 for token, info in stream:
                     token = int(token)
-                    if not self.yielded:
-                        self._evaluate()
-                        self.recorder.commit([token], round=0, accepted_count=0, draft_count=0,
-                                             rejected_token_ids=[], emitted_draft_count=0, emitted_target_count=1)
+                    first = not self.yielded
+                    if first:
+                        if self.synchronize_first:
+                            self._evaluate()
+                        if self.record_first:
+                            self.recorder.commit([token], round=0, accepted_count=0, draft_count=0,
+                                                 rejected_token_ids=[], emitted_draft_count=0, emitted_target_count=1)
                     position = len(self.yielded)
-                    if position >= len(self.recorder.token_ids) or self.recorder.token_ids[position] != token:
-                        raise RuntimeError("MTP event output disagrees with stock generator output")
+                    if not (first and not self.record_first):
+                        if position >= len(self.recorder.token_ids) or self.recorder.token_ids[position] != token:
+                            raise RuntimeError("MTP event output disagrees with stock generator output")
                     self.yielded.append(token)
                     yield token, info
             finally:
@@ -238,7 +247,8 @@ class MTPTraceObserver:
             stack.enter_context(_patch_attribute(self.backend, "_run_rounds", run_rounds))
             # The backend normally decodes after its own phase clocks. Keep that
             # text work outside our whole-request clock as well.
-            stack.enter_context(_patch_attribute(self.backend.tokenizer, "decode", lambda *a, **k: ""))
+            if self.suppress_detokenization:
+                stack.enter_context(_patch_attribute(self.backend.tokenizer, "decode", lambda *a, **k: ""))
             yield self
 
 

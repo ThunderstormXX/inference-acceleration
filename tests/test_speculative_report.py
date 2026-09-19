@@ -264,3 +264,33 @@ def test_dflash_does_not_require_unrelated_mlx_vlm_version_equality(evidence):
     for directory, version in ((evidence.baseline, "0.7.1"), (evidence.speculative[0], "0.7.2")):
         mutate_summary(directory, lambda summary: summary["environment"]["packages"].update({"mlx-vlm": version}))
     assert evidence.analyze()["status"] == "completed"
+
+
+def test_legacy_protocol_defaults_remain_comparable(evidence):
+    for directory in [evidence.baseline, *evidence.speculative]:
+        mutate_summary(directory, lambda summary: [summary["config"].pop(key, None)
+                       for key in ("start_index", "trace_generation")])
+    assert evidence.analyze()["status"] == "completed"
+
+
+def test_instrumented_and_uninstrumented_runs_cannot_be_compared(evidence):
+    mutate_summary(evidence.speculative[0], lambda summary: summary["config"].update(trace_generation=True))
+    report = evidence.analyze()
+    assert report["status"] == "failed"
+    assert "config.trace_generation" in str(report["errors"])
+
+
+def test_nonzero_slice_indices_and_metadata_must_agree(evidence):
+    for directory in [evidence.baseline, *evidence.speculative]:
+        mutate_summary(directory, lambda summary: summary["config"].update(start_index=7))
+        prompts = json.loads((directory / "prompts.json").read_text())
+        rows = [json.loads(line) for line in (directory / "samples.jsonl").read_text().splitlines()]
+        for item in prompts + rows:
+            item["index"] += 7
+        (directory / "prompts.json").write_text(json.dumps(prompts))
+        write_rows(directory, rows)
+    assert evidence.analyze()["status"] == "completed"
+    mutate_summary(evidence.speculative[0], lambda summary: summary["config"].update(start_index=0))
+    report = evidence.analyze()
+    assert report["status"] == "failed"
+    assert "configured contiguous dataset slice" in str(report["errors"])

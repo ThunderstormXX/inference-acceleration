@@ -27,10 +27,11 @@ class PromptDataset:
 
     def load(self) -> list[PromptSample]:
         rows = [json.loads(line) for line in Path(self.config.dataset_path).read_text().splitlines() if line]
-        if len(rows) < self.config.count:
-            raise ValueError(f"Need {self.config.count} rows, found {len(rows)}")
+        end = self.config.start_index + self.config.count
+        if len(rows) < end:
+            raise ValueError(f"Need {end} rows for the requested slice, found {len(rows)}")
         samples = []
-        for index, row in enumerate(rows[:self.config.count]):
+        for index, row in enumerate(rows[self.config.start_index:end], start=self.config.start_index):
             problem = row["problem"]
             if not isinstance(problem, str) or not problem.strip():
                 raise ValueError(f"Empty problem at row {index}")
