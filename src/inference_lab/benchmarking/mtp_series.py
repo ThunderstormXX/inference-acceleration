@@ -17,6 +17,7 @@ import subprocess
 import tempfile
 
 from inference_lab.core.config import ROOT, BenchmarkConfig
+from inference_lab.core.host_clock import MacSleepClock
 from inference_lab.core.io import sha256_file
 from .metrics import aggregate
 from .mtp import MTPConfig
@@ -65,8 +66,11 @@ class MTPSeriesConfig:
     dataset_path: str = BenchmarkConfig.dataset_path
     trace_generation: bool = True
     min_battery_percent: int = 20
+    require_ac: bool = True
 
     def __post_init__(self):
+        if type(self.require_ac) is not bool:
+            raise ValueError("require_ac must be a boolean")
         BenchmarkConfig("mlx-vlm", count=self.count, max_new_tokens=self.max_new_tokens,
                         prefill_step_size=self.prefill_step_size, trace_generation=self.trace_generation)
         if type(self.chunk_size) is not int or not 1 <= self.chunk_size <= 100:
@@ -88,6 +92,7 @@ class MTPSeriesRunner:
         self.resume = resume
         self.manifest_path = self.output / "manifest.json"
         self.manifest = None
+        self._host_clock = None
 
     def plan(self):
         blocks = []
@@ -159,15 +164,94 @@ class MTPSeriesRunner:
         self.manifest["updated_at"] = _now()
         _write_json(self.manifest_path, self.manifest)
 
+    def _host_policy(self):
+        return {"schema_version": 1,
+                "clock_method": "mach_continuous_time minus mach_absolute_time",
+                "sleep_threshold_seconds": 1.0, "require_ac": self.config.require_ac,
+                "min_battery_percent": self.config.min_battery_percent,
+                "power_observation_scope": "before/after child process only; intervening power changes are not observed"}
+
+    def _clock_snapshot(self):
+        if self._host_clock is None:
+            self._host_clock = MacSleepClock()
+        return self._host_clock.snapshot()
+
+    def _parse_power(self, raw):
+        if not isinstance(raw, str) or not raw.strip():
+            raise ValueError("Missing raw pmset battery evidence")
+        charge = re.search(r"(\d+)%;", raw)
+        source = re.search(r"Now drawing from ['\"]?(AC Power|Battery Power)['\"]?", raw)
+        if charge is None or source is None:
+            raise ValueError("Cannot determine battery percentage/power source; series remains resumable")
+        percent = int(charge.group(1))
+        if not 0 <= percent <= 100:
+            raise ValueError("Invalid battery percentage")
+        discharging = bool(re.search(r"\bdischarging\b", raw, re.I))
+        return {"percent": percent, "discharging": discharging, "on_ac": source.group(1) == "AC Power",
+                "raw": raw.strip(), "stop": discharging and percent < self.config.min_battery_percent}
+
     def _battery(self):
         raw = subprocess.check_output(["pmset", "-g", "batt"], text=True, stderr=subprocess.PIPE, timeout=5)
-        charge = re.search(r"(\d+)%;", raw)
-        if charge is None:
-            raise ValueError("Cannot determine battery percentage; series remains resumable")
-        percent = int(charge.group(1))
-        discharging = bool(re.search(r"\bdischarging\b", raw, re.I))
-        return {"checked_at": _now(), "percent": percent, "discharging": discharging,
-                "raw": raw.strip(), "stop": discharging and percent < self.config.min_battery_percent}
+        return {"checked_at": _now(), **self._parse_power(raw)}
+
+    def _power_issues(self, power):
+        if not isinstance(power, dict):
+            raise ValueError("Missing power endpoint evidence")
+        parsed = self._parse_power(power.get("raw"))
+        for key in ("percent", "discharging", "on_ac", "stop"):
+            if type(power.get(key)) is not type(parsed[key]) or power[key] != parsed[key]:
+                raise ValueError(f"Saved power endpoint contradicts pmset evidence: {key}")
+        issues = []
+        if parsed["stop"]:
+            issues.append(f"Discharging at {parsed['percent']}%, below {self.config.min_battery_percent}%")
+        if self.config.require_ac and (not parsed["on_ac"] or parsed["discharging"]):
+            issues.append("AC power without discharging is required at both process endpoints")
+        return issues
+
+    def _finish_host_observation(self, attempt):
+        observation = attempt["host_observation"]
+        errors, issues = [], []
+        # The clocks bracket subprocess execution. pmset is sampled just outside it.
+        try:
+            observation["clock_after"] = self._clock_snapshot()
+        except Exception as error:
+            errors.append(f"After-clock unavailable: {type(error).__name__}: {error}")
+        try:
+            observation["power_after"] = self._battery()
+        except Exception as error:
+            errors.append(f"After-power unavailable: {type(error).__name__}: {error}")
+        try:
+            assessment = MacSleepClock.assess(observation["clock_before"], observation["clock_after"], threshold_seconds=1.0)
+            observation["sleep_assessment"] = assessment
+            if assessment["sleep_detected"]:
+                issues.append(f"System sleep detected during process: {assessment['sleep_seconds']:.6f} seconds exceeds 1 second")
+        except (KeyError, TypeError, ValueError) as error:
+            errors.append(f"Clock evidence invalid: {error}")
+        for endpoint in ("before", "after"):
+            try:
+                issues.extend(f"{endpoint}: {issue}" for issue in self._power_issues(observation.get(f"power_{endpoint}")))
+            except (TypeError, ValueError) as error:
+                errors.append(f"{endpoint} power evidence invalid: {error}")
+        observation.update(collection_errors=errors, invalid_reasons=errors + issues, valid=not (errors or issues))
+        self.manifest.setdefault("power_checks", []).append({"after_block": attempt["block_id"],
+                                                             **observation.get("power_after", {"error": "unavailable"})})
+        self._save()
+
+    def _validate_host_observation(self, attempt):
+        observation = attempt.get("host_observation")
+        if not isinstance(observation, dict) or observation.get("schema_version") != 1:
+            raise ValueError("Missing complete host clock/power evidence for source process")
+        if observation.get("valid") is not True or observation.get("invalid_reasons") != [] or observation.get("collection_errors", []) != []:
+            raise ValueError("Source process has invalid sleep/power evidence")
+        required = ("clock_before", "clock_after", "sleep_assessment", "power_before", "power_after")
+        if any(key not in observation for key in required):
+            raise ValueError("Missing complete host clock/power evidence for source process")
+        recalculated = MacSleepClock.assess(observation["clock_before"], observation["clock_after"], threshold_seconds=1.0)
+        if recalculated != observation["sleep_assessment"] or recalculated["sleep_detected"]:
+            raise ValueError("Source process sleep assessment is inconsistent or detects sleep")
+        for endpoint in ("before", "after"):
+            if self._power_issues(observation[f"power_{endpoint}"]):
+                raise ValueError(f"Source process violates {endpoint} power policy")
 
     @staticmethod
     def _files(directory):
@@ -183,6 +267,7 @@ class MTPSeriesRunner:
                 raise ValueError(f"Recorded source hash mismatch: {path}")
 
     def _validate_block(self, block, attempt):
+        self._validate_host_observation(attempt)
         directory = Path(attempt["run_directory"]).resolve()
         if attempt.get("command") != self.command(block):
             raise ValueError("Recorded worker command differs from the planned protocol")
@@ -307,20 +392,39 @@ class MTPSeriesRunner:
         power = self._battery()
         self.manifest.setdefault("power_checks", []).append({"before_block": block["id"], **power})
         self._save()
-        if power["stop"]:
-            self.manifest.update(status="paused_battery", stop_reason=f"Discharging at {power['percent']}%, below {self.config.min_battery_percent}%")
+        issues = self._power_issues(power)
+        if issues:
+            self.manifest.update(status="paused_battery" if power["stop"] else "paused_power", stop_reason="; ".join(issues))
             self._save()
             return False
         attempt_number = len(block["attempts"]) + 1
         log_dir = self.output / "logs"
         log_dir.mkdir(exist_ok=True)
-        attempt = {"attempt": attempt_number, "status": "running", "started_at": _now(),
+        attempt = {"attempt": attempt_number, "block_id": block["id"], "status": "running", "started_at": _now(),
                    "command": self.command(block), "log": str(log_dir / f"{block['id']}-attempt-{attempt_number:03d}.log")}
         block["attempts"].append(attempt)
         block["status"] = "running"
         self._save()
         try:
-            attempt["exit_code"] = self._execute(block, attempt)
+            attempt["host_observation"] = {"schema_version": 1, "power_before": power,
+                                            "clock_before": self._clock_snapshot()}
+            self._save()
+            try:
+                attempt["exit_code"] = self._execute(block, attempt)
+            finally:
+                self._finish_host_observation(attempt)
+            observation = attempt["host_observation"]
+            if not observation["valid"]:
+                attempt.update(status="invalid", finished_at=_now(), error="; ".join(observation["invalid_reasons"]))
+                block["status"] = "invalid"
+                directory = Path(attempt["run_directory"]) if attempt.get("run_directory") else None
+                if directory and all((directory / name).is_file() for name in RAW_FILES):
+                    attempt["files"] = self._files(directory)
+                pause = ("paused_sleep" if observation.get("sleep_assessment", {}).get("sleep_detected") else
+                         "paused_host_evidence" if observation["collection_errors"] else "paused_power")
+                self.manifest.update(status=pause, stop_reason=attempt["error"])
+                self._save()
+                return False
             if attempt["exit_code"] != 0:
                 raise RuntimeError(f"Child failed with exit code {attempt['exit_code']}; see {attempt['log']}")
             if not attempt.get("run_directory"):
@@ -376,7 +480,7 @@ class MTPSeriesRunner:
             config.update(count=self.config.count, start_index=0,
                           label=f"mtp-baseline-{self.config.label}-merged" if role == "baseline" else f"mtp-k{self.config.block_size}-{self.config.label}-merged")
             sources = [{**{key: block[key] for key in ("id", "chunk_index", "role", "start_index", "count")},
-                        **{key: block["attempts"][-1][key] for key in ("run_directory", "attempt", "command", "files")}}
+                        **{key: block["attempts"][-1][key] for key in ("run_directory", "attempt", "command", "files", "host_observation")}}
                        for block in selected]
             directory = merge_root / role
             directory.mkdir()
@@ -398,6 +502,7 @@ class MTPSeriesRunner:
                        "model_manifest_sha256": first["model_manifest_sha256"], "dataset_sha256": first["dataset_sha256"],
                        "prompt_tokens_sha256": SpeculativeReport._hash([p["prompt_tokens"] for p in prompts]),
                        "series": {"label": self.config.label, "suite_manifest": str(self.manifest_path),
+                                  "host_guard_policy": deepcopy(self._host_policy()),
                                   "source_block_runs": sources, "execution_order": self.manifest["order"],
                                   "process_count": len(selected), "warmups_per_process": 1,
                                   "total_warmup_requests": len(selected), "model_load_count": len(selected),
@@ -428,12 +533,15 @@ class MTPSeriesRunner:
                     raise ValueError("Series already exists; use --resume to verify and continue")
                 self.manifest = json.loads(self.manifest_path.read_text())
             else:
-                self.manifest = {"schema_version": 1, "status": "running", "created_at": _now(),
+                self.manifest = {"schema_version": 2, "status": "running", "created_at": _now(),
+                                 "host_guard_policy": self._host_policy(),
                                  "config": asdict(self.config), "sources": sources,
                                  "order": [block["id"] for block in self.plan()],
                                  "blocks": [{**block, "status": "pending", "attempts": []} for block in self.plan()]}
                 self._save()
             try:
+                if self.manifest.get("schema_version") != 2 or self.manifest.get("host_guard_policy") != self._host_policy():
+                    raise ValueError("Resume requires the current sleep/power guard protocol and evidence")
                 if self.manifest["config"] != asdict(self.config) or self.manifest["sources"] != sources:
                     raise ValueError("Resume source hashes/runtime/inputs or suite protocol changed")
                 plan = self.plan()
@@ -477,10 +585,12 @@ def main():
     parser.add_argument("--dataset-path", default=BenchmarkConfig.dataset_path)
     parser.add_argument("--trace-generation", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--min-battery-percent", type=int, default=20)
+    parser.add_argument("--allow-battery", action="store_true", help="Allow battery operation; default requires AC at both process endpoints")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--resume", action="store_true")
     args = vars(parser.parse_args())
     output, resume = args.pop("output"), args.pop("resume")
+    args["require_ac"] = not args.pop("allow_battery")
     previous = signal.getsignal(signal.SIGTERM)
     def interrupted(signum, frame):
         raise KeyboardInterrupt("Series received SIGTERM; active child is being stopped")

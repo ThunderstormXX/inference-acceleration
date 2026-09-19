@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -97,7 +98,7 @@ class PublicationExporter:
         source = source or {}
         power = source.get("power_source") or {}
         raw = power.get("raw", "") if isinstance(power, dict) else ""
-        source_match = re.search(r"Now drawing from '([^']+)'", raw)
+        source_match = re.search(r"""Now drawing from ['"]?(AC Power|Battery Power)['"]?""", raw)
         charge_match = re.search(r"(\d+)%;\s*([^;\n]+)", raw)
         thermal = source.get("thermal_state") or {}
         return {"caffeinate_assertions": source.get("caffeinate_assertions"),
@@ -120,6 +121,77 @@ class PublicationExporter:
         return result
 
     @classmethod
+    def _guard_policy(cls, value):
+        if (not isinstance(value, dict) or type(value.get("schema_version")) is not int or value["schema_version"] != 1
+                or value.get("clock_method") != "mach_continuous_time minus mach_absolute_time"
+                or type(value.get("require_ac")) is not bool
+                or type(value.get("min_battery_percent")) is not int
+                or not 0 <= value["min_battery_percent"] <= 100
+                or value.get("power_observation_scope") != "before/after child process only; intervening power changes are not observed"):
+            raise ValueError("Invalid declared host guard policy")
+        threshold = value.get("sleep_threshold_seconds")
+        if type(threshold) not in (int, float) or not math.isfinite(threshold) or threshold != 1.0:
+            raise ValueError("Unsupported host guard sleep threshold; schema 1 requires one second")
+        return cls._pick(value, ("schema_version", "clock_method", "sleep_threshold_seconds", "require_ac",
+                                 "min_battery_percent", "power_observation_scope"))
+
+    @classmethod
+    def _guard_observation(cls, observation, policy):
+        from inference_lab.core.host_clock import MacSleepClock
+        if (not isinstance(observation, dict) or observation.get("schema_version") != 1
+                or observation.get("valid") is not True or observation.get("invalid_reasons") != []
+                or observation.get("collection_errors", []) != []):
+            raise ValueError("Missing or invalid source chunk host observation")
+        assessment = MacSleepClock.assess(observation["clock_before"], observation["clock_after"],
+                                          threshold_seconds=policy["sleep_threshold_seconds"])
+        if assessment != observation.get("sleep_assessment") or assessment.get("sleep_detected") is not False:
+            raise ValueError("Source chunk sleep evidence is inconsistent or reports sleep")
+        result = {"schema_version": 1, "valid": True, "invalid_reasons": [],
+                  "sleep_assessment": assessment, "raw_observation_object_sha256": object_digest(observation)}
+        for key in ("clock_before", "clock_after"):
+            result[key] = cls._pick(observation[key], ("schema_version", "absolute_ticks", "continuous_ticks",
+                                                       "timebase_numer", "timebase_denom", "sampling_span_ticks"))
+        for key in ("power_before", "power_after"):
+            power = observation.get(key)
+            if not isinstance(power, dict) or not isinstance(power.get("raw"), str):
+                raise ValueError("Missing source chunk power evidence")
+            parsed = cls._conditions({"power_source": {"raw": power["raw"]}})["power_source"]
+            if parsed["kind"] not in ("AC Power", "Battery Power") or parsed["battery_percent"] is None:
+                raise ValueError("Unparseable source chunk power evidence")
+            percent = parsed["battery_percent"]
+            discharging = bool(re.search(r"\bdischarging\b", power["raw"], re.I))
+            on_ac = parsed["kind"] == "AC Power"
+            stop = discharging and percent < policy["min_battery_percent"]
+            if (type(power.get("percent")) is not int or power["percent"] != percent or not 0 <= percent <= 100
+                    or any(type(power.get(name)) is not bool for name in ("on_ac", "discharging", "stop"))
+                    or power["on_ac"] != on_ac or power["discharging"] != discharging or power["stop"] != stop
+                    or not isinstance(power.get("checked_at"), str) or not power["checked_at"]):
+                raise ValueError("Source chunk parsed power evidence is inconsistent")
+            if stop or (policy["require_ac"] and (not on_ac or discharging)):
+                raise ValueError("Source chunk violates declared AC/battery policy")
+            result[key] = {**cls._pick(power, ("checked_at", "percent", "discharging", "on_ac", "stop")),
+                           "source": "pmset -g batt", "power_kind": parsed["kind"],
+                           "battery_state": parsed["battery_state"]}
+        return result
+
+    @classmethod
+    def _guard_attempt(cls, manifest, block):
+        matches = [item for item in manifest.get("blocks", []) if item.get("id") == block["id"]]
+        if len(matches) != 1 or matches[0].get("status") != "completed":
+            raise ValueError("Guarded chunk is absent or incomplete in suite manifest")
+        source = matches[0]
+        if any(source.get(key) != block.get(key) for key in ("chunk_index", "role", "start_index", "count")):
+            raise ValueError("Guarded chunk protocol conflicts with suite manifest")
+        attempts = [item for item in source.get("attempts", []) if item.get("attempt") == block.get("attempt")]
+        if len(attempts) != 1:
+            raise ValueError("Guarded source attempt is missing or ambiguous")
+        attempt = attempts[0]
+        if (attempt.get("status") != "completed" or attempt.get("run_directory") != block["run_directory"]
+                or attempt.get("files") != block["files"]
+                or attempt.get("host_observation") != block.get("host_observation")):
+            raise ValueError("Guarded source attempt evidence differs from suite manifest")
+
+    @classmethod
     def _series(cls, summary, merged_prompts, merged_rows):
         series = summary.get("series")
         if series is None:
@@ -132,9 +204,32 @@ class PublicationExporter:
         result = cls._pick(series, ("label", "process_count", "warmups_per_process",
                                    "total_warmup_requests", "model_load_count", "methodology"))
         result["execution_order"] = [cls._text(item) for item in series.get("execution_order", [])]
+        manifest_data = None
         if series.get("suite_manifest"):
             manifest = Path(series["suite_manifest"])
-            result["suite_manifest"] = {"path": cls._path(manifest), "sha256": digest(manifest.read_bytes())}
+            if (manifest.parent / "invalidation.json").exists():
+                raise ValueError("Series has an explicit invalidation.json; publication is excluded")
+            manifest_raw = manifest.read_bytes()
+            manifest_data = json.loads(manifest_raw)
+            if not isinstance(manifest_data, dict):
+                raise ValueError("Invalid suite manifest object")
+            result["suite_manifest"] = {"path": cls._path(manifest), "sha256": digest(manifest_raw)}
+        declared_policy = series.get("host_guard_policy")
+        manifest_policy = (manifest_data or {}).get("host_guard_policy")
+        if declared_policy is not None or manifest_policy is not None:
+            if declared_policy != manifest_policy or manifest_data.get("status") != "completed":
+                raise ValueError("Declared host guard policy requires a matching completed suite manifest")
+            policy = cls._guard_policy(declared_policy)
+            result["host_guard_policy"] = policy
+            result["host_guard"] = {"status": "validated", "scope": "Sleep assessed across each child process; AC/battery observed only before and after it.",
+                                     "power_observation_limitation": "Intervening power-source changes are not observed."}
+        else:
+            policy = None
+            if (manifest_data or {}).get("schema_version", 1) >= 2:
+                raise ValueError("New suite manifest is missing its declared host guard policy")
+            if any("host_observation" in block for block in blocks):
+                raise ValueError("Host observations exist without a declared guard policy")
+            result["host_guard"] = {"status": "not_guarded", "scope": "Legacy series: no validated sleep/power guard evidence; caffeinate does not prove absence of sleep."}
         result["source_block_runs"] = []
         common, metadata_sources = None, []
         expected_role = {"mlx": "baseline", "mlx-vlm": "baseline", "mlx-dflash": "dflash", "mlx-mtp": "mtp"}[summary["config"]["backend"]]
@@ -155,6 +250,9 @@ class PublicationExporter:
             directories.add(directory)
             item = cls._pick(block, ("id", "chunk_index", "role", "start_index", "count", "attempt"))
             item["run_directory"] = cls._path(block["run_directory"])
+            if policy is not None:
+                cls._guard_attempt(manifest_data, block)
+                item["host_observation"] = cls._guard_observation(block.get("host_observation"), policy)
             source_data = {}
             for name in ("summary.json", "prompts.json", "samples.jsonl"):
                 source = block["files"][name]
@@ -354,6 +452,8 @@ class PublicationExporter:
         series, common_metadata = self._series(summary, prompts, rows)
         metadata_summary = {**summary, "model_manifest": common_metadata["model_manifest"]} if common_metadata else summary
         runtime = self._runtime(summary)
+        runtime["host_guard"] = series["host_guard"] if series else {
+            "status": "not_guarded", "scope": "Standalone run has no suite sleep/power guard evidence; caffeinate does not prove absence of sleep."}
         if common_metadata:
             runtime["hardware"] = common_metadata["hardware"]
             runtime["hardware_scope"] = "Common values across every hash-verified source chunk; see series.metadata_provenance."
@@ -400,6 +500,8 @@ class PublicationExporter:
     @staticmethod
     def _paired_series(baseline, speculative):
         """Check the full paired schedule, not only each role's independent coverage."""
+        if baseline.get("host_guard_policy") != speculative.get("host_guard_policy"):
+            raise ValueError("Paired source groups declare different host guard policies")
         left = {item["chunk_index"]: item for item in baseline["source_block_runs"]}
         right = {item["chunk_index"]: item for item in speculative["source_block_runs"]}
         if set(left) != set(right) or sorted(left) != list(range(len(left))):
@@ -464,6 +566,7 @@ class PublicationExporter:
                       paired_speedup={"definition": "baseline phase seconds / speculative phase seconds for the same prompt",
                                       "statistics": paired_stats, "per_prompt": paired},
                       methodology={"instrumented": instrumented, "fixed_output_budget": True,
+                          "host_guard": baseline["runtime"]["host_guard"],
                           "timing_overhead": "Draft proposal host reads and baseline per-token clocks are included in instrumented measurements." if instrumented else "No generation trace requested by protocol.",
                           "end_to_end": "Sum of prefill and decode phases; numerator is all generated output tokens. Excludes loading, warmup and between-request overhead.",
                           "series": "When series metadata is present, each source chunk uses a separate process/model load and its own warmup; preserve chronological execution_order.",
@@ -491,6 +594,10 @@ class PublicationExporter:
             lines += [f"Target: `{model['repo_id']}` at `{model.get('resolved_revision', 'unavailable')}`.", ""]
         if baseline["series"]:
             lines += ["Hardware and target pins were checked across all source chunks. Per-chunk start time, runner elapsed time, power and thermal snapshots are preserved in JSON with source-summary SHA256 values.", ""]
+        guard = report["methodology"]["host_guard"]
+        lines += [f"Sleep/power guard: **{guard['status']}**. {guard['scope']}", ""]
+        if guard.get("power_observation_limitation"):
+            lines += [guard["power_observation_limitation"], ""]
         lines += [f"{protocol['count']} identical prompts × {protocol['max_new_tokens']} output tokens; instrumented: **{report['methodology']['instrumented']}**.",
                   report["methodology"]["timing_overhead"], "",
                   "Mean ± sample SD (ddof=1), tokens/s. Pooled = total tokens / total phase seconds.", "",

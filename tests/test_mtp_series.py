@@ -48,12 +48,29 @@ class FakeSeries(MTPSeriesRunner):
         self.mismatch = False
         self.corrupt_trace = False
         self.power = {"percent": 57, "discharging": False, "stop": False}
+        self.post_power = None
+        self.power_calls = self.clock_calls = 0
+        self.clock_offset = 0
+        self.simulated_sleep = 0.0
 
     def _fingerprint(self):
         return deepcopy(self.fingerprint)
 
     def _battery(self):
-        return deepcopy(self.power)
+        self.power_calls += 1
+        values = self.post_power if self.post_power is not None and self.power_calls % 2 == 0 else self.power
+        source = "AC Power" if values.get("on_ac", not values["discharging"]) else "Battery Power"
+        state = "discharging" if values["discharging"] else "charging"
+        raw = f"Now drawing from '{source}'\n -InternalBattery-0 {values['percent']}%; {state}; 1:00 remaining"
+        return {"checked_at": "2026-09-19T00:00:00Z", **self._parse_power(raw)}
+
+    def _clock_snapshot(self):
+        self.clock_calls += 1
+        if self.clock_calls % 2 == 0:
+            self.clock_offset += int(self.simulated_sleep * 1_000_000_000)
+        awake = 1_000_000_000_000 + self.clock_calls * 2_000_000_000
+        return {"schema_version": 1, "absolute_ticks": awake, "continuous_ticks": awake + self.clock_offset,
+                "timebase_numer": 1, "timebase_denom": 1, "sampling_span_ticks": 0}
 
     def _execute(self, block, attempt):
         self.calls.append(block["id"])
@@ -288,3 +305,151 @@ def test_battery_threshold_uses_real_pmset_state(setup, monkeypatch, percent, st
     monkeypatch.setattr(mtp_series.subprocess, "check_output", lambda *a, **k: f"Now drawing from Battery Power\n -InternalBattery-0 {percent}%; {state}; 1:00 remaining")
     result = MTPSeriesRunner(config, output)._battery()
     assert result["percent"] == percent and result["stop"] is stop
+
+
+def test_sleep_invalidates_completed_raw_attempt_and_stops_without_auto_retry(setup):
+    config, output = setup
+    runner = FakeSeries(config, output)
+    runner.simulated_sleep = 3.5
+    result = runner.run()
+    assert result["status"] == "paused_sleep"
+    assert runner.calls == ["000-baseline"]
+    block = result["blocks"][0]
+    assert block["status"] == "invalid" and len(block["attempts"]) == 1
+    attempt = block["attempts"][0]
+    observation = attempt["host_observation"]
+    assert observation["sleep_assessment"]["sleep_seconds"] == 3.5
+    assert observation["sleep_assessment"]["sleep_detected"] is True
+    assert observation["valid"] is False and attempt["status"] == "invalid"
+    path = Path(attempt["run_directory"]) / "samples.jsonl"
+    preserved = path.read_bytes()
+    assert json.loads((path.parent / "summary.json").read_text())["status"] == "completed"
+    assert "merged_runs" not in result
+    with pytest.raises(ValueError, match="partial series"):
+        runner._merge()
+    resumed = FakeSeries(config, output, resume=True)
+    completed = resumed.run()
+    assert resumed.calls[0] == "000-baseline"
+    assert completed["blocks"][0]["attempts"][0]["status"] == "invalid"
+    assert completed["blocks"][0]["attempts"][1]["status"] == "completed"
+    assert path.read_bytes() == preserved
+
+
+def test_requires_ac_before_worker_by_default_but_explicit_battery_is_supported(setup):
+    config, output = setup
+    assert config.require_ac is True
+    runner = FakeSeries(config, output)
+    runner.power = {"percent": 75, "discharging": True, "on_ac": False}
+    result = runner.run()
+    assert result["status"] == "paused_power" and not runner.calls
+    assert not result["blocks"][0]["attempts"]
+    allowed = FakeSeries(replace(config, require_ac=False), output.parent / "battery-allowed")
+    allowed.power = runner.power
+    completed = allowed.run()
+    assert completed["status"] == "completed"
+    assert completed["host_guard_policy"]["require_ac"] is False
+
+
+def test_loss_of_ac_after_block_invalidates_raw_and_resume_waits_for_ac(setup):
+    config, output = setup
+    runner = FakeSeries(config, output)
+    runner.post_power = {"percent": 57, "discharging": True, "on_ac": False}
+    result = runner.run()
+    assert result["status"] == "paused_power" and len(runner.calls) == 1
+    attempt = result["blocks"][0]["attempts"][0]
+    assert attempt["status"] == "invalid" and attempt["host_observation"]["valid"] is False
+    assert not attempt["host_observation"]["sleep_assessment"]["sleep_detected"]
+    resumed = FakeSeries(config, output, resume=True)
+    resumed.power = runner.post_power
+    assert resumed.run()["status"] == "paused_power" and resumed.calls == []
+    assert len(resumed.manifest["blocks"][0]["attempts"]) == 1
+    stable = FakeSeries(config, output, resume=True)
+    assert stable.run()["status"] == "completed"
+    assert stable.calls[0] == "000-baseline"
+
+
+def test_ac_connected_but_discharging_is_not_accepted(setup):
+    config, output = setup
+    runner = FakeSeries(config, output)
+    runner.power = {"percent": 57, "discharging": True, "on_ac": True}
+    assert runner.run()["status"] == "paused_power"
+    assert not runner.calls
+
+
+def test_completed_block_without_clock_evidence_cannot_resume(setup):
+    config, output = setup
+    result = FakeSeries(config, output).run()
+    del result["blocks"][0]["attempts"][0]["host_observation"]
+    (output / "manifest.json").write_text(json.dumps(result))
+    resumed = FakeSeries(config, output, resume=True)
+    with pytest.raises(ValueError, match="Missing complete host clock/power evidence"):
+        resumed.run()
+    assert not resumed.calls
+
+
+def test_legacy_completed_series_cannot_enter_guarded_protocol(setup):
+    config, output = setup
+    result = FakeSeries(config, output).run()
+    result["schema_version"] = 1
+    result.pop("host_guard_policy")
+    (output / "manifest.json").write_text(json.dumps(result))
+    resumed = FakeSeries(config, output, resume=True)
+    with pytest.raises(ValueError, match="current sleep/power guard protocol"):
+        resumed.run()
+    assert not resumed.calls
+
+
+def test_saved_assessment_is_recomputed_on_resume(setup):
+    config, output = setup
+    result = FakeSeries(config, output).run()
+    result["blocks"][0]["attempts"][0]["host_observation"]["sleep_assessment"]["sleep_seconds"] = 123
+    (output / "manifest.json").write_text(json.dumps(result))
+    resumed = FakeSeries(config, output, resume=True)
+    with pytest.raises(ValueError, match="sleep assessment"):
+        resumed.run()
+    assert not resumed.calls
+
+
+def test_merged_sources_preserve_every_clock_and_power_endpoint(setup):
+    config, output = setup
+    result = FakeSeries(config, output).run()
+    for role, directory in result["merged_runs"].items():
+        summary = json.loads((Path(directory) / "summary.json").read_text())
+        series = summary["series"]
+        assert series["host_guard_policy"] == result["host_guard_policy"]
+        assert series["host_guard_policy"]["power_observation_scope"] == "before/after child process only; intervening power changes are not observed"
+        for source in series["source_block_runs"]:
+            block = next(block for block in result["blocks"] if block["id"] == source["id"])
+            assert source["host_observation"] == block["attempts"][-1]["host_observation"]
+            assert source["host_observation"]["valid"] is True
+
+
+def test_missing_after_power_stops_with_unusable_evidence(setup):
+    class MissingAfterPower(FakeSeries):
+        def _battery(self):
+            if self.power_calls == 1:
+                raise OSError("pmset unavailable after worker")
+            return super()._battery()
+    config, output = setup
+    runner = MissingAfterPower(config, output)
+    result = runner.run()
+    assert result["status"] == "paused_host_evidence"
+    assert len(runner.calls) == 1
+    assert result["blocks"][0]["attempts"][0]["status"] == "invalid"
+    assert result["blocks"][0]["attempts"][0]["host_observation"]["collection_errors"]
+
+
+def test_missing_clock_endpoint_prevents_recovery_of_complete_child(setup):
+    config, output = setup
+    result = FakeSeries(config, output).run()
+    block = result["blocks"][0]
+    block["status"] = block["attempts"][0]["status"] = "running"
+    del block["attempts"][0]["host_observation"]["clock_after"]
+    result.pop("merged_runs")
+    result.pop("merged_files")
+    (output / "manifest.json").write_text(json.dumps(result))
+    resumed = FakeSeries(config, output, resume=True)
+    repaired = resumed.run()
+    assert resumed.calls == ["000-baseline"]
+    assert repaired["blocks"][0]["attempts"][0]["status"] == "interrupted"
+    assert repaired["blocks"][0]["attempts"][1]["status"] == "completed"

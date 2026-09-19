@@ -50,17 +50,17 @@ Draft-событие появляется после готовности пак
 Полная серия сохраняет реальные события **каждого** измеренного запроса, а не только средний tok/s. Запуск на всех 100 задачах с бюджетом 2048 выходных токенов:
 
 ```bash
-bash scripts/benchmark/mtp_series.sh --count 100 --max-new-tokens 2048 --chunk-size 5 --label mtp-long2048
+bash scripts/benchmark/mtp_series.sh --count 100 --max-new-tokens 2048 --chunk-size 5 --label mtp-long2048-awake
 ```
 
-Порядок процессов чередуется: baseline→MTP для строк 0–4, MTP→baseline для 5–9 и так далее. Каждый процесс имеет отдельную загрузку модели и один полный прогрев; прогревы не входят в измеренные 100 запросов. Все процессы работают последовательно. Сводка и состояние находятся в `artifacts/series/mtp-long2048/manifest.json`; незавершённый запуск продолжается той же командой с `--resume`. Проверяются исходные хеши, параметры, версии и целостность уже выполненных блоков. При разряде ниже 20% следующий блок не начинается.
+Порядок процессов чередуется: baseline→MTP для строк 0–4, MTP→baseline для 5–9 и так далее. Каждый процесс имеет отдельную загрузку модели и один полный прогрев; прогревы не входят в измеренные 100 запросов. Все процессы работают последовательно. Сводка и состояние находятся в `artifacts/series/mtp-long2048-awake/manifest.json`; незавершённый запуск продолжается той же командой с `--resume`. Проверяются исходные хеши, параметры, версии и целостность уже выполненных блоков. По умолчанию до и после процесса требуются внешнее питание без разряда батареи; сон более 1 секунды делает блок недопустимым. Серия останавливается, а `--resume` повторяет этот блок после устранения причины. Снимки питания не являются непрерывной телеметрией. При разряде ниже 20% следующий блок также не начинается.
 
 В каждой строке `samples.jsonl` сохранены исходный индекс датасета, текст ответа, token IDs, времена prefill/decode и `generation_trace`. В trace находятся время каждого наблюдаемого commit и все draft/verification события MTP: предложенные IDs, принятый префикс, отброшенный суффикс и время проверки. Сразу после запроса строка записывается с `flush`/`fsync`. Итоговые объединённые `samples.jsonl` сохраняют эти данные без потерь; manifest указывает их точные каталоги и исходные блоки.
 
 После завершения серии можно выбрать **любой индекс 0…99** и создать GIF без повторной генерации:
 
 ```bash
-bash scripts/demo/from_logs.sh --series artifacts/series/mtp-long2048 --index 42 --output artifacts/demos/sample-042
+bash scripts/demo/from_logs.sh --series artifacts/series/mtp-long2048-awake --index 42 --output artifacts/demos/sample-042
 ```
 
 Это 43-я строка датасета, поскольку индексация начинается с нуля. Скрипт создаёт `trace.json`, GIF, контрольные PNG и `render-manifest.json`. Он загружает только локальный tokenizer для отображения текста; веса модели и GPU не нужны. Полный форматированный вход остаётся в token IDs и `metadata.decoded_input_text`; на экране показывается исходное условие задачи.
@@ -69,13 +69,13 @@ bash scripts/demo/from_logs.sh --series artifacts/series/mtp-long2048 --index 42
 
 ```bash
 # Одинаковое замедление обеих сторон, удобное для просмотра draft-пакетов
-bash scripts/demo/from_logs.sh --series artifacts/series/mtp-long2048 --index 42 --rates 0.25 --fps 20
+bash scripts/demo/from_logs.sh --series artifacts/series/mtp-long2048-awake --index 42 --rates 0.25 --fps 20
 
 # Короткий ролик по первым 128 токенам; исходные логи остаются полными
-bash scripts/demo/from_logs.sh --series artifacts/series/mtp-long2048 --index 42 --max-visible-tokens 128
+bash scripts/demo/from_logs.sh --series artifacts/series/mtp-long2048-awake --index 42 --max-visible-tokens 128
 
 # Только обогащённая запись для собственного визуализатора
-bash scripts/demo/from_logs.sh --series artifacts/series/mtp-long2048 --index 42 --trace-only
+bash scripts/demo/from_logs.sh --series artifacts/series/mtp-long2048-awake --index 42 --trace-only
 ```
 
 Вместо `--series` можно передать `--baseline <каталог завершённого baseline>` и `--mtp <каталог завершённого MTP>`. Это работает и для отдельной завершённой пары блоков до конца всей серии. Для длинных ответов текст прокручивается; длинные GIF записываются потоком с ограниченным расходом памяти. Если output IDs различаются, визуализатор показывает обе фактические траектории с явным предупреждением вместо надписи о совпадении. В рендере старого trace такой режим включается через `scripts/demo/render.sh --allow-mismatch`.

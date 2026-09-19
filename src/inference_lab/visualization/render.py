@@ -38,6 +38,8 @@ class StreamingGifWriter:
     """Encode long replays with a shared palette and bounded frame memory.
 
     Delta rectangles use disposal=1 so previous pixels remain on screen.
+    Unchanged pixels inside each rectangle become transparent when palette
+    index 255 is unused there; occupied rectangles safely remain opaque.
     Identical frames accumulate duration instead of allocating more images.
     """
 
@@ -55,21 +57,36 @@ class StreamingGifWriter:
         self.output.parent.mkdir(parents=True, exist_ok=True)
         try:
             with temporary.open("wb") as stream:
-                header, _ = GifImagePlugin.getheader(pending, info={"loop": 0, "optimize": False})
+                # Transparency index 255 must exist even with a short source
+                # palette. getheader may mutate its image, so pad a private copy.
+                header_frame = pending.copy()
+                palette = header_frame.getpalette() or []
+                header_frame.putpalette(palette + [0] * (768 - len(palette)))
+                header, _ = GifImagePlugin.getheader(header_frame, info={"loop": 0, "optimize": False})
                 for block in header:
                     stream.write(block)
                 previous = None
                 duration = self.duration_ms
 
                 def flush(frame, milliseconds, prior):
-                    bbox = ImageChops.difference(prior, frame).getbbox() if prior is not None else None
+                    difference = ImageChops.difference(prior, frame) if prior is not None else None
+                    bbox = difference.getbbox() if difference is not None else None
                     if bbox is None:
                         bbox = (0, 0, frame.width, frame.height)
                     crop = frame.crop(bbox)
+                    options = {}
+                    if difference is not None and crop.histogram()[255] == 0:
+                        # Index differences, not palette RGB luminance, decide
+                        # which pixels changed. Real resets to the background
+                        # remain opaque, while unchanged text need not be LZW
+                        # encoded again inside a large delta rectangle.
+                        unchanged = difference.crop(bbox).point([255] + [0] * 255, mode="L")
+                        crop.paste(255, mask=unchanged)
+                        options["transparency"] = 255
                     # A GIF delay is a uint16 number of centiseconds.
                     while milliseconds:
                         part = min(milliseconds, 655350)
-                        for block in GifImagePlugin.getdata(crop, offset=bbox[:2], duration=part, disposal=1):
+                        for block in GifImagePlugin.getdata(crop, offset=bbox[:2], duration=part, disposal=1, **options):
                             stream.write(block)
                         milliseconds -= part
 

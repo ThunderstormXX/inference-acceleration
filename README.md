@@ -71,10 +71,10 @@ bash scripts/download/mtp.sh         # the separate MTP head
 # Full matched series: 100 prompts × 2048 tokens per runtime, with event logs
 bash scripts/benchmark/mtp_series.sh \
   --count 100 --max-new-tokens 2048 --chunk-size 5 \
-  --label mtp-long2048
+  --label mtp-long2048-awake
 ```
 
-The series alternates baseline→MTP and MTP→baseline in five-prompt blocks, with a fresh process and one unmeasured warmup for every block. It saves its progress in `artifacts/series/mtp-long2048/manifest.json`; add `--resume` to the same command after an interruption. Completed blocks are checked and reused. Each request saves its complete output and actual event timestamps, including draft proposals and verification. The 2048-token budget ignores EOS; it does not imply a complete solution.
+The series alternates baseline→MTP and MTP→baseline in five-prompt blocks, with a fresh process and one unmeasured warmup for every block. It saves its progress in `artifacts/series/mtp-long2048-awake/manifest.json`; add `--resume` to the same command after an interruption. Completed blocks are checked and reused. Keep the lid open and connect adequate external power: each process requires AC without battery discharge at its endpoints, and more than one second of detected system sleep invalidates that block. Each request saves its complete output and actual event timestamps, including draft proposals and verification. The 2048-token budget ignores EOS; it does not imply a complete solution.
 
 For a shorter experiment, run the two roles separately:
 
@@ -94,7 +94,7 @@ Select any original dataset index **0–99** after the full series finishes. Thi
 
 ```bash
 bash scripts/demo/from_logs.sh \
-  --series artifacts/series/mtp-long2048 --index 42 \
+  --series artifacts/series/mtp-long2048-awake --index 42 \
   --output artifacts/demos/sample-042
 ```
 

@@ -441,3 +441,131 @@ def test_genuine_merged_output_mismatch_is_still_usable_and_disclosed(exporter, 
     assert report["status"] == "completed" and report["parity_status"] == "failed"
     assert report["unsuitable_for_lossless_claim"] is True
     assert report["parity"]["per_prompt"][0]["first_mismatch_token_position"] == 2
+
+
+def add_host_guard(exporter, tmp_path):
+    from copy import deepcopy
+    from inference_lab.core.host_clock import MacSleepClock
+    add_metadata_series(exporter, tmp_path)
+    policy = {"schema_version": 1, "clock_method": "mach_continuous_time minus mach_absolute_time",
+              "sleep_threshold_seconds": 1.0, "require_ac": True, "min_battery_percent": 20,
+              "power_observation_scope": "before/after child process only; intervening power changes are not observed"}
+    manifest_path = tmp_path / "guarded-suite" / "manifest.json"
+    manifest_path.parent.mkdir()
+    manifest = {"schema_version": 2, "status": "completed", "host_guard_policy": policy,
+                "hostname": "PRIVATE_GUARD_HOST", "blocks": []}
+    for directory in (exporter.baseline, exporter.speculative):
+        summary = json.loads((directory / "summary.json").read_text())
+        summary["series"].update(host_guard_policy=policy, suite_manifest=str(manifest_path))
+        for block in summary["series"]["source_block_runs"]:
+            before = {"schema_version": 1, "absolute_ticks": 1_000_000_000, "continuous_ticks": 2_000_000_000,
+                      "timebase_numer": 1, "timebase_denom": 1, "sampling_span_ticks": 1}
+            after = {**before, "absolute_ticks": 26_000_000_000, "continuous_ticks": 27_000_000_000}
+            power = {"checked_at": "2026-09-19T14:00:00+00:00", "percent": 87, "on_ac": True,
+                     "discharging": False, "stop": False,
+                     "raw": "Now drawing from 'AC Power'\n -InternalBattery-0 (id=PRIVATE_GUARD_BATTERY_ID)\t87%; charging; present: true"}
+            observation = {"schema_version": 1, "clock_before": before, "clock_after": after,
+                           "sleep_assessment": MacSleepClock.assess(before, after, threshold_seconds=1.0),
+                           "power_before": deepcopy(power), "power_after": deepcopy(power),
+                           "valid": True, "invalid_reasons": [], "collection_errors": []}
+            block["host_observation"] = observation
+            attempt = {key: deepcopy(block[key]) for key in ("attempt", "run_directory", "files", "host_observation")}
+            attempt.update(status="completed", pid=12345, command=["/Users/private_guard/command"])
+            manifest["blocks"].append({**{key: block[key] for key in ("id", "chunk_index", "role", "start_index", "count")},
+                                        "status": "completed", "attempts": [attempt]})
+        (directory / "summary.json").write_text(json.dumps(summary))
+    manifest_path.write_text(json.dumps(manifest))
+    return manifest_path
+
+
+def test_guarded_publication_preserves_verified_health_without_raw_identifiers(exporter, tmp_path):
+    add_host_guard(exporter, tmp_path)
+    report = exporter.build()
+    assert report["status"] == "completed", report["errors"]
+    assert report["methodology"]["host_guard"]["status"] == "validated"
+    for run in report["runs"].values():
+        assert run["series"]["host_guard_policy"]["require_ac"] is True
+        for block in run["series"]["source_block_runs"]:
+            evidence = block["host_observation"]
+            assert evidence["sleep_assessment"]["sleep_detected"] is False
+            assert evidence["clock_before"]["continuous_ticks"] == 2_000_000_000
+            assert evidence["power_before"]["on_ac"] is True
+            assert evidence["power_before"]["source"] == "pmset -g batt"
+            assert "raw" not in evidence["power_before"]
+            assert len(evidence["raw_observation_object_sha256"]) == 64
+    public = exporter.output.with_suffix(".json").read_text()
+    for forbidden in ("PRIVATE_GUARD", "private_guard", "/Users/", '"pid"', '"hostname"'):
+        assert forbidden not in public
+    markdown = exporter.output.with_suffix(".md").read_text()
+    assert "Sleep/power guard: **validated**" in markdown
+    assert "Intervening power-source changes are not observed" in markdown
+
+
+@pytest.mark.parametrize("fault", ["missing_observation", "missing_policy", "missing_manifest_policy",
+                                  "missing_all_policy", "assessment_mismatch", "sleep_detected",
+                                  "battery_transition", "parsed_power_mismatch", "invalid_flag", "collection_error",
+                                  "manifest_observation_mismatch", "manifest_attempt_failed", "manifest_incomplete"])
+def test_guarded_publication_fails_closed_on_missing_or_inconsistent_health(exporter, tmp_path, fault):
+    from inference_lab.core.host_clock import MacSleepClock
+    manifest_path = add_host_guard(exporter, tmp_path)
+    manifest = json.loads(manifest_path.read_text())
+    summary_path = exporter.baseline / "summary.json"
+    summary = json.loads(summary_path.read_text())
+    block = summary["series"]["source_block_runs"][0]
+    attempt = next(item for item in manifest["blocks"] if item["id"] == block["id"])["attempts"][0]
+    observation = block["host_observation"]
+    if fault == "missing_observation":
+        del block["host_observation"]
+        del attempt["host_observation"]
+    elif fault == "missing_policy":
+        del summary["series"]["host_guard_policy"]
+    elif fault == "missing_manifest_policy":
+        del manifest["host_guard_policy"]
+    elif fault == "missing_all_policy":
+        del manifest["host_guard_policy"]
+        del summary["series"]["host_guard_policy"]
+    elif fault == "manifest_attempt_failed":
+        attempt["status"] = "failed"
+    elif fault == "manifest_incomplete":
+        manifest["status"] = "running"
+    elif fault == "manifest_observation_mismatch":
+        observation["power_after"]["checked_at"] = "different"
+    else:
+        if fault == "assessment_mismatch":
+            observation["sleep_assessment"]["sleep_seconds"] = 0.5
+        elif fault == "sleep_detected":
+            observation["clock_after"]["continuous_ticks"] += 5_000_000_000
+            observation["sleep_assessment"] = MacSleepClock.assess(observation["clock_before"], observation["clock_after"], threshold_seconds=1.0)
+        elif fault == "battery_transition":
+            power = observation["power_after"]
+            power.update(on_ac=False, discharging=True,
+                         raw="Now drawing from 'Battery Power'\n -InternalBattery-0\t87%; discharging; present: true")
+        elif fault == "parsed_power_mismatch":
+            observation["power_after"]["on_ac"] = False
+        elif fault == "invalid_flag":
+            observation["valid"] = False
+        else:
+            observation["collection_errors"] = ["PRIVATE_COLLECTION_ERROR"]
+        attempt["host_observation"] = observation
+    summary_path.write_text(json.dumps(summary))
+    manifest_path.write_text(json.dumps(manifest))
+    report = exporter.build()
+    assert report["status"] == "failed" and report["errors"] and "runs" not in report
+    assert "PRIVATE_COLLECTION_ERROR" not in json.dumps(report)
+
+
+def test_legacy_is_explicitly_unguarded_and_invalidated_series_is_refused(exporter, tmp_path):
+    report = exporter.build()
+    assert report["status"] == "completed"
+    assert report["methodology"]["host_guard"]["status"] == "not_guarded"
+    assert "Sleep/power guard: **not_guarded**" in exporter.output.with_suffix(".md").read_text()
+    add_metadata_series(exporter, tmp_path)
+    manifest = tmp_path / "legacy-suite" / "manifest.json"
+    manifest.parent.mkdir()
+    manifest.write_text('{}')
+    for directory in (exporter.baseline, exporter.speculative):
+        mutate_summary(directory, lambda s: s["series"].update(suite_manifest=str(manifest)))
+    assert exporter.analyze()["status"] == "completed"
+    (manifest.parent / "invalidation.json").write_text('{"status":"excluded_from_primary_comparison"}')
+    report = exporter.analyze()
+    assert report["status"] == "failed" and "explicit invalidation.json" in report["errors"][0]
