@@ -6,7 +6,7 @@
 
 Qwen3.5 · 9B · 4-bit · Apple Silicon · Native MTP
 
-**34.81 → 41.58 tok/s** decode on an M2 Pro · **2,560 / 2,560** output token IDs matched
+**Five-prompt pilot:** **34.81 → 41.58 tok/s** decode on an M2 Pro · **2,560 / 2,560** output token IDs matched
 
 <img src="docs/assets/mtp-0.25x.gif" alt="Recorded Qwen3.5 generation: ordinary decode on the left, native MTP draft and verification on the right. Both lanes replay at 0.25× speed." width="1280">
 
@@ -45,6 +45,8 @@ Five prompts × 512 generated tokens; greedy, batch size 1; identical target wei
 The later baseline slowed down, so the larger ratio against it is not our headline. These runs used battery power, temporary `caffeinate -di` assertions and wired memory; temperature and clock frequencies were not controlled. SD describes variation between five prompts, not a confidence interval. The native MTP path also uses fused quantized argmax, so this measures the complete runtime path rather than isolating the contribution of speculation alone. See [per-prompt results and provenance](docs/results/mtp-512.md).
 
 The [100-prompt framework comparison and five-prompt recheck](docs/results/frameworks.md) cover Transformers/MPS, official vLLM Metal, MLX-LM and MLX-VLM. [Short speculative experiments](docs/results/speculative-128.md) include MTP blocks 2/3 and DFlash blocks 2/3/5 with 4/8-bit drafts.
+
+The **100-prompt × 2048-token comparison is not complete**. Its first attempt was interrupted after confirmed Mac lid sleep and a power-source change; none of those partial results is used for the acceleration claim above. A guarded repeat is prepared and currently deferred. Per-request token/event logging and offline replay are implemented; see the [long-run protocol and interruption record](docs/benchmark-methodology.md#полная-парная-серия-100--2048).
 
 ## How MTP works here
 
