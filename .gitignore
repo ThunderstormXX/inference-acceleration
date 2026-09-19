@@ -1,0 +1,18 @@
+# Reproducible local environments and caches
+.venv*/
+.cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Downloaded weights, dataset and raw machine-specific measurements
+/models/
+/data/raw/
+/artifacts/
+
+# Local credentials and OS metadata
+.env
+.env.*
+!.env.example
+.DS_Store

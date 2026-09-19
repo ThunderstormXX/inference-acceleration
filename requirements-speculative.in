@@ -1,0 +1,8 @@
+# Official DFlash runtime plus the same MLX/Transformers versions as the target baseline.
+dflash @ git+https://github.com/z-lab/dflash.git@07ebd93db9f472af339b644bb70221ad8428328a
+mlx==0.32.2
+mlx-lm==0.31.3
+transformers==5.17.0
+huggingface-hub==1.32.0
+setuptools==84.0.0
+pytest==9.1.1

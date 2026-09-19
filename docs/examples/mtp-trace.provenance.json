@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "original": {
+    "project_relative_path": "artifacts/demos/mtp-race/trace.json",
+    "original_sha256": "03bc1557444050083048d88afba6401a426126c9121673c5a8e09e7f841d4062"
+  },
+  "sanitized": {
+    "project_relative_path": "docs/examples/mtp-trace.json",
+    "sha256": "da69cbdaa4fe21e1fae64078cdc9cb1e382817903457f2e815d22748a91f53e5"
+  },
+  "transformations": [
+    "Absolute project paths converted to project-relative paths.",
+    "Process/host identifiers and inventories removed; pmset battery device id redacted.",
+    "Hardware, package versions, timings, token IDs, generated text and all generation events preserved."
+  ],
+  "removed_fields": [
+    {
+      "field": "pid",
+      "count": 1
+    }
+  ],
+  "unchanged_generation_data_verified": true,
+  "parity": {
+    "equal": true,
+    "compared_tokens": 128,
+    "baseline_tokens": 128,
+    "mtp_tokens": 128,
+    "first_mismatch_index": null,
+    "baseline_token_at_mismatch": null,
+    "mtp_token_at_mismatch": null
+  },
+  "measurement_scope": "Instrumented illustration of one chosen prompt, not an uninstrumented throughput benchmark."
+}

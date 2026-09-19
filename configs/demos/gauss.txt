@@ -1,0 +1,1 @@
+Explain how to add the integers from 1 to 100 by pairing the first and last numbers. Write one clear paragraph of about 100 words for a curious student. Include the pairs 1 + 100, 2 + 99, and 3 + 98, explain why there are 50 pairs, and finish with the answer 5050. Use simple English and plain text without Markdown or LaTeX. Output only the explanation.

@@ -1,0 +1,3390 @@
+{
+  "schema_version": 1,
+  "families": {
+    "DFlash": {
+      "source_report": {
+        "project_relative_path": "artifacts/reports/speculative-comparison.json",
+        "original_sha256": "e18245326124a3617b2b534c9af929055d6d79f4bf05cfb60a7c6895517d010d"
+      },
+      "runs": {
+        "20260919T093354.785827Z-mlx-spec-baseline-128": {
+          "run_id": "20260919T093354.785827Z-mlx-spec-baseline-128",
+          "sources": [
+            {
+              "project_relative_path": "artifacts/runs/20260919T093354.785827Z-mlx-spec-baseline-128/summary.json",
+              "original_sha256": "8197dc2c200f0bdb5fdbe47169b91107298d179c2029bdd6608aea14363f749c"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T093354.785827Z-mlx-spec-baseline-128/prompts.json",
+              "original_sha256": "0f0efb23910855d40a0d9cb3d60470f6efe9e349b51d1e96e804ee794814cc1e"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T093354.785827Z-mlx-spec-baseline-128/samples.jsonl",
+              "original_sha256": "94a3c62a4cdf63c0ace22f6f8b79588dfbd7ba3a20630b63c46615ad24a3753b"
+            }
+          ],
+          "started_at": "20260919T093354.785827Z",
+          "config": {
+            "backend": "mlx",
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "dataset_path": "data/raw/deepscaler-100.jsonl",
+            "count": 5,
+            "max_new_tokens": 128,
+            "max_prompt_tokens": 2048,
+            "prefill_step_size": 512,
+            "warmup": 1,
+            "prompt_mode": "problem",
+            "chain_prefix_tokens": 512,
+            "kv_bits": null,
+            "label": "spec-baseline-128",
+            "user_initiated": false,
+            "wired_memory": true
+          },
+          "model_manifest_sha256": "e12769294a538b8154ec1fc87522240d8dfbfb58e18ea756c750ff6602ea9519",
+          "model": {
+            "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+            "requested_revision": "main",
+            "resolved_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+            "format": "MLX 4-bit safetensors; not a PyTorch 4-bit checkpoint",
+            "scope": "complete_snapshot",
+            "files": [
+              {
+                "path": ".gitattributes",
+                "bytes": 1570,
+                "sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930"
+              },
+              {
+                "path": "README.md",
+                "bytes": 666,
+                "sha256": "1407e3e3337063c280b2fe1a63724908a5051cfbf26cd8b98f247432b0382537"
+              },
+              {
+                "path": "chat_template.jinja",
+                "bytes": 7756,
+                "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+              },
+              {
+                "path": "config.json",
+                "bytes": 3331,
+                "sha256": "a96942cb6a8a1d3f1d17514d81a1925d04362a6a3233b389d13012211baaa9f8"
+              },
+              {
+                "path": "model-00001-of-00002.safetensors",
+                "bytes": 5349771222,
+                "sha256": "a68b87558c6ef43f74c2bd63ce7e9092ceddc3101f3def0030774bae5f42aadd"
+              },
+              {
+                "path": "model-00002-of-00002.safetensors",
+                "bytes": 600449850,
+                "sha256": "b0a770bf8469c7f3f18756a0e0283f1c1174344a83e059a4e483f6af4907352d"
+              },
+              {
+                "path": "model.safetensors.index.json",
+                "bytes": 123592,
+                "sha256": "dd023913fb87cfdae27fb11dcf695117c925833796ccac3c64117d6652d8ff1e"
+              },
+              {
+                "path": "preprocessor_config.json",
+                "bytes": 390,
+                "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+              },
+              {
+                "path": "processor_config.json",
+                "bytes": 1300,
+                "sha256": "14932921ca485d458a04dafd8069fbb0a4505622a48208d19ed247115801385b"
+              },
+              {
+                "path": "tokenizer.json",
+                "bytes": 19989343,
+                "sha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4"
+              },
+              {
+                "path": "tokenizer_config.json",
+                "bytes": 1139,
+                "sha256": "e98f1901ac6f0adff67b1d540bfa0c36ac1a0cf59eb72ed78146ef89aafa1182"
+              },
+              {
+                "path": "video_preprocessor_config.json",
+                "bytes": 385,
+                "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+              },
+              {
+                "path": "vocab.json",
+                "bytes": 6722759,
+                "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+              }
+            ]
+          },
+          "dataset_sha256": "359f60d6d3c6a2a93d5f4a1cc2e7f1ec13ac3e10a1f83b6ad5c21bab4e8a5f54",
+          "prompt_tokens_sha256": "738fc83fec5457a3f4a5a094a5421ff2c82bb549241fdff0ae5970d265bb0eef",
+          "hardware": {
+            "os": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+            "machine": "arm64",
+            "processor": "Apple M2 Pro",
+            "memory_bytes": "17179869184"
+          },
+          "runtime": {
+            "python": "3.13.5",
+            "packages": {
+              "numpy": "2.5.3",
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "huggingface_hub": "1.32.0",
+              "dflash": "0.1.0",
+              "transformers": "5.17.0",
+              "safetensors": "0.8.0",
+              "mlx-metal": "0.32.2"
+            }
+          },
+          "backend_metadata": {
+            "framework": "mlx-lm",
+            "versions": {
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3"
+            },
+            "device": "metal",
+            "device_info": {
+              "device_name": "Apple M2 Pro",
+              "max_recommended_working_set_size": 11453251584,
+              "memory_size": 17179869184,
+              "architecture": "applegpu_g14s",
+              "max_buffer_length": 8589934592,
+              "resource_limit": 499000
+            },
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "model_type": "qwen3_5",
+            "weight_bits": 4,
+            "weight_group_size": 64,
+            "prefill_step_size": 512,
+            "wired_memory": true,
+            "wired_memory_policy": "recommended working-set size per request; previous MLX limit restored in finally",
+            "kv_bits": null,
+            "kv_group_size": null,
+            "kv_quantization_scope": "attention caches only; recurrent state unchanged",
+            "sampling": "greedy",
+            "ignore_eos": true,
+            "batch_size": 1,
+            "fresh_cache_per_request": true,
+            "first_generated_token_phase": "prefill",
+            "text_only": true,
+            "peak_memory_unit": "decimal GB, MLX allocator peak per request"
+          },
+          "conditions": {
+            "caffeinate_assertions": "di",
+            "power_start": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t89%; discharging; 16:08 remaining present: true"
+            },
+            "power_end": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t89%; discharging; 16:08 remaining present: true"
+            },
+            "thermal_start": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            },
+            "thermal_end": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            }
+          },
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 164.26519134846532,
+              "median_tokens_per_second": 172.29294168418303,
+              "aggregate_tokens_per_second": 169.44851582103772,
+              "total_tokens": 441,
+              "total_seconds": 2.602560417028144,
+              "sample_variance_tokens_per_second": 881.2161082132617,
+              "sample_stddev_tokens_per_second": 29.68528437144003,
+              "min_tokens_per_second": 125.1733445692693,
+              "max_tokens_per_second": 191.729054610866,
+              "coefficient_of_variation_percent": 18.07156107009117
+            },
+            "decode": {
+              "mean_tokens_per_second": 30.160041545371477,
+              "median_tokens_per_second": 30.18396891365536,
+              "aggregate_tokens_per_second": 30.159203370631985,
+              "total_tokens": 635,
+              "total_seconds": 21.05493279104121,
+              "sample_variance_tokens_per_second": 0.03161228376885948,
+              "sample_stddev_tokens_per_second": 0.17779843578856222,
+              "min_tokens_per_second": 29.95989001786429,
+              "max_tokens_per_second": 30.390376654069104,
+              "coefficient_of_variation_percent": 0.5895165479831646
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 5.479437554
+          },
+          "samples": [
+            {
+              "index": 0,
+              "prompt_token_sha256": "2a9090aa3313132e0d313e90cfa3e93834e03b5267639a537447ce3a2766d4d1",
+              "prompt_tokens": 133,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.7719410830177367,
+              "decode_seconds": 4.232220166013576,
+              "peak_memory_gb": 5.447683434,
+              "timing_method": "perf_counter + MLX phase synchronization; first token in prefill",
+              "prefill_tokens_per_second": 172.29294168418303,
+              "decode_tokens_per_second": 30.00789066217795,
+              "generated_token_ids_sha256": "b46fef66cf56c5dc04d38238e81072a3226727bb07428bb04bd0b35a40a4457d"
+            },
+            {
+              "index": 1,
+              "prompt_token_sha256": "c018f989a9e6abba20d378b2ff142935d1387d870c2139d972e2875bbcda5603",
+              "prompt_tokens": 45,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.3595014589955099,
+              "decode_seconds": 4.207531500025652,
+              "peak_memory_gb": 5.272327828,
+              "timing_method": "perf_counter + MLX phase synchronization; first token in prefill",
+              "prefill_tokens_per_second": 125.1733445692693,
+              "decode_tokens_per_second": 30.18396891365536,
+              "generated_token_ids_sha256": "eaded04102ca97230de4d52ab8ad61f6e0c2120816d628fbd494a965ff597682"
+            },
+            {
+              "index": 2,
+              "prompt_token_sha256": "c8a1f3befa288d71e0751c0b21c6e6881ba91200cff2804030df583e8f33278d",
+              "prompt_tokens": 51,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.35950175003381446,
+              "decode_seconds": 4.239000874978956,
+              "peak_memory_gb": 5.293172184,
+              "timing_method": "perf_counter + MLX phase synchronization; first token in prefill",
+              "prefill_tokens_per_second": 141.8630089984346,
+              "decode_tokens_per_second": 29.95989001786429,
+              "generated_token_ids_sha256": "fdf7ea12f4f451dffe702864c210471f18611da3d05359e4fc819bd1fb621239"
+            },
+            {
+              "index": 3,
+              "prompt_token_sha256": "ba802358a96b0d6ab565bd73d190d119c68dddbfb1b09cd5ff76aefb350abf7b",
+              "prompt_tokens": 147,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.7725960420211777,
+              "decode_seconds": 4.197225791984238,
+              "peak_memory_gb": 5.479437554,
+              "timing_method": "perf_counter + MLX phase synchronization; first token in prefill",
+              "prefill_tokens_per_second": 190.26760687957363,
+              "decode_tokens_per_second": 30.258081479090684,
+              "generated_token_ids_sha256": "3fd825a6cd2a47f1f7db5e205ffd19d34bb7a3442dd44c6fa476be52d57cca18"
+            },
+            {
+              "index": 4,
+              "prompt_token_sha256": "1f2c089cfb61a885a17f6ed588b2e2940923dfb7b0f298708041492c6866669b",
+              "prompt_tokens": 65,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.33902008295990527,
+              "decode_seconds": 4.178954458038788,
+              "peak_memory_gb": 5.333565976,
+              "timing_method": "perf_counter + MLX phase synchronization; first token in prefill",
+              "prefill_tokens_per_second": 191.729054610866,
+              "decode_tokens_per_second": 30.390376654069104,
+              "generated_token_ids_sha256": "a360036cbc1196ae3ce89faf79e3e05813bb2535d169e7422a4ddbfc58ccda07"
+            }
+          ]
+        },
+        "20260919T093746.072668Z-mlx-dflash-dflash-k2-q4-128": {
+          "run_id": "20260919T093746.072668Z-mlx-dflash-dflash-k2-q4-128",
+          "sources": [
+            {
+              "project_relative_path": "artifacts/runs/20260919T093746.072668Z-mlx-dflash-dflash-k2-q4-128/summary.json",
+              "original_sha256": "2d59176639a5ef3117c2fde68450962b8e2ecee57280f63c67cb27b092ed259c"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T093746.072668Z-mlx-dflash-dflash-k2-q4-128/prompts.json",
+              "original_sha256": "0f0efb23910855d40a0d9cb3d60470f6efe9e349b51d1e96e804ee794814cc1e"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T093746.072668Z-mlx-dflash-dflash-k2-q4-128/samples.jsonl",
+              "original_sha256": "cd9662ee63b3569e9d72a9c5ab24ca1d9b50080391623b418e364f47a54338ec"
+            }
+          ],
+          "started_at": "20260919T093746.072668Z",
+          "config": {
+            "backend": "mlx-dflash",
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "dataset_path": "data/raw/deepscaler-100.jsonl",
+            "count": 5,
+            "max_new_tokens": 128,
+            "max_prompt_tokens": 2048,
+            "prefill_step_size": 512,
+            "warmup": 1,
+            "prompt_mode": "problem",
+            "chain_prefix_tokens": 512,
+            "kv_bits": null,
+            "label": "dflash-k2-q4-128",
+            "user_initiated": false,
+            "wired_memory": true,
+            "draft_path": "models/qwen3.5-9b-dflash",
+            "draft_bits": 4,
+            "block_size": 2
+          },
+          "model_manifest_sha256": "e12769294a538b8154ec1fc87522240d8dfbfb58e18ea756c750ff6602ea9519",
+          "model": {
+            "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+            "requested_revision": "main",
+            "resolved_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+            "format": "MLX 4-bit safetensors; not a PyTorch 4-bit checkpoint",
+            "scope": "complete_snapshot",
+            "files": [
+              {
+                "path": ".gitattributes",
+                "bytes": 1570,
+                "sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930"
+              },
+              {
+                "path": "README.md",
+                "bytes": 666,
+                "sha256": "1407e3e3337063c280b2fe1a63724908a5051cfbf26cd8b98f247432b0382537"
+              },
+              {
+                "path": "chat_template.jinja",
+                "bytes": 7756,
+                "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+              },
+              {
+                "path": "config.json",
+                "bytes": 3331,
+                "sha256": "a96942cb6a8a1d3f1d17514d81a1925d04362a6a3233b389d13012211baaa9f8"
+              },
+              {
+                "path": "model-00001-of-00002.safetensors",
+                "bytes": 5349771222,
+                "sha256": "a68b87558c6ef43f74c2bd63ce7e9092ceddc3101f3def0030774bae5f42aadd"
+              },
+              {
+                "path": "model-00002-of-00002.safetensors",
+                "bytes": 600449850,
+                "sha256": "b0a770bf8469c7f3f18756a0e0283f1c1174344a83e059a4e483f6af4907352d"
+              },
+              {
+                "path": "model.safetensors.index.json",
+                "bytes": 123592,
+                "sha256": "dd023913fb87cfdae27fb11dcf695117c925833796ccac3c64117d6652d8ff1e"
+              },
+              {
+                "path": "preprocessor_config.json",
+                "bytes": 390,
+                "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+              },
+              {
+                "path": "processor_config.json",
+                "bytes": 1300,
+                "sha256": "14932921ca485d458a04dafd8069fbb0a4505622a48208d19ed247115801385b"
+              },
+              {
+                "path": "tokenizer.json",
+                "bytes": 19989343,
+                "sha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4"
+              },
+              {
+                "path": "tokenizer_config.json",
+                "bytes": 1139,
+                "sha256": "e98f1901ac6f0adff67b1d540bfa0c36ac1a0cf59eb72ed78146ef89aafa1182"
+              },
+              {
+                "path": "video_preprocessor_config.json",
+                "bytes": 385,
+                "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+              },
+              {
+                "path": "vocab.json",
+                "bytes": 6722759,
+                "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+              }
+            ]
+          },
+          "dataset_sha256": "359f60d6d3c6a2a93d5f4a1cc2e7f1ec13ac3e10a1f83b6ad5c21bab4e8a5f54",
+          "prompt_tokens_sha256": "738fc83fec5457a3f4a5a094a5421ff2c82bb549241fdff0ae5970d265bb0eef",
+          "hardware": {
+            "os": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+            "machine": "arm64",
+            "processor": "Apple M2 Pro",
+            "memory_bytes": "17179869184"
+          },
+          "runtime": {
+            "python": "3.13.5",
+            "packages": {
+              "numpy": "2.5.3",
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "huggingface_hub": "1.32.0",
+              "dflash": "0.1.0",
+              "transformers": "5.17.0",
+              "safetensors": "0.8.0",
+              "mlx-metal": "0.32.2"
+            }
+          },
+          "backend_metadata": {
+            "framework": "dflash-mlx",
+            "versions": {
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "dflash": "0.1.0"
+            },
+            "device": "metal",
+            "device_info": {
+              "device_name": "Apple M2 Pro",
+              "max_recommended_working_set_size": 11453251584,
+              "memory_size": 17179869184,
+              "architecture": "applegpu_g14s",
+              "max_buffer_length": 8589934592,
+              "resource_limit": 499000
+            },
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "model_type": "qwen3_5",
+            "weight_bits": 4,
+            "weight_group_size": 64,
+            "prefill_step_size": 512,
+            "wired_memory": true,
+            "wired_memory_policy": "official mlx_lm.generate.wired_limit, outside phase timers; restored on exit",
+            "kv_bits": null,
+            "kv_group_size": null,
+            "kv_quantization_scope": "attention caches only; recurrent state unchanged",
+            "sampling": "greedy",
+            "ignore_eos": true,
+            "batch_size": 1,
+            "fresh_cache_per_request": true,
+            "first_generated_token_phase": "prefill",
+            "text_only": true,
+            "peak_memory_unit": "decimal GB, MLX allocator peak per request",
+            "target_framework": "mlx-lm",
+            "algorithm": "DFlash block-diffusion speculative decoding",
+            "upstream_repository": "https://github.com/z-lab/dflash",
+            "upstream_commit": "07ebd93db9f472af339b644bb70221ad8428328a",
+            "upstream_source_sha256": "2f8598eaca4cb814e63ea69e791c1bdf55ba82280bfd299f9141906356b7cb87",
+            "upstream_source_path": ".venv-speculative/lib/python3.13/site-packages/dflash/model_mlx.py",
+            "draft_model_path": "models/qwen3.5-9b-dflash",
+            "draft_repo_id": "z-lab/Qwen3.5-9B-DFlash",
+            "draft_revision": "5fc3b3d474760f18c516db87d84c37edbfd3ede6",
+            "draft_manifest_sha256": "3ae918a1acebc474b99ca21f307f824cf68fefc7861a5f6a53a4f273778fe858",
+            "draft_weight_bits": 4,
+            "draft_weight_group_size": 64,
+            "draft_quantization_strategy": "runtime mlx.nn.quantize affine, group_size=64, before binding shared target embedding/head; original downloaded weights preserved",
+            "block_size": 2,
+            "max_draft_tokens_per_round": 1,
+            "acceptance_accounting": "all verified matching drafts, including non-emitted final proposals; exact rollback observer; target bonus excluded",
+            "timed_text_detokenization": false,
+            "greedy_parity": "must be independently validated against same-environment MLXBackend"
+          },
+          "conditions": {
+            "caffeinate_assertions": "di",
+            "power_start": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t86%; discharging; 15:28 remaining present: true"
+            },
+            "power_end": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t86%; discharging; 15:28 remaining present: true"
+            },
+            "thermal_start": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            },
+            "thermal_end": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            }
+          },
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 157.1453501613468,
+              "median_tokens_per_second": 171.04867450683113,
+              "aggregate_tokens_per_second": 163.88942441464263,
+              "total_tokens": 441,
+              "total_seconds": 2.690838665002957,
+              "sample_variance_tokens_per_second": 743.6083604347456,
+              "sample_stddev_tokens_per_second": 27.269183347411516,
+              "min_tokens_per_second": 125.97129114998434,
+              "max_tokens_per_second": 181.86847647003665,
+              "coefficient_of_variation_percent": 17.352841378642932
+            },
+            "decode": {
+              "mean_tokens_per_second": 29.309669370495016,
+              "median_tokens_per_second": 28.55989512216678,
+              "aggregate_tokens_per_second": 29.208528344360502,
+              "total_tokens": 635,
+              "total_seconds": 21.74022574891569,
+              "sample_variance_tokens_per_second": 3.759058633095664,
+              "sample_stddev_tokens_per_second": 1.9388291913151257,
+              "min_tokens_per_second": 27.021250966020485,
+              "max_tokens_per_second": 31.95737640887673,
+              "coefficient_of_variation_percent": 6.614981447954765
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 6.496674056
+          },
+          "samples": [
+            {
+              "index": 0,
+              "prompt_token_sha256": "2a9090aa3313132e0d313e90cfa3e93834e03b5267639a537447ce3a2766d4d1",
+              "prompt_tokens": 133,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.7312977080000564,
+              "decode_seconds": 3.9740433749975637,
+              "peak_memory_gb": 6.262249844,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 65,
+              "accepted_draft_tokens": 62,
+              "speculative_rounds": 65,
+              "emitted_draft_tokens": 62,
+              "emitted_target_tokens": 66,
+              "prefill_tokens_per_second": 181.86847647003665,
+              "decode_tokens_per_second": 31.95737640887673,
+              "generated_token_ids_sha256": "b46fef66cf56c5dc04d38238e81072a3226727bb07428bb04bd0b35a40a4457d"
+            },
+            {
+              "index": 1,
+              "prompt_token_sha256": "c018f989a9e6abba20d378b2ff142935d1387d870c2139d972e2875bbcda5603",
+              "prompt_tokens": 45,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.3572242499794811,
+              "decode_seconds": 4.158224124985281,
+              "peak_memory_gb": 6.152709722,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 66,
+              "accepted_draft_tokens": 61,
+              "speculative_rounds": 66,
+              "emitted_draft_tokens": 61,
+              "emitted_target_tokens": 67,
+              "prefill_tokens_per_second": 125.97129114998434,
+              "decode_tokens_per_second": 30.541884271437517,
+              "generated_token_ids_sha256": "eaded04102ca97230de4d52ab8ad61f6e0c2120816d628fbd494a965ff597682"
+            },
+            {
+              "index": 2,
+              "prompt_token_sha256": "c8a1f3befa288d71e0751c0b21c6e6881ba91200cff2804030df583e8f33278d",
+              "prompt_tokens": 51,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.3946476250421256,
+              "decode_seconds": 4.4467950409743935,
+              "peak_memory_gb": 6.23833551,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 65,
+              "accepted_draft_tokens": 62,
+              "speculative_rounds": 65,
+              "emitted_draft_tokens": 62,
+              "emitted_target_tokens": 66,
+              "prefill_tokens_per_second": 129.2292079410237,
+              "decode_tokens_per_second": 28.55989512216678,
+              "generated_token_ids_sha256": "fdf7ea12f4f451dffe702864c210471f18611da3d05359e4fc819bd1fb621239"
+            },
+            {
+              "index": 3,
+              "prompt_token_sha256": "ba802358a96b0d6ab565bd73d190d119c68dddbfb1b09cd5ff76aefb350abf7b",
+              "prompt_tokens": 147,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.8276602909900248,
+              "decode_seconds": 4.700004457961768,
+              "peak_memory_gb": 6.496674056,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 67,
+              "accepted_draft_tokens": 61,
+              "speculative_rounds": 67,
+              "emitted_draft_tokens": 61,
+              "emitted_target_tokens": 67,
+              "prefill_tokens_per_second": 177.6091007388582,
+              "decode_tokens_per_second": 27.021250966020485,
+              "generated_token_ids_sha256": "3fd825a6cd2a47f1f7db5e205ffd19d34bb7a3442dd44c6fa476be52d57cca18"
+            },
+            {
+              "index": 4,
+              "prompt_token_sha256": "1f2c089cfb61a885a17f6ed588b2e2940923dfb7b0f298708041492c6866669b",
+              "prompt_tokens": 65,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.38000879099126905,
+              "decode_seconds": 4.4611587499966845,
+              "peak_memory_gb": 6.420758088,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 65,
+              "accepted_draft_tokens": 62,
+              "speculative_rounds": 65,
+              "emitted_draft_tokens": 62,
+              "emitted_target_tokens": 66,
+              "prefill_tokens_per_second": 171.04867450683113,
+              "decode_tokens_per_second": 28.46794008397356,
+              "generated_token_ids_sha256": "a360036cbc1196ae3ce89faf79e3e05813bb2535d169e7422a4ddbfc58ccda07"
+            }
+          ]
+        },
+        "20260919T093429.141864Z-mlx-dflash-dflash-k3-q4-128": {
+          "run_id": "20260919T093429.141864Z-mlx-dflash-dflash-k3-q4-128",
+          "sources": [
+            {
+              "project_relative_path": "artifacts/runs/20260919T093429.141864Z-mlx-dflash-dflash-k3-q4-128/summary.json",
+              "original_sha256": "f3ee7cd3caa83dd95f8f9c2f467ace88267485d8f83bd837467100a84913ef22"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T093429.141864Z-mlx-dflash-dflash-k3-q4-128/prompts.json",
+              "original_sha256": "0f0efb23910855d40a0d9cb3d60470f6efe9e349b51d1e96e804ee794814cc1e"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T093429.141864Z-mlx-dflash-dflash-k3-q4-128/samples.jsonl",
+              "original_sha256": "9f15fe35799fef2b653cc5403e796236692241f9faea3826128cc06f25683b52"
+            }
+          ],
+          "started_at": "20260919T093429.141864Z",
+          "config": {
+            "backend": "mlx-dflash",
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "dataset_path": "data/raw/deepscaler-100.jsonl",
+            "count": 5,
+            "max_new_tokens": 128,
+            "max_prompt_tokens": 2048,
+            "prefill_step_size": 512,
+            "warmup": 1,
+            "prompt_mode": "problem",
+            "chain_prefix_tokens": 512,
+            "kv_bits": null,
+            "label": "dflash-k3-q4-128",
+            "user_initiated": false,
+            "wired_memory": true,
+            "draft_path": "models/qwen3.5-9b-dflash",
+            "draft_bits": 4,
+            "block_size": 3
+          },
+          "model_manifest_sha256": "e12769294a538b8154ec1fc87522240d8dfbfb58e18ea756c750ff6602ea9519",
+          "model": {
+            "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+            "requested_revision": "main",
+            "resolved_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+            "format": "MLX 4-bit safetensors; not a PyTorch 4-bit checkpoint",
+            "scope": "complete_snapshot",
+            "files": [
+              {
+                "path": ".gitattributes",
+                "bytes": 1570,
+                "sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930"
+              },
+              {
+                "path": "README.md",
+                "bytes": 666,
+                "sha256": "1407e3e3337063c280b2fe1a63724908a5051cfbf26cd8b98f247432b0382537"
+              },
+              {
+                "path": "chat_template.jinja",
+                "bytes": 7756,
+                "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+              },
+              {
+                "path": "config.json",
+                "bytes": 3331,
+                "sha256": "a96942cb6a8a1d3f1d17514d81a1925d04362a6a3233b389d13012211baaa9f8"
+              },
+              {
+                "path": "model-00001-of-00002.safetensors",
+                "bytes": 5349771222,
+                "sha256": "a68b87558c6ef43f74c2bd63ce7e9092ceddc3101f3def0030774bae5f42aadd"
+              },
+              {
+                "path": "model-00002-of-00002.safetensors",
+                "bytes": 600449850,
+                "sha256": "b0a770bf8469c7f3f18756a0e0283f1c1174344a83e059a4e483f6af4907352d"
+              },
+              {
+                "path": "model.safetensors.index.json",
+                "bytes": 123592,
+                "sha256": "dd023913fb87cfdae27fb11dcf695117c925833796ccac3c64117d6652d8ff1e"
+              },
+              {
+                "path": "preprocessor_config.json",
+                "bytes": 390,
+                "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+              },
+              {
+                "path": "processor_config.json",
+                "bytes": 1300,
+                "sha256": "14932921ca485d458a04dafd8069fbb0a4505622a48208d19ed247115801385b"
+              },
+              {
+                "path": "tokenizer.json",
+                "bytes": 19989343,
+                "sha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4"
+              },
+              {
+                "path": "tokenizer_config.json",
+                "bytes": 1139,
+                "sha256": "e98f1901ac6f0adff67b1d540bfa0c36ac1a0cf59eb72ed78146ef89aafa1182"
+              },
+              {
+                "path": "video_preprocessor_config.json",
+                "bytes": 385,
+                "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+              },
+              {
+                "path": "vocab.json",
+                "bytes": 6722759,
+                "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+              }
+            ]
+          },
+          "dataset_sha256": "359f60d6d3c6a2a93d5f4a1cc2e7f1ec13ac3e10a1f83b6ad5c21bab4e8a5f54",
+          "prompt_tokens_sha256": "738fc83fec5457a3f4a5a094a5421ff2c82bb549241fdff0ae5970d265bb0eef",
+          "hardware": {
+            "os": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+            "machine": "arm64",
+            "processor": "Apple M2 Pro",
+            "memory_bytes": "17179869184"
+          },
+          "runtime": {
+            "python": "3.13.5",
+            "packages": {
+              "numpy": "2.5.3",
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "huggingface_hub": "1.32.0",
+              "dflash": "0.1.0",
+              "transformers": "5.17.0",
+              "safetensors": "0.8.0",
+              "mlx-metal": "0.32.2"
+            }
+          },
+          "backend_metadata": {
+            "framework": "dflash-mlx",
+            "versions": {
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "dflash": "0.1.0"
+            },
+            "device": "metal",
+            "device_info": {
+              "device_name": "Apple M2 Pro",
+              "max_recommended_working_set_size": 11453251584,
+              "memory_size": 17179869184,
+              "architecture": "applegpu_g14s",
+              "max_buffer_length": 8589934592,
+              "resource_limit": 499000
+            },
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "model_type": "qwen3_5",
+            "weight_bits": 4,
+            "weight_group_size": 64,
+            "prefill_step_size": 512,
+            "wired_memory": true,
+            "wired_memory_policy": "official mlx_lm.generate.wired_limit, outside phase timers; restored on exit",
+            "kv_bits": null,
+            "kv_group_size": null,
+            "kv_quantization_scope": "attention caches only; recurrent state unchanged",
+            "sampling": "greedy",
+            "ignore_eos": true,
+            "batch_size": 1,
+            "fresh_cache_per_request": true,
+            "first_generated_token_phase": "prefill",
+            "text_only": true,
+            "peak_memory_unit": "decimal GB, MLX allocator peak per request",
+            "target_framework": "mlx-lm",
+            "algorithm": "DFlash block-diffusion speculative decoding",
+            "upstream_repository": "https://github.com/z-lab/dflash",
+            "upstream_commit": "07ebd93db9f472af339b644bb70221ad8428328a",
+            "upstream_source_sha256": "2f8598eaca4cb814e63ea69e791c1bdf55ba82280bfd299f9141906356b7cb87",
+            "upstream_source_path": ".venv-speculative/lib/python3.13/site-packages/dflash/model_mlx.py",
+            "draft_model_path": "models/qwen3.5-9b-dflash",
+            "draft_repo_id": "z-lab/Qwen3.5-9B-DFlash",
+            "draft_revision": "5fc3b3d474760f18c516db87d84c37edbfd3ede6",
+            "draft_manifest_sha256": "3ae918a1acebc474b99ca21f307f824cf68fefc7861a5f6a53a4f273778fe858",
+            "draft_weight_bits": 4,
+            "draft_weight_group_size": 64,
+            "draft_quantization_strategy": "runtime mlx.nn.quantize affine, group_size=64, before binding shared target embedding/head; original downloaded weights preserved",
+            "block_size": 3,
+            "max_draft_tokens_per_round": 2,
+            "acceptance_accounting": "all verified matching drafts, including non-emitted final proposals; exact rollback observer; target bonus excluded",
+            "timed_text_detokenization": false,
+            "greedy_parity": "must be independently validated against same-environment MLXBackend"
+          },
+          "conditions": {
+            "caffeinate_assertions": "di",
+            "power_start": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t89%; discharging; 16:08 remaining present: true"
+            },
+            "power_end": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t88%; discharging; 15:58 remaining present: true"
+            },
+            "thermal_start": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            },
+            "thermal_end": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            }
+          },
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 169.10161076971121,
+              "median_tokens_per_second": 176.852549777646,
+              "aggregate_tokens_per_second": 173.34117244916928,
+              "total_tokens": 441,
+              "total_seconds": 2.5441157098975964,
+              "sample_variance_tokens_per_second": 1163.9832915206052,
+              "sample_stddev_tokens_per_second": 34.11719935048311,
+              "min_tokens_per_second": 127.06608860118148,
+              "max_tokens_per_second": 208.03286919174514,
+              "coefficient_of_variation_percent": 20.175561424394218
+            },
+            "decode": {
+              "mean_tokens_per_second": 30.911594640632533,
+              "median_tokens_per_second": 30.25983879828569,
+              "aggregate_tokens_per_second": 30.82291211127524,
+              "total_tokens": 635,
+              "total_seconds": 20.601557624002453,
+              "sample_variance_tokens_per_second": 3.5153756664312796,
+              "sample_stddev_tokens_per_second": 1.8749335098694246,
+              "min_tokens_per_second": 28.837893084412922,
+              "max_tokens_per_second": 33.69447069681742,
+              "coefficient_of_variation_percent": 6.065470033709844
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 6.496690488
+          },
+          "samples": [
+            {
+              "index": 0,
+              "prompt_token_sha256": "2a9090aa3313132e0d313e90cfa3e93834e03b5267639a537447ce3a2766d4d1",
+              "prompt_tokens": 133,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.752038916980382,
+              "decode_seconds": 3.9968989169574343,
+              "peak_memory_gb": 6.262249844,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 88,
+              "accepted_draft_tokens": 83,
+              "speculative_rounds": 44,
+              "emitted_draft_tokens": 83,
+              "emitted_target_tokens": 45,
+              "prefill_tokens_per_second": 176.852549777646,
+              "decode_tokens_per_second": 31.774633944627354,
+              "generated_token_ids_sha256": "b46fef66cf56c5dc04d38238e81072a3226727bb07428bb04bd0b35a40a4457d"
+            },
+            {
+              "index": 1,
+              "prompt_token_sha256": "c018f989a9e6abba20d378b2ff142935d1387d870c2139d972e2875bbcda5603",
+              "prompt_tokens": 45,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.354146416997537,
+              "decode_seconds": 4.234584416029975,
+              "peak_memory_gb": 6.152708778,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 94,
+              "accepted_draft_tokens": 81,
+              "speculative_rounds": 47,
+              "emitted_draft_tokens": 81,
+              "emitted_target_tokens": 47,
+              "prefill_tokens_per_second": 127.06608860118148,
+              "decode_tokens_per_second": 29.991136679019277,
+              "generated_token_ids_sha256": "eaded04102ca97230de4d52ab8ad61f6e0c2120816d628fbd494a965ff597682"
+            },
+            {
+              "index": 2,
+              "prompt_token_sha256": "c8a1f3befa288d71e0751c0b21c6e6881ba91200cff2804030df583e8f33278d",
+              "prompt_tokens": 51,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.3610380839672871,
+              "decode_seconds": 4.403927833016496,
+              "peak_memory_gb": 6.238351848,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 96,
+              "accepted_draft_tokens": 80,
+              "speculative_rounds": 48,
+              "emitted_draft_tokens": 80,
+              "emitted_target_tokens": 48,
+              "prefill_tokens_per_second": 141.25933596695302,
+              "decode_tokens_per_second": 28.837893084412922,
+              "generated_token_ids_sha256": "fdf7ea12f4f451dffe702864c210471f18611da3d05359e4fc819bd1fb621239"
+            },
+            {
+              "index": 3,
+              "prompt_token_sha256": "ba802358a96b0d6ab565bd73d190d119c68dddbfb1b09cd5ff76aefb350abf7b",
+              "prompt_tokens": 147,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.764441666950006,
+              "decode_seconds": 4.19698204100132,
+              "peak_memory_gb": 6.496690488,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 98,
+              "accepted_draft_tokens": 79,
+              "speculative_rounds": 49,
+              "emitted_draft_tokens": 79,
+              "emitted_target_tokens": 49,
+              "prefill_tokens_per_second": 192.29721031103045,
+              "decode_tokens_per_second": 30.25983879828569,
+              "generated_token_ids_sha256": "3fd825a6cd2a47f1f7db5e205ffd19d34bb7a3442dd44c6fa476be52d57cca18"
+            },
+            {
+              "index": 4,
+              "prompt_token_sha256": "1f2c089cfb61a885a17f6ed588b2e2940923dfb7b0f298708041492c6866669b",
+              "prompt_tokens": 65,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.3124506250023842,
+              "decode_seconds": 3.769164416997228,
+              "peak_memory_gb": 6.420610718,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 93,
+              "accepted_draft_tokens": 81,
+              "speculative_rounds": 47,
+              "emitted_draft_tokens": 81,
+              "emitted_target_tokens": 47,
+              "prefill_tokens_per_second": 208.03286919174514,
+              "decode_tokens_per_second": 33.69447069681742,
+              "generated_token_ids_sha256": "a360036cbc1196ae3ce89faf79e3e05813bb2535d169e7422a4ddbfc58ccda07"
+            }
+          ]
+        },
+        "20260919T093504.130714Z-mlx-dflash-dflash-k5-q4-128": {
+          "run_id": "20260919T093504.130714Z-mlx-dflash-dflash-k5-q4-128",
+          "sources": [
+            {
+              "project_relative_path": "artifacts/runs/20260919T093504.130714Z-mlx-dflash-dflash-k5-q4-128/summary.json",
+              "original_sha256": "021e0cd52ab7f55fa808b637c891341a433edc4c933072e217438819b17ffe87"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T093504.130714Z-mlx-dflash-dflash-k5-q4-128/prompts.json",
+              "original_sha256": "0f0efb23910855d40a0d9cb3d60470f6efe9e349b51d1e96e804ee794814cc1e"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T093504.130714Z-mlx-dflash-dflash-k5-q4-128/samples.jsonl",
+              "original_sha256": "3ff75373ec71ad3ddacf8223459f82a170041daf5fa37d7fc88cf1ad5d051fed"
+            }
+          ],
+          "started_at": "20260919T093504.130714Z",
+          "config": {
+            "backend": "mlx-dflash",
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "dataset_path": "data/raw/deepscaler-100.jsonl",
+            "count": 5,
+            "max_new_tokens": 128,
+            "max_prompt_tokens": 2048,
+            "prefill_step_size": 512,
+            "warmup": 1,
+            "prompt_mode": "problem",
+            "chain_prefix_tokens": 512,
+            "kv_bits": null,
+            "label": "dflash-k5-q4-128",
+            "user_initiated": false,
+            "wired_memory": true,
+            "draft_path": "models/qwen3.5-9b-dflash",
+            "draft_bits": 4,
+            "block_size": 5
+          },
+          "model_manifest_sha256": "e12769294a538b8154ec1fc87522240d8dfbfb58e18ea756c750ff6602ea9519",
+          "model": {
+            "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+            "requested_revision": "main",
+            "resolved_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+            "format": "MLX 4-bit safetensors; not a PyTorch 4-bit checkpoint",
+            "scope": "complete_snapshot",
+            "files": [
+              {
+                "path": ".gitattributes",
+                "bytes": 1570,
+                "sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930"
+              },
+              {
+                "path": "README.md",
+                "bytes": 666,
+                "sha256": "1407e3e3337063c280b2fe1a63724908a5051cfbf26cd8b98f247432b0382537"
+              },
+              {
+                "path": "chat_template.jinja",
+                "bytes": 7756,
+                "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+              },
+              {
+                "path": "config.json",
+                "bytes": 3331,
+                "sha256": "a96942cb6a8a1d3f1d17514d81a1925d04362a6a3233b389d13012211baaa9f8"
+              },
+              {
+                "path": "model-00001-of-00002.safetensors",
+                "bytes": 5349771222,
+                "sha256": "a68b87558c6ef43f74c2bd63ce7e9092ceddc3101f3def0030774bae5f42aadd"
+              },
+              {
+                "path": "model-00002-of-00002.safetensors",
+                "bytes": 600449850,
+                "sha256": "b0a770bf8469c7f3f18756a0e0283f1c1174344a83e059a4e483f6af4907352d"
+              },
+              {
+                "path": "model.safetensors.index.json",
+                "bytes": 123592,
+                "sha256": "dd023913fb87cfdae27fb11dcf695117c925833796ccac3c64117d6652d8ff1e"
+              },
+              {
+                "path": "preprocessor_config.json",
+                "bytes": 390,
+                "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+              },
+              {
+                "path": "processor_config.json",
+                "bytes": 1300,
+                "sha256": "14932921ca485d458a04dafd8069fbb0a4505622a48208d19ed247115801385b"
+              },
+              {
+                "path": "tokenizer.json",
+                "bytes": 19989343,
+                "sha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4"
+              },
+              {
+                "path": "tokenizer_config.json",
+                "bytes": 1139,
+                "sha256": "e98f1901ac6f0adff67b1d540bfa0c36ac1a0cf59eb72ed78146ef89aafa1182"
+              },
+              {
+                "path": "video_preprocessor_config.json",
+                "bytes": 385,
+                "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+              },
+              {
+                "path": "vocab.json",
+                "bytes": 6722759,
+                "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+              }
+            ]
+          },
+          "dataset_sha256": "359f60d6d3c6a2a93d5f4a1cc2e7f1ec13ac3e10a1f83b6ad5c21bab4e8a5f54",
+          "prompt_tokens_sha256": "738fc83fec5457a3f4a5a094a5421ff2c82bb549241fdff0ae5970d265bb0eef",
+          "hardware": {
+            "os": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+            "machine": "arm64",
+            "processor": "Apple M2 Pro",
+            "memory_bytes": "17179869184"
+          },
+          "runtime": {
+            "python": "3.13.5",
+            "packages": {
+              "numpy": "2.5.3",
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "huggingface_hub": "1.32.0",
+              "dflash": "0.1.0",
+              "transformers": "5.17.0",
+              "safetensors": "0.8.0",
+              "mlx-metal": "0.32.2"
+            }
+          },
+          "backend_metadata": {
+            "framework": "dflash-mlx",
+            "versions": {
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "dflash": "0.1.0"
+            },
+            "device": "metal",
+            "device_info": {
+              "device_name": "Apple M2 Pro",
+              "max_recommended_working_set_size": 11453251584,
+              "memory_size": 17179869184,
+              "architecture": "applegpu_g14s",
+              "max_buffer_length": 8589934592,
+              "resource_limit": 499000
+            },
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "model_type": "qwen3_5",
+            "weight_bits": 4,
+            "weight_group_size": 64,
+            "prefill_step_size": 512,
+            "wired_memory": true,
+            "wired_memory_policy": "official mlx_lm.generate.wired_limit, outside phase timers; restored on exit",
+            "kv_bits": null,
+            "kv_group_size": null,
+            "kv_quantization_scope": "attention caches only; recurrent state unchanged",
+            "sampling": "greedy",
+            "ignore_eos": true,
+            "batch_size": 1,
+            "fresh_cache_per_request": true,
+            "first_generated_token_phase": "prefill",
+            "text_only": true,
+            "peak_memory_unit": "decimal GB, MLX allocator peak per request",
+            "target_framework": "mlx-lm",
+            "algorithm": "DFlash block-diffusion speculative decoding",
+            "upstream_repository": "https://github.com/z-lab/dflash",
+            "upstream_commit": "07ebd93db9f472af339b644bb70221ad8428328a",
+            "upstream_source_sha256": "2f8598eaca4cb814e63ea69e791c1bdf55ba82280bfd299f9141906356b7cb87",
+            "upstream_source_path": ".venv-speculative/lib/python3.13/site-packages/dflash/model_mlx.py",
+            "draft_model_path": "models/qwen3.5-9b-dflash",
+            "draft_repo_id": "z-lab/Qwen3.5-9B-DFlash",
+            "draft_revision": "5fc3b3d474760f18c516db87d84c37edbfd3ede6",
+            "draft_manifest_sha256": "3ae918a1acebc474b99ca21f307f824cf68fefc7861a5f6a53a4f273778fe858",
+            "draft_weight_bits": 4,
+            "draft_weight_group_size": 64,
+            "draft_quantization_strategy": "runtime mlx.nn.quantize affine, group_size=64, before binding shared target embedding/head; original downloaded weights preserved",
+            "block_size": 5,
+            "max_draft_tokens_per_round": 4,
+            "acceptance_accounting": "all verified matching drafts, including non-emitted final proposals; exact rollback observer; target bonus excluded",
+            "timed_text_detokenization": false,
+            "greedy_parity": "must be independently validated against same-environment MLXBackend"
+          },
+          "conditions": {
+            "caffeinate_assertions": "di",
+            "power_start": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t88%; discharging; 15:58 remaining present: true"
+            },
+            "power_end": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t87%; discharging; 15:48 remaining present: true"
+            },
+            "thermal_start": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            },
+            "thermal_end": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            }
+          },
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 150.08492898159156,
+              "median_tokens_per_second": 148.2876194461184,
+              "aggregate_tokens_per_second": 151.46760434361562,
+              "total_tokens": 441,
+              "total_seconds": 2.9115136659820564,
+              "sample_variance_tokens_per_second": 720.7039679056762,
+              "sample_stddev_tokens_per_second": 26.84593019259486,
+              "min_tokens_per_second": 123.00595201551393,
+              "max_tokens_per_second": 188.6275711855824,
+              "coefficient_of_variation_percent": 17.887159206963148
+            },
+            "decode": {
+              "mean_tokens_per_second": 24.95046337887361,
+              "median_tokens_per_second": 24.673184328499495,
+              "aggregate_tokens_per_second": 24.851624711145725,
+              "total_tokens": 635,
+              "total_seconds": 25.55164933402557,
+              "sample_variance_tokens_per_second": 3.1899778915267474,
+              "sample_stddev_tokens_per_second": 1.78605092075415,
+              "min_tokens_per_second": 23.113112387185723,
+              "max_tokens_per_second": 27.66108961034742,
+              "coefficient_of_variation_percent": 7.158387776743493
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 6.494282032
+          },
+          "samples": [
+            {
+              "index": 0,
+              "prompt_token_sha256": "2a9090aa3313132e0d313e90cfa3e93834e03b5267639a537447ce3a2766d4d1",
+              "prompt_tokens": 133,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.896905625006184,
+              "decode_seconds": 4.591286959010176,
+              "peak_memory_gb": 6.260971892,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 116,
+              "accepted_draft_tokens": 98,
+              "speculative_rounds": 29,
+              "emitted_draft_tokens": 98,
+              "emitted_target_tokens": 30,
+              "prefill_tokens_per_second": 148.2876194461184,
+              "decode_tokens_per_second": 27.66108961034742,
+              "generated_token_ids_sha256": "b46fef66cf56c5dc04d38238e81072a3226727bb07428bb04bd0b35a40a4457d"
+            },
+            {
+              "index": 1,
+              "prompt_token_sha256": "c018f989a9e6abba20d378b2ff142935d1387d870c2139d972e2875bbcda5603",
+              "prompt_tokens": 45,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.352307082968764,
+              "decode_seconds": 4.961632999998983,
+              "peak_memory_gb": 6.150136554,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 118,
+              "accepted_draft_tokens": 98,
+              "speculative_rounds": 30,
+              "emitted_draft_tokens": 98,
+              "emitted_target_tokens": 30,
+              "prefill_tokens_per_second": 127.72947855831147,
+              "decode_tokens_per_second": 25.596411504040308,
+              "generated_token_ids_sha256": "eaded04102ca97230de4d52ab8ad61f6e0c2120816d628fbd494a965ff597682"
+            },
+            {
+              "index": 2,
+              "prompt_token_sha256": "c8a1f3befa288d71e0751c0b21c6e6881ba91200cff2804030df583e8f33278d",
+              "prompt_tokens": 51,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.41461408301256597,
+              "decode_seconds": 5.147288582986221,
+              "peak_memory_gb": 6.2357796,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 128,
+              "accepted_draft_tokens": 95,
+              "speculative_rounds": 33,
+              "emitted_draft_tokens": 95,
+              "emitted_target_tokens": 33,
+              "prefill_tokens_per_second": 123.00595201551393,
+              "decode_tokens_per_second": 24.673184328499495,
+              "generated_token_ids_sha256": "fdf7ea12f4f451dffe702864c210471f18611da3d05359e4fc819bd1fb621239"
+            },
+            {
+              "index": 3,
+              "prompt_token_sha256": "ba802358a96b0d6ab565bd73d190d119c68dddbfb1b09cd5ff76aefb350abf7b",
+              "prompt_tokens": 147,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.9030924999970011,
+              "decode_seconds": 5.494716499990318,
+              "peak_memory_gb": 6.494282032,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 136,
+              "accepted_draft_tokens": 93,
+              "speculative_rounds": 34,
+              "emitted_draft_tokens": 93,
+              "emitted_target_tokens": 35,
+              "prefill_tokens_per_second": 162.77402370243152,
+              "decode_tokens_per_second": 23.113112387185723,
+              "generated_token_ids_sha256": "3fd825a6cd2a47f1f7db5e205ffd19d34bb7a3442dd44c6fa476be52d57cca18"
+            },
+            {
+              "index": 4,
+              "prompt_token_sha256": "1f2c089cfb61a885a17f6ed588b2e2940923dfb7b0f298708041492c6866669b",
+              "prompt_tokens": 65,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.3445943749975413,
+              "decode_seconds": 5.356724292039871,
+              "peak_memory_gb": 6.418202206,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 133,
+              "accepted_draft_tokens": 94,
+              "speculative_rounds": 34,
+              "emitted_draft_tokens": 94,
+              "emitted_target_tokens": 34,
+              "prefill_tokens_per_second": 188.6275711855824,
+              "decode_tokens_per_second": 23.708519064295107,
+              "generated_token_ids_sha256": "a360036cbc1196ae3ce89faf79e3e05813bb2535d169e7422a4ddbfc58ccda07"
+            }
+          ]
+        },
+        "20260919T093821.996568Z-mlx-dflash-dflash-k3-q8-128": {
+          "run_id": "20260919T093821.996568Z-mlx-dflash-dflash-k3-q8-128",
+          "sources": [
+            {
+              "project_relative_path": "artifacts/runs/20260919T093821.996568Z-mlx-dflash-dflash-k3-q8-128/summary.json",
+              "original_sha256": "47cad4b13fc3b7f6e43181b36df5e26dcd09831c61737f11bd0220cd0a7d0a59"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T093821.996568Z-mlx-dflash-dflash-k3-q8-128/prompts.json",
+              "original_sha256": "0f0efb23910855d40a0d9cb3d60470f6efe9e349b51d1e96e804ee794814cc1e"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T093821.996568Z-mlx-dflash-dflash-k3-q8-128/samples.jsonl",
+              "original_sha256": "7ac26bf31c6efdc86d632549f4f4f3883fa71004962fa1898dab1f4673fe9a07"
+            }
+          ],
+          "started_at": "20260919T093821.996568Z",
+          "config": {
+            "backend": "mlx-dflash",
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "dataset_path": "data/raw/deepscaler-100.jsonl",
+            "count": 5,
+            "max_new_tokens": 128,
+            "max_prompt_tokens": 2048,
+            "prefill_step_size": 512,
+            "warmup": 1,
+            "prompt_mode": "problem",
+            "chain_prefix_tokens": 512,
+            "kv_bits": null,
+            "label": "dflash-k3-q8-128",
+            "user_initiated": false,
+            "wired_memory": true,
+            "draft_path": "models/qwen3.5-9b-dflash",
+            "draft_bits": 8,
+            "block_size": 3
+          },
+          "model_manifest_sha256": "e12769294a538b8154ec1fc87522240d8dfbfb58e18ea756c750ff6602ea9519",
+          "model": {
+            "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+            "requested_revision": "main",
+            "resolved_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+            "format": "MLX 4-bit safetensors; not a PyTorch 4-bit checkpoint",
+            "scope": "complete_snapshot",
+            "files": [
+              {
+                "path": ".gitattributes",
+                "bytes": 1570,
+                "sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930"
+              },
+              {
+                "path": "README.md",
+                "bytes": 666,
+                "sha256": "1407e3e3337063c280b2fe1a63724908a5051cfbf26cd8b98f247432b0382537"
+              },
+              {
+                "path": "chat_template.jinja",
+                "bytes": 7756,
+                "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+              },
+              {
+                "path": "config.json",
+                "bytes": 3331,
+                "sha256": "a96942cb6a8a1d3f1d17514d81a1925d04362a6a3233b389d13012211baaa9f8"
+              },
+              {
+                "path": "model-00001-of-00002.safetensors",
+                "bytes": 5349771222,
+                "sha256": "a68b87558c6ef43f74c2bd63ce7e9092ceddc3101f3def0030774bae5f42aadd"
+              },
+              {
+                "path": "model-00002-of-00002.safetensors",
+                "bytes": 600449850,
+                "sha256": "b0a770bf8469c7f3f18756a0e0283f1c1174344a83e059a4e483f6af4907352d"
+              },
+              {
+                "path": "model.safetensors.index.json",
+                "bytes": 123592,
+                "sha256": "dd023913fb87cfdae27fb11dcf695117c925833796ccac3c64117d6652d8ff1e"
+              },
+              {
+                "path": "preprocessor_config.json",
+                "bytes": 390,
+                "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+              },
+              {
+                "path": "processor_config.json",
+                "bytes": 1300,
+                "sha256": "14932921ca485d458a04dafd8069fbb0a4505622a48208d19ed247115801385b"
+              },
+              {
+                "path": "tokenizer.json",
+                "bytes": 19989343,
+                "sha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4"
+              },
+              {
+                "path": "tokenizer_config.json",
+                "bytes": 1139,
+                "sha256": "e98f1901ac6f0adff67b1d540bfa0c36ac1a0cf59eb72ed78146ef89aafa1182"
+              },
+              {
+                "path": "video_preprocessor_config.json",
+                "bytes": 385,
+                "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+              },
+              {
+                "path": "vocab.json",
+                "bytes": 6722759,
+                "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+              }
+            ]
+          },
+          "dataset_sha256": "359f60d6d3c6a2a93d5f4a1cc2e7f1ec13ac3e10a1f83b6ad5c21bab4e8a5f54",
+          "prompt_tokens_sha256": "738fc83fec5457a3f4a5a094a5421ff2c82bb549241fdff0ae5970d265bb0eef",
+          "hardware": {
+            "os": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+            "machine": "arm64",
+            "processor": "Apple M2 Pro",
+            "memory_bytes": "17179869184"
+          },
+          "runtime": {
+            "python": "3.13.5",
+            "packages": {
+              "numpy": "2.5.3",
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "huggingface_hub": "1.32.0",
+              "dflash": "0.1.0",
+              "transformers": "5.17.0",
+              "safetensors": "0.8.0",
+              "mlx-metal": "0.32.2"
+            }
+          },
+          "backend_metadata": {
+            "framework": "dflash-mlx",
+            "versions": {
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "dflash": "0.1.0"
+            },
+            "device": "metal",
+            "device_info": {
+              "device_name": "Apple M2 Pro",
+              "max_recommended_working_set_size": 11453251584,
+              "memory_size": 17179869184,
+              "architecture": "applegpu_g14s",
+              "max_buffer_length": 8589934592,
+              "resource_limit": 499000
+            },
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "model_type": "qwen3_5",
+            "weight_bits": 4,
+            "weight_group_size": 64,
+            "prefill_step_size": 512,
+            "wired_memory": true,
+            "wired_memory_policy": "official mlx_lm.generate.wired_limit, outside phase timers; restored on exit",
+            "kv_bits": null,
+            "kv_group_size": null,
+            "kv_quantization_scope": "attention caches only; recurrent state unchanged",
+            "sampling": "greedy",
+            "ignore_eos": true,
+            "batch_size": 1,
+            "fresh_cache_per_request": true,
+            "first_generated_token_phase": "prefill",
+            "text_only": true,
+            "peak_memory_unit": "decimal GB, MLX allocator peak per request",
+            "target_framework": "mlx-lm",
+            "algorithm": "DFlash block-diffusion speculative decoding",
+            "upstream_repository": "https://github.com/z-lab/dflash",
+            "upstream_commit": "07ebd93db9f472af339b644bb70221ad8428328a",
+            "upstream_source_sha256": "2f8598eaca4cb814e63ea69e791c1bdf55ba82280bfd299f9141906356b7cb87",
+            "upstream_source_path": ".venv-speculative/lib/python3.13/site-packages/dflash/model_mlx.py",
+            "draft_model_path": "models/qwen3.5-9b-dflash",
+            "draft_repo_id": "z-lab/Qwen3.5-9B-DFlash",
+            "draft_revision": "5fc3b3d474760f18c516db87d84c37edbfd3ede6",
+            "draft_manifest_sha256": "3ae918a1acebc474b99ca21f307f824cf68fefc7861a5f6a53a4f273778fe858",
+            "draft_weight_bits": 8,
+            "draft_weight_group_size": 64,
+            "draft_quantization_strategy": "runtime mlx.nn.quantize affine, group_size=64, before binding shared target embedding/head; original downloaded weights preserved",
+            "block_size": 3,
+            "max_draft_tokens_per_round": 2,
+            "acceptance_accounting": "all verified matching drafts, including non-emitted final proposals; exact rollback observer; target bonus excluded",
+            "timed_text_detokenization": false,
+            "greedy_parity": "must be independently validated against same-environment MLXBackend"
+          },
+          "conditions": {
+            "caffeinate_assertions": "di",
+            "power_start": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t86%; discharging; 15:28 remaining present: true"
+            },
+            "power_end": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t85%; discharging; 15:18 remaining present: true"
+            },
+            "thermal_start": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            },
+            "thermal_end": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            }
+          },
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 156.10817860671924,
+              "median_tokens_per_second": 162.01480638690856,
+              "aggregate_tokens_per_second": 160.9802125923007,
+              "total_tokens": 441,
+              "total_seconds": 2.739467123930808,
+              "sample_variance_tokens_per_second": 746.8184920634874,
+              "sample_stddev_tokens_per_second": 27.32798002164608,
+              "min_tokens_per_second": 120.01762947120444,
+              "max_tokens_per_second": 181.5975301533662,
+              "coefficient_of_variation_percent": 17.50579647110803
+            },
+            "decode": {
+              "mean_tokens_per_second": 28.431773753704896,
+              "median_tokens_per_second": 28.453282100990695,
+              "aggregate_tokens_per_second": 28.396314503591437,
+              "total_tokens": 635,
+              "total_seconds": 22.362056876067072,
+              "sample_variance_tokens_per_second": 1.2362936899397756,
+              "sample_stddev_tokens_per_second": 1.1118874448161449,
+              "min_tokens_per_second": 26.721395265404535,
+              "max_tokens_per_second": 29.780815544625696,
+              "coefficient_of_variation_percent": 3.9107213445353786
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 7.142613304
+          },
+          "samples": [
+            {
+              "index": 0,
+              "prompt_token_sha256": "2a9090aa3313132e0d313e90cfa3e93834e03b5267639a537447ce3a2766d4d1",
+              "prompt_tokens": 133,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.8209126250003465,
+              "decode_seconds": 4.26449033303652,
+              "peak_memory_gb": 6.90817266,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 88,
+              "accepted_draft_tokens": 83,
+              "speculative_rounds": 44,
+              "emitted_draft_tokens": 83,
+              "emitted_target_tokens": 45,
+              "prefill_tokens_per_second": 162.01480638690856,
+              "decode_tokens_per_second": 29.780815544625696,
+              "generated_token_ids_sha256": "b46fef66cf56c5dc04d38238e81072a3226727bb07428bb04bd0b35a40a4457d"
+            },
+            {
+              "index": 1,
+              "prompt_token_sha256": "c018f989a9e6abba20d378b2ff142935d1387d870c2139d972e2875bbcda5603",
+              "prompt_tokens": 45,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.3749449159950018,
+              "decode_seconds": 4.463456958997995,
+              "peak_memory_gb": 6.79861521,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 94,
+              "accepted_draft_tokens": 81,
+              "speculative_rounds": 47,
+              "emitted_draft_tokens": 81,
+              "emitted_target_tokens": 47,
+              "prefill_tokens_per_second": 120.01762947120444,
+              "decode_tokens_per_second": 28.453282100990695,
+              "generated_token_ids_sha256": "eaded04102ca97230de4d52ab8ad61f6e0c2120816d628fbd494a965ff597682"
+            },
+            {
+              "index": 2,
+              "prompt_token_sha256": "c8a1f3befa288d71e0751c0b21c6e6881ba91200cff2804030df583e8f33278d",
+              "prompt_tokens": 51,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.37440362497000024,
+              "decode_seconds": 4.482002792006824,
+              "peak_memory_gb": 6.884274664,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 96,
+              "accepted_draft_tokens": 80,
+              "speculative_rounds": 48,
+              "emitted_draft_tokens": 80,
+              "emitted_target_tokens": 48,
+              "prefill_tokens_per_second": 136.21662985791463,
+              "decode_tokens_per_second": 28.33554682886209,
+              "generated_token_ids_sha256": "fdf7ea12f4f451dffe702864c210471f18611da3d05359e4fc819bd1fb621239"
+            },
+            {
+              "index": 3,
+              "prompt_token_sha256": "ba802358a96b0d6ab565bd73d190d119c68dddbfb1b09cd5ff76aefb350abf7b",
+              "prompt_tokens": 147,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.8094823749852367,
+              "decode_seconds": 4.752745833015069,
+              "peak_memory_gb": 7.142613304,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 100,
+              "accepted_draft_tokens": 78,
+              "speculative_rounds": 50,
+              "emitted_draft_tokens": 78,
+              "emitted_target_tokens": 50,
+              "prefill_tokens_per_second": 181.5975301533662,
+              "decode_tokens_per_second": 26.721395265404535,
+              "generated_token_ids_sha256": "3fd825a6cd2a47f1f7db5e205ffd19d34bb7a3442dd44c6fa476be52d57cca18"
+            },
+            {
+              "index": 4,
+              "prompt_token_sha256": "1f2c089cfb61a885a17f6ed588b2e2940923dfb7b0f298708041492c6866669b",
+              "prompt_tokens": 65,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.359723582980223,
+              "decode_seconds": 4.399360959010664,
+              "peak_memory_gb": 7.066533534,
+              "timing_method": "perf_counter + MLX synchronization; first target token in prefill; full DFlash stream, final rollback and cache evaluation in decode",
+              "drafted_tokens": 94,
+              "accepted_draft_tokens": 81,
+              "speculative_rounds": 47,
+              "emitted_draft_tokens": 81,
+              "emitted_target_tokens": 47,
+              "prefill_tokens_per_second": 180.6942971642023,
+              "decode_tokens_per_second": 28.867829028641463,
+              "generated_token_ids_sha256": "a360036cbc1196ae3ce89faf79e3e05813bb2535d169e7422a4ddbfc58ccda07"
+            }
+          ]
+        }
+      },
+      "baseline": {
+        "directory": "artifacts/runs/20260919T093354.785827Z-mlx-spec-baseline-128",
+        "statistics": {
+          "samples": 5,
+          "prefill": {
+            "mean_tokens_per_second": 164.26519134846532,
+            "median_tokens_per_second": 172.29294168418303,
+            "aggregate_tokens_per_second": 169.44851582103772,
+            "total_tokens": 441,
+            "total_seconds": 2.602560417028144,
+            "sample_variance_tokens_per_second": 881.2161082132617,
+            "sample_stddev_tokens_per_second": 29.68528437144003,
+            "min_tokens_per_second": 125.1733445692693,
+            "max_tokens_per_second": 191.729054610866,
+            "coefficient_of_variation_percent": 18.07156107009117
+          },
+          "decode": {
+            "mean_tokens_per_second": 30.160041545371477,
+            "median_tokens_per_second": 30.18396891365536,
+            "aggregate_tokens_per_second": 30.159203370631985,
+            "total_tokens": 635,
+            "total_seconds": 21.05493279104121,
+            "sample_variance_tokens_per_second": 0.03161228376885948,
+            "sample_stddev_tokens_per_second": 0.17779843578856222,
+            "min_tokens_per_second": 29.95989001786429,
+            "max_tokens_per_second": 30.390376654069104,
+            "coefficient_of_variation_percent": 0.5895165479831646
+          },
+          "generated_tokens": 640,
+          "peak_memory_gb": 5.479437554
+        }
+      },
+      "comparisons": [
+        {
+          "directory": "artifacts/runs/20260919T093746.072668Z-mlx-dflash-dflash-k2-q4-128",
+          "label": "dflash-k2-q4-128",
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 157.1453501613468,
+              "median_tokens_per_second": 171.04867450683113,
+              "aggregate_tokens_per_second": 163.88942441464263,
+              "total_tokens": 441,
+              "total_seconds": 2.690838665002957,
+              "sample_variance_tokens_per_second": 743.6083604347456,
+              "sample_stddev_tokens_per_second": 27.269183347411516,
+              "min_tokens_per_second": 125.97129114998434,
+              "max_tokens_per_second": 181.86847647003665,
+              "coefficient_of_variation_percent": 17.352841378642932
+            },
+            "decode": {
+              "mean_tokens_per_second": 29.309669370495016,
+              "median_tokens_per_second": 28.55989512216678,
+              "aggregate_tokens_per_second": 29.208528344360502,
+              "total_tokens": 635,
+              "total_seconds": 21.74022574891569,
+              "sample_variance_tokens_per_second": 3.759058633095664,
+              "sample_stddev_tokens_per_second": 1.9388291913151257,
+              "min_tokens_per_second": 27.021250966020485,
+              "max_tokens_per_second": 31.95737640887673,
+              "coefficient_of_variation_percent": 6.614981447954765
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 6.496674056
+          },
+          "parity": {
+            "status": "passed",
+            "matched_prompts": 5,
+            "total_prompts": 5,
+            "token_position_convention": "zero-based",
+            "per_prompt": [
+              {
+                "index": 0,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 1,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 2,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 3,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 4,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              }
+            ]
+          },
+          "speedup": {
+            "prefill": {
+              "ratio_of_mean_rates": 0.9566564216760033,
+              "ratio_of_aggregate_rates": 0.967193035716723
+            },
+            "decode": {
+              "ratio_of_mean_rates": 0.9718046749505568,
+              "ratio_of_aggregate_rates": 0.96847811215076
+            }
+          },
+          "speculation": {
+            "drafted_tokens": 328,
+            "accepted_draft_tokens": 308,
+            "weighted_draft_acceptance_rate": 0.9390243902439024,
+            "speculative_rounds": 328,
+            "committed_decode_tokens": 635,
+            "mean_committed_tokens_per_round": 1.9359756097560976,
+            "mean_accepted_draft_tokens_per_round": 0.9390243902439024,
+            "accepted_tokens_scope": "all verified matching draft tokens; final length cap may omit accepted tokens from output",
+            "committed_tokens_scope": "decode only; first prefill token excluded"
+          }
+        },
+        {
+          "directory": "artifacts/runs/20260919T093429.141864Z-mlx-dflash-dflash-k3-q4-128",
+          "label": "dflash-k3-q4-128",
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 169.10161076971121,
+              "median_tokens_per_second": 176.852549777646,
+              "aggregate_tokens_per_second": 173.34117244916928,
+              "total_tokens": 441,
+              "total_seconds": 2.5441157098975964,
+              "sample_variance_tokens_per_second": 1163.9832915206052,
+              "sample_stddev_tokens_per_second": 34.11719935048311,
+              "min_tokens_per_second": 127.06608860118148,
+              "max_tokens_per_second": 208.03286919174514,
+              "coefficient_of_variation_percent": 20.175561424394218
+            },
+            "decode": {
+              "mean_tokens_per_second": 30.911594640632533,
+              "median_tokens_per_second": 30.25983879828569,
+              "aggregate_tokens_per_second": 30.82291211127524,
+              "total_tokens": 635,
+              "total_seconds": 20.601557624002453,
+              "sample_variance_tokens_per_second": 3.5153756664312796,
+              "sample_stddev_tokens_per_second": 1.8749335098694246,
+              "min_tokens_per_second": 28.837893084412922,
+              "max_tokens_per_second": 33.69447069681742,
+              "coefficient_of_variation_percent": 6.065470033709844
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 6.496690488
+          },
+          "parity": {
+            "status": "passed",
+            "matched_prompts": 5,
+            "total_prompts": 5,
+            "token_position_convention": "zero-based",
+            "per_prompt": [
+              {
+                "index": 0,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 1,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 2,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 3,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 4,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              }
+            ]
+          },
+          "speedup": {
+            "prefill": {
+              "ratio_of_mean_rates": 1.0294427527922585,
+              "ratio_of_aggregate_rates": 1.0229725035316495
+            },
+            "decode": {
+              "ratio_of_mean_rates": 1.0249188348805969,
+              "ratio_of_aggregate_rates": 1.0220068392552288
+            }
+          },
+          "speculation": {
+            "drafted_tokens": 469,
+            "accepted_draft_tokens": 404,
+            "weighted_draft_acceptance_rate": 0.8614072494669509,
+            "speculative_rounds": 235,
+            "committed_decode_tokens": 635,
+            "mean_committed_tokens_per_round": 2.702127659574468,
+            "mean_accepted_draft_tokens_per_round": 1.7191489361702128,
+            "accepted_tokens_scope": "all verified matching draft tokens; final length cap may omit accepted tokens from output",
+            "committed_tokens_scope": "decode only; first prefill token excluded"
+          }
+        },
+        {
+          "directory": "artifacts/runs/20260919T093504.130714Z-mlx-dflash-dflash-k5-q4-128",
+          "label": "dflash-k5-q4-128",
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 150.08492898159156,
+              "median_tokens_per_second": 148.2876194461184,
+              "aggregate_tokens_per_second": 151.46760434361562,
+              "total_tokens": 441,
+              "total_seconds": 2.9115136659820564,
+              "sample_variance_tokens_per_second": 720.7039679056762,
+              "sample_stddev_tokens_per_second": 26.84593019259486,
+              "min_tokens_per_second": 123.00595201551393,
+              "max_tokens_per_second": 188.6275711855824,
+              "coefficient_of_variation_percent": 17.887159206963148
+            },
+            "decode": {
+              "mean_tokens_per_second": 24.95046337887361,
+              "median_tokens_per_second": 24.673184328499495,
+              "aggregate_tokens_per_second": 24.851624711145725,
+              "total_tokens": 635,
+              "total_seconds": 25.55164933402557,
+              "sample_variance_tokens_per_second": 3.1899778915267474,
+              "sample_stddev_tokens_per_second": 1.78605092075415,
+              "min_tokens_per_second": 23.113112387185723,
+              "max_tokens_per_second": 27.66108961034742,
+              "coefficient_of_variation_percent": 7.158387776743493
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 6.494282032
+          },
+          "parity": {
+            "status": "passed",
+            "matched_prompts": 5,
+            "total_prompts": 5,
+            "token_position_convention": "zero-based",
+            "per_prompt": [
+              {
+                "index": 0,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 1,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 2,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 3,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 4,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              }
+            ]
+          },
+          "speedup": {
+            "prefill": {
+              "ratio_of_mean_rates": 0.9136745755417388,
+              "ratio_of_aggregate_rates": 0.8938856950720504
+            },
+            "decode": {
+              "ratio_of_mean_rates": 0.8272688663687415,
+              "ratio_of_aggregate_rates": 0.8240146268367751
+            }
+          },
+          "speculation": {
+            "drafted_tokens": 631,
+            "accepted_draft_tokens": 478,
+            "weighted_draft_acceptance_rate": 0.757527733755943,
+            "speculative_rounds": 160,
+            "committed_decode_tokens": 635,
+            "mean_committed_tokens_per_round": 3.96875,
+            "mean_accepted_draft_tokens_per_round": 2.9875,
+            "accepted_tokens_scope": "all verified matching draft tokens; final length cap may omit accepted tokens from output",
+            "committed_tokens_scope": "decode only; first prefill token excluded"
+          }
+        },
+        {
+          "directory": "artifacts/runs/20260919T093821.996568Z-mlx-dflash-dflash-k3-q8-128",
+          "label": "dflash-k3-q8-128",
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 156.10817860671924,
+              "median_tokens_per_second": 162.01480638690856,
+              "aggregate_tokens_per_second": 160.9802125923007,
+              "total_tokens": 441,
+              "total_seconds": 2.739467123930808,
+              "sample_variance_tokens_per_second": 746.8184920634874,
+              "sample_stddev_tokens_per_second": 27.32798002164608,
+              "min_tokens_per_second": 120.01762947120444,
+              "max_tokens_per_second": 181.5975301533662,
+              "coefficient_of_variation_percent": 17.50579647110803
+            },
+            "decode": {
+              "mean_tokens_per_second": 28.431773753704896,
+              "median_tokens_per_second": 28.453282100990695,
+              "aggregate_tokens_per_second": 28.396314503591437,
+              "total_tokens": 635,
+              "total_seconds": 22.362056876067072,
+              "sample_variance_tokens_per_second": 1.2362936899397756,
+              "sample_stddev_tokens_per_second": 1.1118874448161449,
+              "min_tokens_per_second": 26.721395265404535,
+              "max_tokens_per_second": 29.780815544625696,
+              "coefficient_of_variation_percent": 3.9107213445353786
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 7.142613304
+          },
+          "parity": {
+            "status": "passed",
+            "matched_prompts": 5,
+            "total_prompts": 5,
+            "token_position_convention": "zero-based",
+            "per_prompt": [
+              {
+                "index": 0,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 1,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 2,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 3,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 4,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              }
+            ]
+          },
+          "speedup": {
+            "prefill": {
+              "ratio_of_mean_rates": 0.9503424147575968,
+              "ratio_of_aggregate_rates": 0.9500243292913773
+            },
+            "decode": {
+              "ratio_of_mean_rates": 0.9426967701928842,
+              "ratio_of_aggregate_rates": 0.9415472336793488
+            }
+          },
+          "speculation": {
+            "drafted_tokens": 472,
+            "accepted_draft_tokens": 403,
+            "weighted_draft_acceptance_rate": 0.8538135593220338,
+            "speculative_rounds": 236,
+            "committed_decode_tokens": 635,
+            "mean_committed_tokens_per_round": 2.690677966101695,
+            "mean_accepted_draft_tokens_per_round": 1.7076271186440677,
+            "accepted_tokens_scope": "all verified matching draft tokens; final length cap may omit accepted tokens from output",
+            "committed_tokens_scope": "decode only; first prefill token excluded"
+          }
+        }
+      ]
+    },
+    "MTP": {
+      "source_report": {
+        "project_relative_path": "artifacts/reports/mtp/speculative-comparison.json",
+        "original_sha256": "ad1a746a6735ad4c74c423cc779319974316861644b9c56cf18712942fb931cf"
+      },
+      "runs": {
+        "20260919T094418.953073Z-mlx-vlm-mtp-baseline-128": {
+          "run_id": "20260919T094418.953073Z-mlx-vlm-mtp-baseline-128",
+          "sources": [
+            {
+              "project_relative_path": "artifacts/runs/20260919T094418.953073Z-mlx-vlm-mtp-baseline-128/summary.json",
+              "original_sha256": "6a3ac3e7843e632eb8415580dd764924908db3d4844b961f5ab1ea52e30ea9db"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T094418.953073Z-mlx-vlm-mtp-baseline-128/prompts.json",
+              "original_sha256": "0f0efb23910855d40a0d9cb3d60470f6efe9e349b51d1e96e804ee794814cc1e"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T094418.953073Z-mlx-vlm-mtp-baseline-128/samples.jsonl",
+              "original_sha256": "bff0b722c740312038871263c9652c9bf911f4fe3570e8c6603173736f83b42a"
+            }
+          ],
+          "started_at": "20260919T094418.953073Z",
+          "config": {
+            "backend": "mlx-vlm",
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "dataset_path": "data/raw/deepscaler-100.jsonl",
+            "count": 5,
+            "max_new_tokens": 128,
+            "max_prompt_tokens": 2048,
+            "prefill_step_size": 512,
+            "warmup": 1,
+            "prompt_mode": "problem",
+            "chain_prefix_tokens": 512,
+            "kv_bits": null,
+            "label": "mtp-baseline-128",
+            "user_initiated": false,
+            "wired_memory": true
+          },
+          "model_manifest_sha256": "e12769294a538b8154ec1fc87522240d8dfbfb58e18ea756c750ff6602ea9519",
+          "model": {
+            "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+            "requested_revision": "main",
+            "resolved_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+            "format": "MLX 4-bit safetensors; not a PyTorch 4-bit checkpoint",
+            "scope": "complete_snapshot",
+            "files": [
+              {
+                "path": ".gitattributes",
+                "bytes": 1570,
+                "sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930"
+              },
+              {
+                "path": "README.md",
+                "bytes": 666,
+                "sha256": "1407e3e3337063c280b2fe1a63724908a5051cfbf26cd8b98f247432b0382537"
+              },
+              {
+                "path": "chat_template.jinja",
+                "bytes": 7756,
+                "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+              },
+              {
+                "path": "config.json",
+                "bytes": 3331,
+                "sha256": "a96942cb6a8a1d3f1d17514d81a1925d04362a6a3233b389d13012211baaa9f8"
+              },
+              {
+                "path": "model-00001-of-00002.safetensors",
+                "bytes": 5349771222,
+                "sha256": "a68b87558c6ef43f74c2bd63ce7e9092ceddc3101f3def0030774bae5f42aadd"
+              },
+              {
+                "path": "model-00002-of-00002.safetensors",
+                "bytes": 600449850,
+                "sha256": "b0a770bf8469c7f3f18756a0e0283f1c1174344a83e059a4e483f6af4907352d"
+              },
+              {
+                "path": "model.safetensors.index.json",
+                "bytes": 123592,
+                "sha256": "dd023913fb87cfdae27fb11dcf695117c925833796ccac3c64117d6652d8ff1e"
+              },
+              {
+                "path": "preprocessor_config.json",
+                "bytes": 390,
+                "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+              },
+              {
+                "path": "processor_config.json",
+                "bytes": 1300,
+                "sha256": "14932921ca485d458a04dafd8069fbb0a4505622a48208d19ed247115801385b"
+              },
+              {
+                "path": "tokenizer.json",
+                "bytes": 19989343,
+                "sha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4"
+              },
+              {
+                "path": "tokenizer_config.json",
+                "bytes": 1139,
+                "sha256": "e98f1901ac6f0adff67b1d540bfa0c36ac1a0cf59eb72ed78146ef89aafa1182"
+              },
+              {
+                "path": "video_preprocessor_config.json",
+                "bytes": 385,
+                "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+              },
+              {
+                "path": "vocab.json",
+                "bytes": 6722759,
+                "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+              }
+            ]
+          },
+          "dataset_sha256": "359f60d6d3c6a2a93d5f4a1cc2e7f1ec13ac3e10a1f83b6ad5c21bab4e8a5f54",
+          "prompt_tokens_sha256": "738fc83fec5457a3f4a5a094a5421ff2c82bb549241fdff0ae5970d265bb0eef",
+          "hardware": {
+            "os": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+            "machine": "arm64",
+            "processor": "Apple M2 Pro",
+            "memory_bytes": "17179869184"
+          },
+          "runtime": {
+            "python": "3.13.5",
+            "packages": {
+              "numpy": "2.5.3",
+              "mlx-vlm": "0.7.1",
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "kernels": "0.17.1",
+              "huggingface_hub": "1.32.0",
+              "torch": "2.14.0",
+              "transformers": "5.17.0",
+              "safetensors": "0.8.0",
+              "mlx-metal": "0.32.2"
+            }
+          },
+          "backend_metadata": {
+            "framework": "mlx-vlm",
+            "versions": {
+              "mlx": "0.32.2",
+              "mlx-vlm": "0.7.1",
+              "transformers": "5.17.0"
+            },
+            "device": "metal",
+            "device_info": {
+              "device_name": "Apple M2 Pro",
+              "max_recommended_working_set_size": 11453251584,
+              "memory_size": 17179869184,
+              "architecture": "applegpu_g14s",
+              "max_buffer_length": 8589934592,
+              "resource_limit": 499000
+            },
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "model_type": "qwen3_5",
+            "weight_bits": 4,
+            "weight_group_size": 64,
+            "prefill_step_size": 512,
+            "wired_memory": true,
+            "wired_memory_policy": "recommended working-set size per request; previous MLX limit restored in finally",
+            "kv_bits": null,
+            "kv_group_size": null,
+            "kv_quantization_scope": "attention caches only; recurrent state unchanged",
+            "sampling": "greedy",
+            "ignore_eos": true,
+            "batch_size": 1,
+            "fresh_cache_per_request": true,
+            "first_generated_token_phase": "prefill",
+            "text_only": true,
+            "peak_memory_unit": "decimal GB, MLX allocator peak per request",
+            "compute_runtime": "mlx / Metal (shared with mlx-lm)",
+            "model_implementation": "mlx_vlm.models.qwen3_5.language.LanguageModel",
+            "model_loader": "mlx_vlm.utils.load_model",
+            "vision_tower_retained": false,
+            "measurement_harness": "shared phase-separated MLX harness"
+          },
+          "conditions": {
+            "caffeinate_assertions": "di",
+            "power_start": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t82%; discharging; 14:28 remaining present: true"
+            },
+            "power_end": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t82%; discharging; 14:18 remaining present: true"
+            },
+            "thermal_start": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            },
+            "thermal_end": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            }
+          },
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 160.20604848381987,
+              "median_tokens_per_second": 166.91522664870305,
+              "aggregate_tokens_per_second": 166.59581420401233,
+              "total_tokens": 441,
+              "total_seconds": 2.6471253320924006,
+              "sample_variance_tokens_per_second": 1121.5413431674149,
+              "sample_stddev_tokens_per_second": 33.489421362087086,
+              "min_tokens_per_second": 113.86152307615023,
+              "max_tokens_per_second": 202.16837047196896,
+              "coefficient_of_variation_percent": 20.903968157899715
+            },
+            "decode": {
+              "mean_tokens_per_second": 29.127467354687994,
+              "median_tokens_per_second": 28.614498115991672,
+              "aggregate_tokens_per_second": 29.029788082520632,
+              "total_tokens": 635,
+              "total_seconds": 21.87408320704708,
+              "sample_variance_tokens_per_second": 3.7963985076860496,
+              "sample_stddev_tokens_per_second": 1.9484348866939458,
+              "min_tokens_per_second": 27.318570209569646,
+              "max_tokens_per_second": 32.462913647843436,
+              "coefficient_of_variation_percent": 6.6893384960925895
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 5.482619682
+          },
+          "samples": [
+            {
+              "index": 0,
+              "prompt_token_sha256": "2a9090aa3313132e0d313e90cfa3e93834e03b5267639a537447ce3a2766d4d1",
+              "prompt_tokens": 133,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.7968116670381278,
+              "decode_seconds": 4.438309541030321,
+              "peak_memory_gb": 5.458156386,
+              "timing_method": "perf_counter + MLX phase synchronization; first token in prefill",
+              "prefill_tokens_per_second": 166.91522664870305,
+              "decode_tokens_per_second": 28.614498115991672,
+              "generated_token_ids_sha256": "bfdb283389957e42f0cd7b05a44a463629f945440b7bad54510843a8a864a052"
+            },
+            {
+              "index": 1,
+              "prompt_token_sha256": "c018f989a9e6abba20d378b2ff142935d1387d870c2139d972e2875bbcda5603",
+              "prompt_tokens": 45,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.39521691598929465,
+              "decode_seconds": 4.425639291002881,
+              "peak_memory_gb": 5.272587568,
+              "timing_method": "perf_counter + MLX phase synchronization; first token in prefill",
+              "prefill_tokens_per_second": 113.86152307615023,
+              "decode_tokens_per_second": 28.69641912710444,
+              "generated_token_ids_sha256": "b4785f9a2157b703a8213fd499014ba3c7dd243fc3b23287d6840e844be3b3af"
+            },
+            {
+              "index": 2,
+              "prompt_token_sha256": "c8a1f3befa288d71e0751c0b21c6e6881ba91200cff2804030df583e8f33278d",
+              "prompt_tokens": 51,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.35722562501905486,
+              "decode_seconds": 3.9121565420064144,
+              "peak_memory_gb": 5.293333576,
+              "timing_method": "perf_counter + MLX phase synchronization; first token in prefill",
+              "prefill_tokens_per_second": 142.76691376011897,
+              "decode_tokens_per_second": 32.462913647843436,
+              "generated_token_ids_sha256": "fdf7ea12f4f451dffe702864c210471f18611da3d05359e4fc819bd1fb621239"
+            },
+            {
+              "index": 3,
+              "prompt_token_sha256": "ba802358a96b0d6ab565bd73d190d119c68dddbfb1b09cd5ff76aefb350abf7b",
+              "prompt_tokens": 147,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.7271167080034502,
+              "decode_seconds": 4.648852374986745,
+              "peak_memory_gb": 5.482619682,
+              "timing_method": "perf_counter + MLX phase synchronization; first token in prefill",
+              "prefill_tokens_per_second": 202.16837047196896,
+              "decode_tokens_per_second": 27.318570209569646,
+              "generated_token_ids_sha256": "3fd825a6cd2a47f1f7db5e205ffd19d34bb7a3442dd44c6fa476be52d57cca18"
+            },
+            {
+              "index": 4,
+              "prompt_token_sha256": "1f2c089cfb61a885a17f6ed588b2e2940923dfb7b0f298708041492c6866669b",
+              "prompt_tokens": 65,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.37075441604247317,
+              "decode_seconds": 4.449125458020717,
+              "peak_memory_gb": 5.340253952,
+              "timing_method": "perf_counter + MLX phase synchronization; first token in prefill",
+              "prefill_tokens_per_second": 175.31820846215808,
+              "decode_tokens_per_second": 28.544935672930766,
+              "generated_token_ids_sha256": "353219271533b1ab03364f481aef12440d5167594d0aa2e489cc2ca6c72f0e4e"
+            }
+          ]
+        },
+        "20260919T094456.562787Z-mlx-mtp-mtp-k2-128": {
+          "run_id": "20260919T094456.562787Z-mlx-mtp-mtp-k2-128",
+          "sources": [
+            {
+              "project_relative_path": "artifacts/runs/20260919T094456.562787Z-mlx-mtp-mtp-k2-128/summary.json",
+              "original_sha256": "1de699a77054b4793c59407be9f00e5b510cc1c5b889be6290434e0ad6f8fbd3"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T094456.562787Z-mlx-mtp-mtp-k2-128/prompts.json",
+              "original_sha256": "0f0efb23910855d40a0d9cb3d60470f6efe9e349b51d1e96e804ee794814cc1e"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T094456.562787Z-mlx-mtp-mtp-k2-128/samples.jsonl",
+              "original_sha256": "2a855365ab38cf9bb00f523ede80f1247d600e2e851f6aae4a57cacb4f0bfd87"
+            }
+          ],
+          "started_at": "20260919T094456.562787Z",
+          "config": {
+            "backend": "mlx-mtp",
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "dataset_path": "data/raw/deepscaler-100.jsonl",
+            "count": 5,
+            "max_new_tokens": 128,
+            "max_prompt_tokens": 2048,
+            "prefill_step_size": 512,
+            "warmup": 1,
+            "prompt_mode": "problem",
+            "chain_prefix_tokens": 512,
+            "kv_bits": null,
+            "label": "mtp-k2-128",
+            "user_initiated": false,
+            "wired_memory": true,
+            "draft_path": "models/qwen3.5-9b-mtp-4bit",
+            "block_size": 2
+          },
+          "model_manifest_sha256": "e12769294a538b8154ec1fc87522240d8dfbfb58e18ea756c750ff6602ea9519",
+          "model": {
+            "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+            "requested_revision": "main",
+            "resolved_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+            "format": "MLX 4-bit safetensors; not a PyTorch 4-bit checkpoint",
+            "scope": "complete_snapshot",
+            "files": [
+              {
+                "path": ".gitattributes",
+                "bytes": 1570,
+                "sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930"
+              },
+              {
+                "path": "README.md",
+                "bytes": 666,
+                "sha256": "1407e3e3337063c280b2fe1a63724908a5051cfbf26cd8b98f247432b0382537"
+              },
+              {
+                "path": "chat_template.jinja",
+                "bytes": 7756,
+                "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+              },
+              {
+                "path": "config.json",
+                "bytes": 3331,
+                "sha256": "a96942cb6a8a1d3f1d17514d81a1925d04362a6a3233b389d13012211baaa9f8"
+              },
+              {
+                "path": "model-00001-of-00002.safetensors",
+                "bytes": 5349771222,
+                "sha256": "a68b87558c6ef43f74c2bd63ce7e9092ceddc3101f3def0030774bae5f42aadd"
+              },
+              {
+                "path": "model-00002-of-00002.safetensors",
+                "bytes": 600449850,
+                "sha256": "b0a770bf8469c7f3f18756a0e0283f1c1174344a83e059a4e483f6af4907352d"
+              },
+              {
+                "path": "model.safetensors.index.json",
+                "bytes": 123592,
+                "sha256": "dd023913fb87cfdae27fb11dcf695117c925833796ccac3c64117d6652d8ff1e"
+              },
+              {
+                "path": "preprocessor_config.json",
+                "bytes": 390,
+                "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+              },
+              {
+                "path": "processor_config.json",
+                "bytes": 1300,
+                "sha256": "14932921ca485d458a04dafd8069fbb0a4505622a48208d19ed247115801385b"
+              },
+              {
+                "path": "tokenizer.json",
+                "bytes": 19989343,
+                "sha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4"
+              },
+              {
+                "path": "tokenizer_config.json",
+                "bytes": 1139,
+                "sha256": "e98f1901ac6f0adff67b1d540bfa0c36ac1a0cf59eb72ed78146ef89aafa1182"
+              },
+              {
+                "path": "video_preprocessor_config.json",
+                "bytes": 385,
+                "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+              },
+              {
+                "path": "vocab.json",
+                "bytes": 6722759,
+                "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+              }
+            ]
+          },
+          "dataset_sha256": "359f60d6d3c6a2a93d5f4a1cc2e7f1ec13ac3e10a1f83b6ad5c21bab4e8a5f54",
+          "prompt_tokens_sha256": "738fc83fec5457a3f4a5a094a5421ff2c82bb549241fdff0ae5970d265bb0eef",
+          "hardware": {
+            "os": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+            "machine": "arm64",
+            "processor": "Apple M2 Pro",
+            "memory_bytes": "17179869184"
+          },
+          "runtime": {
+            "python": "3.13.5",
+            "packages": {
+              "numpy": "2.5.3",
+              "mlx-vlm": "0.7.1",
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "kernels": "0.17.1",
+              "huggingface_hub": "1.32.0",
+              "torch": "2.14.0",
+              "transformers": "5.17.0",
+              "safetensors": "0.8.0",
+              "mlx-metal": "0.32.2"
+            }
+          },
+          "backend_metadata": {
+            "framework": "mlx-vlm-mtp",
+            "versions": {
+              "mlx": "0.32.2",
+              "mlx-vlm": "0.7.1",
+              "transformers": "5.17.0"
+            },
+            "device": "metal",
+            "device_info": {
+              "device_name": "Apple M2 Pro",
+              "max_recommended_working_set_size": 11453251584,
+              "memory_size": 17179869184,
+              "architecture": "applegpu_g14s",
+              "max_buffer_length": 8589934592,
+              "resource_limit": 499000
+            },
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "model_type": "qwen3_5",
+            "weight_bits": 4,
+            "weight_group_size": 64,
+            "prefill_step_size": 512,
+            "wired_memory": true,
+            "wired_memory_policy": "recommended working-set size per request; previous MLX limit restored in finally",
+            "kv_bits": null,
+            "kv_group_size": null,
+            "kv_quantization_scope": "attention caches only; recurrent state unchanged",
+            "sampling": "greedy",
+            "ignore_eos": true,
+            "batch_size": 1,
+            "fresh_cache_per_request": true,
+            "first_generated_token_phase": "prefill",
+            "text_only": true,
+            "peak_memory_unit": "decimal GB, MLX allocator peak per request",
+            "compute_runtime": "mlx / Metal (shared with mlx-lm)",
+            "model_implementation": "mlx_vlm.models.qwen3_5.language.LanguageModel",
+            "model_loader": "mlx_vlm.utils.load_model",
+            "vision_tower_retained": false,
+            "measurement_harness": "phase-separated native MTP with full prompt hidden capture",
+            "target_framework": "mlx-vlm",
+            "algorithm": "native Qwen3.5 multi-token prediction with stock MLX-VLM target verification",
+            "upstream_repository": "https://github.com/Blaizzy/mlx-vlm",
+            "upstream_runtime_sources": {
+              "mlx_vlm.speculative.cache_state": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/speculative/cache_state.py",
+                "sha256": "39d35ef0aae0c9298f2fcd3ff6b91b106c6b6c1c3ab6becae216a8fafb2c5300"
+              },
+              "mlx_vlm.speculative.common": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/speculative/common.py",
+                "sha256": "e3d3c0294a6d6fc915a32e96460370bfe57baef19539c5a290d4254525717cf1"
+              },
+              "mlx_vlm.speculative.mtp": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/speculative/mtp.py",
+                "sha256": "4ed467918bd24e26c60730d6d3529c6a9e633448b2fc6028829965bb1f4daad1"
+              },
+              "mlx_vlm.speculative.utils": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/speculative/utils.py",
+                "sha256": "93d2ed29ac7b7c378536bf09d22eb570d5abb1f2d338dc550e59a84468b6a9ff"
+              },
+              "mlx_vlm.speculative.drafters.qwen3_5_mtp.qwen3_5_mtp": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/speculative/drafters/qwen3_5_mtp/qwen3_5_mtp.py",
+                "sha256": "3b2cf5cf0e83393a331fdd95394b812cda749d207a96b9bd4905bc025df85876"
+              },
+              "mlx_vlm.models.qwen3_5.speculative_verifier": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/models/qwen3_5/speculative_verifier.py",
+                "sha256": "e0b869d60a347b5bc4bc00ce24018831fcbeac177f33fd3bc0dc1c20fec81d63"
+              }
+            },
+            "draft_model_path": "models/qwen3.5-9b-mtp-4bit",
+            "draft_repo_id": "mlx-community/Qwen3.5-9B-MTP-4bit",
+            "draft_revision": "222dfd2c23fc9518d7b817e4f8e0cb0571787489",
+            "draft_manifest_sha256": "6f04b006806f9e1a36528cbd5298ef4b7609ec15965f692ed57144b9cdda55ef",
+            "draft_weight_bits": 4,
+            "draft_weight_group_size": 64,
+            "draft_quantization_strategy": "checkpoint-provided quantization loaded unchanged by mlx_vlm.speculative.drafters.load_drafter",
+            "block_size": 2,
+            "max_draft_tokens_per_round": 1,
+            "prefill_hidden_capture": "normalized target hidden states retained for every prompt token across chunks; original full prompt passed to stock run_speculative_rounds",
+            "draft_prefill_phase": "decode, after the first target token is available",
+            "acceptance_accounting": "stock accept_lens/draft_lens; all verified matching drafts including capped final proposals, bonus excluded",
+            "timed_text_detokenization": false,
+            "greedy_parity": "must be validated against same-environment MLXVLMBackend"
+          },
+          "conditions": {
+            "caffeinate_assertions": "di",
+            "power_start": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t82%; discharging; 14:18 remaining present: true"
+            },
+            "power_end": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t82%; discharging; 14:18 remaining present: true"
+            },
+            "thermal_start": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            },
+            "thermal_end": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            }
+          },
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 148.37913170176364,
+              "median_tokens_per_second": 153.17825448506264,
+              "aggregate_tokens_per_second": 154.04575097456424,
+              "total_tokens": 441,
+              "total_seconds": 2.862785875040572,
+              "sample_variance_tokens_per_second": 681.2247519500897,
+              "sample_stddev_tokens_per_second": 26.10028260287788,
+              "min_tokens_per_second": 119.92264988819524,
+              "max_tokens_per_second": 181.39491758780994,
+              "coefficient_of_variation_percent": 17.590265088852554
+            },
+            "decode": {
+              "mean_tokens_per_second": 31.287870083260316,
+              "median_tokens_per_second": 31.7331093942577,
+              "aggregate_tokens_per_second": 31.245617937546857,
+              "total_tokens": 635,
+              "total_seconds": 20.322849791904446,
+              "sample_variance_tokens_per_second": 1.6196616376708644,
+              "sample_stddev_tokens_per_second": 1.272659277918039,
+              "min_tokens_per_second": 29.449672859561044,
+              "max_tokens_per_second": 32.53347035817794,
+              "coefficient_of_variation_percent": 4.067580421841943
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 5.621793704
+          },
+          "samples": [
+            {
+              "index": 0,
+              "prompt_token_sha256": "2a9090aa3313132e0d313e90cfa3e93834e03b5267639a537447ce3a2766d4d1",
+              "prompt_tokens": 133,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.8682694580056705,
+              "decode_seconds": 3.9036720829899423,
+              "peak_memory_gb": 5.595037798,
+              "timing_method": "perf_counter + MLX phase synchronization; full prompt hidden-state capture and first target token in prefill; MTP head prefill, stock round loop and final cache materialization in decode",
+              "drafted_tokens": 67,
+              "accepted_draft_tokens": 61,
+              "speculative_rounds": 67,
+              "emitted_draft_tokens": 61,
+              "emitted_target_tokens": 67,
+              "prefill_tokens_per_second": 153.17825448506264,
+              "decode_tokens_per_second": 32.53347035817794,
+              "generated_token_ids_sha256": "bfdb283389957e42f0cd7b05a44a463629f945440b7bad54510843a8a864a052"
+            },
+            {
+              "index": 1,
+              "prompt_token_sha256": "c018f989a9e6abba20d378b2ff142935d1387d870c2139d972e2875bbcda5603",
+              "prompt_tokens": 45,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.37524187500821427,
+              "decode_seconds": 4.158031374972779,
+              "peak_memory_gb": 5.40948544,
+              "timing_method": "perf_counter + MLX phase synchronization; full prompt hidden-state capture and first target token in prefill; MTP head prefill, stock round loop and final cache materialization in decode",
+              "drafted_tokens": 65,
+              "accepted_draft_tokens": 63,
+              "speculative_rounds": 65,
+              "emitted_draft_tokens": 63,
+              "emitted_target_tokens": 65,
+              "prefill_tokens_per_second": 119.92264988819524,
+              "decode_tokens_per_second": 30.543300073302454,
+              "generated_token_ids_sha256": "b4785f9a2157b703a8213fd499014ba3c7dd243fc3b23287d6840e844be3b3af"
+            },
+            {
+              "index": 2,
+              "prompt_token_sha256": "c8a1f3befa288d71e0751c0b21c6e6881ba91200cff2804030df583e8f33278d",
+              "prompt_tokens": 51,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.41053345904219896,
+              "decode_seconds": 3.94657545897644,
+              "peak_memory_gb": 5.43021434,
+              "timing_method": "perf_counter + MLX phase synchronization; full prompt hidden-state capture and first target token in prefill; MTP head prefill, stock round loop and final cache materialization in decode",
+              "drafted_tokens": 66,
+              "accepted_draft_tokens": 61,
+              "speculative_rounds": 66,
+              "emitted_draft_tokens": 61,
+              "emitted_target_tokens": 67,
+              "prefill_tokens_per_second": 124.22860762430008,
+              "decode_tokens_per_second": 32.17979773100245,
+              "generated_token_ids_sha256": "fdf7ea12f4f451dffe702864c210471f18611da3d05359e4fc819bd1fb621239"
+            },
+            {
+              "index": 3,
+              "prompt_token_sha256": "ba802358a96b0d6ab565bd73d190d119c68dddbfb1b09cd5ff76aefb350abf7b",
+              "prompt_tokens": 147,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.8103865419980139,
+              "decode_seconds": 4.312441791989841,
+              "peak_memory_gb": 5.621793704,
+              "timing_method": "perf_counter + MLX phase synchronization; full prompt hidden-state capture and first target token in prefill; MTP head prefill, stock round loop and final cache materialization in decode",
+              "drafted_tokens": 68,
+              "accepted_draft_tokens": 59,
+              "speculative_rounds": 68,
+              "emitted_draft_tokens": 59,
+              "emitted_target_tokens": 69,
+              "prefill_tokens_per_second": 181.39491758780994,
+              "decode_tokens_per_second": 29.449672859561044,
+              "generated_token_ids_sha256": "3fd825a6cd2a47f1f7db5e205ffd19d34bb7a3442dd44c6fa476be52d57cca18"
+            },
+            {
+              "index": 4,
+              "prompt_token_sha256": "1f2c089cfb61a885a17f6ed588b2e2940923dfb7b0f298708041492c6866669b",
+              "prompt_tokens": 65,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.3983545409864746,
+              "decode_seconds": 4.0021290829754435,
+              "peak_memory_gb": 5.477135402,
+              "timing_method": "perf_counter + MLX phase synchronization; full prompt hidden-state capture and first target token in prefill; MTP head prefill, stock round loop and final cache materialization in decode",
+              "drafted_tokens": 66,
+              "accepted_draft_tokens": 61,
+              "speculative_rounds": 66,
+              "emitted_draft_tokens": 61,
+              "emitted_target_tokens": 67,
+              "prefill_tokens_per_second": 163.17122892345026,
+              "decode_tokens_per_second": 31.7331093942577,
+              "generated_token_ids_sha256": "353219271533b1ab03364f481aef12440d5167594d0aa2e489cc2ca6c72f0e4e"
+            }
+          ]
+        },
+        "20260919T094532.821635Z-mlx-mtp-mtp-k3-128": {
+          "run_id": "20260919T094532.821635Z-mlx-mtp-mtp-k3-128",
+          "sources": [
+            {
+              "project_relative_path": "artifacts/runs/20260919T094532.821635Z-mlx-mtp-mtp-k3-128/summary.json",
+              "original_sha256": "4989af4b6141f492c37e8547efc2aee5d44872de647774137466db47ab94781c"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T094532.821635Z-mlx-mtp-mtp-k3-128/prompts.json",
+              "original_sha256": "0f0efb23910855d40a0d9cb3d60470f6efe9e349b51d1e96e804ee794814cc1e"
+            },
+            {
+              "project_relative_path": "artifacts/runs/20260919T094532.821635Z-mlx-mtp-mtp-k3-128/samples.jsonl",
+              "original_sha256": "a0619240b549a8fdebc1a9da68d376e25b154d0f846ed8365345a6c3161cf4d0"
+            }
+          ],
+          "started_at": "20260919T094532.821635Z",
+          "config": {
+            "backend": "mlx-mtp",
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "dataset_path": "data/raw/deepscaler-100.jsonl",
+            "count": 5,
+            "max_new_tokens": 128,
+            "max_prompt_tokens": 2048,
+            "prefill_step_size": 512,
+            "warmup": 1,
+            "prompt_mode": "problem",
+            "chain_prefix_tokens": 512,
+            "kv_bits": null,
+            "label": "mtp-k3-128",
+            "user_initiated": false,
+            "wired_memory": true,
+            "draft_path": "models/qwen3.5-9b-mtp-4bit",
+            "block_size": 3
+          },
+          "model_manifest_sha256": "e12769294a538b8154ec1fc87522240d8dfbfb58e18ea756c750ff6602ea9519",
+          "model": {
+            "repo_id": "mlx-community/Qwen3.5-9B-4bit",
+            "requested_revision": "main",
+            "resolved_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+            "format": "MLX 4-bit safetensors; not a PyTorch 4-bit checkpoint",
+            "scope": "complete_snapshot",
+            "files": [
+              {
+                "path": ".gitattributes",
+                "bytes": 1570,
+                "sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930"
+              },
+              {
+                "path": "README.md",
+                "bytes": 666,
+                "sha256": "1407e3e3337063c280b2fe1a63724908a5051cfbf26cd8b98f247432b0382537"
+              },
+              {
+                "path": "chat_template.jinja",
+                "bytes": 7756,
+                "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+              },
+              {
+                "path": "config.json",
+                "bytes": 3331,
+                "sha256": "a96942cb6a8a1d3f1d17514d81a1925d04362a6a3233b389d13012211baaa9f8"
+              },
+              {
+                "path": "model-00001-of-00002.safetensors",
+                "bytes": 5349771222,
+                "sha256": "a68b87558c6ef43f74c2bd63ce7e9092ceddc3101f3def0030774bae5f42aadd"
+              },
+              {
+                "path": "model-00002-of-00002.safetensors",
+                "bytes": 600449850,
+                "sha256": "b0a770bf8469c7f3f18756a0e0283f1c1174344a83e059a4e483f6af4907352d"
+              },
+              {
+                "path": "model.safetensors.index.json",
+                "bytes": 123592,
+                "sha256": "dd023913fb87cfdae27fb11dcf695117c925833796ccac3c64117d6652d8ff1e"
+              },
+              {
+                "path": "preprocessor_config.json",
+                "bytes": 390,
+                "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+              },
+              {
+                "path": "processor_config.json",
+                "bytes": 1300,
+                "sha256": "14932921ca485d458a04dafd8069fbb0a4505622a48208d19ed247115801385b"
+              },
+              {
+                "path": "tokenizer.json",
+                "bytes": 19989343,
+                "sha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4"
+              },
+              {
+                "path": "tokenizer_config.json",
+                "bytes": 1139,
+                "sha256": "e98f1901ac6f0adff67b1d540bfa0c36ac1a0cf59eb72ed78146ef89aafa1182"
+              },
+              {
+                "path": "video_preprocessor_config.json",
+                "bytes": 385,
+                "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+              },
+              {
+                "path": "vocab.json",
+                "bytes": 6722759,
+                "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+              }
+            ]
+          },
+          "dataset_sha256": "359f60d6d3c6a2a93d5f4a1cc2e7f1ec13ac3e10a1f83b6ad5c21bab4e8a5f54",
+          "prompt_tokens_sha256": "738fc83fec5457a3f4a5a094a5421ff2c82bb549241fdff0ae5970d265bb0eef",
+          "hardware": {
+            "os": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+            "machine": "arm64",
+            "processor": "Apple M2 Pro",
+            "memory_bytes": "17179869184"
+          },
+          "runtime": {
+            "python": "3.13.5",
+            "packages": {
+              "numpy": "2.5.3",
+              "mlx-vlm": "0.7.1",
+              "mlx": "0.32.2",
+              "mlx-lm": "0.31.3",
+              "kernels": "0.17.1",
+              "huggingface_hub": "1.32.0",
+              "torch": "2.14.0",
+              "transformers": "5.17.0",
+              "safetensors": "0.8.0",
+              "mlx-metal": "0.32.2"
+            }
+          },
+          "backend_metadata": {
+            "framework": "mlx-vlm-mtp",
+            "versions": {
+              "mlx": "0.32.2",
+              "mlx-vlm": "0.7.1",
+              "transformers": "5.17.0"
+            },
+            "device": "metal",
+            "device_info": {
+              "device_name": "Apple M2 Pro",
+              "max_recommended_working_set_size": 11453251584,
+              "memory_size": 17179869184,
+              "architecture": "applegpu_g14s",
+              "max_buffer_length": 8589934592,
+              "resource_limit": 499000
+            },
+            "model_path": "models/qwen3.5-9b-mlx-4bit",
+            "model_type": "qwen3_5",
+            "weight_bits": 4,
+            "weight_group_size": 64,
+            "prefill_step_size": 512,
+            "wired_memory": true,
+            "wired_memory_policy": "recommended working-set size per request; previous MLX limit restored in finally",
+            "kv_bits": null,
+            "kv_group_size": null,
+            "kv_quantization_scope": "attention caches only; recurrent state unchanged",
+            "sampling": "greedy",
+            "ignore_eos": true,
+            "batch_size": 1,
+            "fresh_cache_per_request": true,
+            "first_generated_token_phase": "prefill",
+            "text_only": true,
+            "peak_memory_unit": "decimal GB, MLX allocator peak per request",
+            "compute_runtime": "mlx / Metal (shared with mlx-lm)",
+            "model_implementation": "mlx_vlm.models.qwen3_5.language.LanguageModel",
+            "model_loader": "mlx_vlm.utils.load_model",
+            "vision_tower_retained": false,
+            "measurement_harness": "phase-separated native MTP with full prompt hidden capture",
+            "target_framework": "mlx-vlm",
+            "algorithm": "native Qwen3.5 multi-token prediction with stock MLX-VLM target verification",
+            "upstream_repository": "https://github.com/Blaizzy/mlx-vlm",
+            "upstream_runtime_sources": {
+              "mlx_vlm.speculative.cache_state": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/speculative/cache_state.py",
+                "sha256": "39d35ef0aae0c9298f2fcd3ff6b91b106c6b6c1c3ab6becae216a8fafb2c5300"
+              },
+              "mlx_vlm.speculative.common": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/speculative/common.py",
+                "sha256": "e3d3c0294a6d6fc915a32e96460370bfe57baef19539c5a290d4254525717cf1"
+              },
+              "mlx_vlm.speculative.mtp": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/speculative/mtp.py",
+                "sha256": "4ed467918bd24e26c60730d6d3529c6a9e633448b2fc6028829965bb1f4daad1"
+              },
+              "mlx_vlm.speculative.utils": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/speculative/utils.py",
+                "sha256": "93d2ed29ac7b7c378536bf09d22eb570d5abb1f2d338dc550e59a84468b6a9ff"
+              },
+              "mlx_vlm.speculative.drafters.qwen3_5_mtp.qwen3_5_mtp": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/speculative/drafters/qwen3_5_mtp/qwen3_5_mtp.py",
+                "sha256": "3b2cf5cf0e83393a331fdd95394b812cda749d207a96b9bd4905bc025df85876"
+              },
+              "mlx_vlm.models.qwen3_5.speculative_verifier": {
+                "path": ".venv/lib/python3.13/site-packages/mlx_vlm/models/qwen3_5/speculative_verifier.py",
+                "sha256": "e0b869d60a347b5bc4bc00ce24018831fcbeac177f33fd3bc0dc1c20fec81d63"
+              }
+            },
+            "draft_model_path": "models/qwen3.5-9b-mtp-4bit",
+            "draft_repo_id": "mlx-community/Qwen3.5-9B-MTP-4bit",
+            "draft_revision": "222dfd2c23fc9518d7b817e4f8e0cb0571787489",
+            "draft_manifest_sha256": "6f04b006806f9e1a36528cbd5298ef4b7609ec15965f692ed57144b9cdda55ef",
+            "draft_weight_bits": 4,
+            "draft_weight_group_size": 64,
+            "draft_quantization_strategy": "checkpoint-provided quantization loaded unchanged by mlx_vlm.speculative.drafters.load_drafter",
+            "block_size": 3,
+            "max_draft_tokens_per_round": 2,
+            "prefill_hidden_capture": "normalized target hidden states retained for every prompt token across chunks; original full prompt passed to stock run_speculative_rounds",
+            "draft_prefill_phase": "decode, after the first target token is available",
+            "acceptance_accounting": "stock accept_lens/draft_lens; all verified matching drafts including capped final proposals, bonus excluded",
+            "timed_text_detokenization": false,
+            "greedy_parity": "must be validated against same-environment MLXVLMBackend"
+          },
+          "conditions": {
+            "caffeinate_assertions": "di",
+            "power_start": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t81%; discharging; 14:08 remaining present: true"
+            },
+            "power_end": {
+              "status": "available",
+              "source": "pmset -g batt",
+              "raw": "Now drawing from 'Battery Power'\n -InternalBattery-0 (id=redacted)\t81%; discharging; 14:08 remaining present: true"
+            },
+            "thermal_start": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            },
+            "thermal_end": {
+              "status": "available",
+              "value": 0,
+              "name": "nominal",
+              "source": "NSProcessInfo.thermalState",
+              "limitation": "System thermal category, not a GPU temperature or measured GPU frequency."
+            }
+          },
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 164.84062180705115,
+              "median_tokens_per_second": 154.1864454162093,
+              "aggregate_tokens_per_second": 166.19448427031045,
+              "total_tokens": 441,
+              "total_seconds": 2.6535176659817807,
+              "sample_variance_tokens_per_second": 1078.6166736334853,
+              "sample_stddev_tokens_per_second": 32.84230006612639,
+              "min_tokens_per_second": 123.89337712789496,
+              "max_tokens_per_second": 198.9063869769273,
+              "coefficient_of_variation_percent": 19.92366912117626
+            },
+            "decode": {
+              "mean_tokens_per_second": 38.15155083497768,
+              "median_tokens_per_second": 39.12224167944623,
+              "aggregate_tokens_per_second": 37.97973612323986,
+              "total_tokens": 635,
+              "total_seconds": 16.719442124071065,
+              "sample_variance_tokens_per_second": 7.548842401891737,
+              "sample_stddev_tokens_per_second": 2.7475156781885226,
+              "min_tokens_per_second": 33.44899905023875,
+              "max_tokens_per_second": 40.40382724309921,
+              "coefficient_of_variation_percent": 7.201583207122411
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 5.6217937
+          },
+          "samples": [
+            {
+              "index": 0,
+              "prompt_token_sha256": "2a9090aa3313132e0d313e90cfa3e93834e03b5267639a537447ce3a2766d4d1",
+              "prompt_tokens": 133,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.8925505419611,
+              "decode_seconds": 3.796825124998577,
+              "peak_memory_gb": 5.595037798,
+              "timing_method": "perf_counter + MLX phase synchronization; full prompt hidden-state capture and first target token in prefill; MTP head prefill, stock round loop and final cache materialization in decode",
+              "drafted_tokens": 91,
+              "accepted_draft_tokens": 82,
+              "speculative_rounds": 46,
+              "emitted_draft_tokens": 82,
+              "emitted_target_tokens": 46,
+              "prefill_tokens_per_second": 149.01116939302307,
+              "decode_tokens_per_second": 33.44899905023875,
+              "generated_token_ids_sha256": "bfdb283389957e42f0cd7b05a44a463629f945440b7bad54510843a8a864a052"
+            },
+            {
+              "index": 1,
+              "prompt_token_sha256": "c018f989a9e6abba20d378b2ff142935d1387d870c2139d972e2875bbcda5603",
+              "prompt_tokens": 45,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.3632155410014093,
+              "decode_seconds": 3.1432665830361657,
+              "peak_memory_gb": 5.455355122,
+              "timing_method": "perf_counter + MLX phase synchronization; full prompt hidden-state capture and first target token in prefill; MTP head prefill, stock round loop and final cache materialization in decode",
+              "drafted_tokens": 92,
+              "accepted_draft_tokens": 81,
+              "speculative_rounds": 46,
+              "emitted_draft_tokens": 81,
+              "emitted_target_tokens": 47,
+              "prefill_tokens_per_second": 123.89337712789496,
+              "decode_tokens_per_second": 40.40382724309921,
+              "generated_token_ids_sha256": "b4785f9a2157b703a8213fd499014ba3c7dd243fc3b23287d6840e844be3b3af"
+            },
+            {
+              "index": 2,
+              "prompt_token_sha256": "c8a1f3befa288d71e0751c0b21c6e6881ba91200cff2804030df583e8f33278d",
+              "prompt_tokens": 51,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.33076837501721457,
+              "decode_seconds": 3.246235250029713,
+              "peak_memory_gb": 5.455568358,
+              "timing_method": "perf_counter + MLX phase synchronization; full prompt hidden-state capture and first target token in prefill; MTP head prefill, stock round loop and final cache materialization in decode",
+              "drafted_tokens": 94,
+              "accepted_draft_tokens": 81,
+              "speculative_rounds": 47,
+              "emitted_draft_tokens": 81,
+              "emitted_target_tokens": 47,
+              "prefill_tokens_per_second": 154.1864454162093,
+              "decode_tokens_per_second": 39.12224167944623,
+              "generated_token_ids_sha256": "fdf7ea12f4f451dffe702864c210471f18611da3d05359e4fc819bd1fb621239"
+            },
+            {
+              "index": 3,
+              "prompt_token_sha256": "ba802358a96b0d6ab565bd73d190d119c68dddbfb1b09cd5ff76aefb350abf7b",
+              "prompt_tokens": 147,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.7390411249944009,
+              "decode_seconds": 3.32510545803234,
+              "peak_memory_gb": 5.6217937,
+              "timing_method": "perf_counter + MLX phase synchronization; full prompt hidden-state capture and first target token in prefill; MTP head prefill, stock round loop and final cache materialization in decode",
+              "drafted_tokens": 95,
+              "accepted_draft_tokens": 80,
+              "speculative_rounds": 48,
+              "emitted_draft_tokens": 80,
+              "emitted_target_tokens": 48,
+              "prefill_tokens_per_second": 198.9063869769273,
+              "decode_tokens_per_second": 38.19427732531327,
+              "generated_token_ids_sha256": "3fd825a6cd2a47f1f7db5e205ffd19d34bb7a3442dd44c6fa476be52d57cca18"
+            },
+            {
+              "index": 4,
+              "prompt_token_sha256": "1f2c089cfb61a885a17f6ed588b2e2940923dfb7b0f298708041492c6866669b",
+              "prompt_tokens": 65,
+              "generated_tokens": 128,
+              "decode_tokens": 127,
+              "prefill_seconds": 0.32794208300765604,
+              "decode_seconds": 3.20800970797427,
+              "peak_memory_gb": 5.477135488,
+              "timing_method": "perf_counter + MLX phase synchronization; full prompt hidden-state capture and first target token in prefill; MTP head prefill, stock round loop and final cache materialization in decode",
+              "drafted_tokens": 91,
+              "accepted_draft_tokens": 82,
+              "speculative_rounds": 46,
+              "emitted_draft_tokens": 82,
+              "emitted_target_tokens": 46,
+              "prefill_tokens_per_second": 198.2057301212011,
+              "decode_tokens_per_second": 39.58840887679091,
+              "generated_token_ids_sha256": "353219271533b1ab03364f481aef12440d5167594d0aa2e489cc2ca6c72f0e4e"
+            }
+          ]
+        }
+      },
+      "baseline": {
+        "directory": "artifacts/runs/20260919T094418.953073Z-mlx-vlm-mtp-baseline-128",
+        "statistics": {
+          "samples": 5,
+          "prefill": {
+            "mean_tokens_per_second": 160.20604848381987,
+            "median_tokens_per_second": 166.91522664870305,
+            "aggregate_tokens_per_second": 166.59581420401233,
+            "total_tokens": 441,
+            "total_seconds": 2.6471253320924006,
+            "sample_variance_tokens_per_second": 1121.5413431674149,
+            "sample_stddev_tokens_per_second": 33.489421362087086,
+            "min_tokens_per_second": 113.86152307615023,
+            "max_tokens_per_second": 202.16837047196896,
+            "coefficient_of_variation_percent": 20.903968157899715
+          },
+          "decode": {
+            "mean_tokens_per_second": 29.127467354687994,
+            "median_tokens_per_second": 28.614498115991672,
+            "aggregate_tokens_per_second": 29.029788082520632,
+            "total_tokens": 635,
+            "total_seconds": 21.87408320704708,
+            "sample_variance_tokens_per_second": 3.7963985076860496,
+            "sample_stddev_tokens_per_second": 1.9484348866939458,
+            "min_tokens_per_second": 27.318570209569646,
+            "max_tokens_per_second": 32.462913647843436,
+            "coefficient_of_variation_percent": 6.6893384960925895
+          },
+          "generated_tokens": 640,
+          "peak_memory_gb": 5.482619682
+        }
+      },
+      "comparisons": [
+        {
+          "directory": "artifacts/runs/20260919T094456.562787Z-mlx-mtp-mtp-k2-128",
+          "label": "mtp-k2-128",
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 148.37913170176364,
+              "median_tokens_per_second": 153.17825448506264,
+              "aggregate_tokens_per_second": 154.04575097456424,
+              "total_tokens": 441,
+              "total_seconds": 2.862785875040572,
+              "sample_variance_tokens_per_second": 681.2247519500897,
+              "sample_stddev_tokens_per_second": 26.10028260287788,
+              "min_tokens_per_second": 119.92264988819524,
+              "max_tokens_per_second": 181.39491758780994,
+              "coefficient_of_variation_percent": 17.590265088852554
+            },
+            "decode": {
+              "mean_tokens_per_second": 31.287870083260316,
+              "median_tokens_per_second": 31.7331093942577,
+              "aggregate_tokens_per_second": 31.245617937546857,
+              "total_tokens": 635,
+              "total_seconds": 20.322849791904446,
+              "sample_variance_tokens_per_second": 1.6196616376708644,
+              "sample_stddev_tokens_per_second": 1.272659277918039,
+              "min_tokens_per_second": 29.449672859561044,
+              "max_tokens_per_second": 32.53347035817794,
+              "coefficient_of_variation_percent": 4.067580421841943
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 5.621793704
+          },
+          "parity": {
+            "status": "passed",
+            "matched_prompts": 5,
+            "total_prompts": 5,
+            "token_position_convention": "zero-based",
+            "per_prompt": [
+              {
+                "index": 0,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 1,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 2,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 3,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 4,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              }
+            ]
+          },
+          "speedup": {
+            "prefill": {
+              "ratio_of_mean_rates": 0.9261768398010847,
+              "ratio_of_aggregate_rates": 0.9246675957051397
+            },
+            "decode": {
+              "ratio_of_mean_rates": 1.0741706342767425,
+              "ratio_of_aggregate_rates": 1.076329522238587
+            }
+          },
+          "speculation": {
+            "drafted_tokens": 332,
+            "accepted_draft_tokens": 305,
+            "weighted_draft_acceptance_rate": 0.9186746987951807,
+            "speculative_rounds": 332,
+            "committed_decode_tokens": 635,
+            "mean_committed_tokens_per_round": 1.9126506024096386,
+            "mean_accepted_draft_tokens_per_round": 0.9186746987951807,
+            "accepted_tokens_scope": "all verified matching draft tokens; final length cap may omit accepted tokens from output",
+            "committed_tokens_scope": "decode only; first prefill token excluded"
+          }
+        },
+        {
+          "directory": "artifacts/runs/20260919T094532.821635Z-mlx-mtp-mtp-k3-128",
+          "label": "mtp-k3-128",
+          "statistics": {
+            "samples": 5,
+            "prefill": {
+              "mean_tokens_per_second": 164.84062180705115,
+              "median_tokens_per_second": 154.1864454162093,
+              "aggregate_tokens_per_second": 166.19448427031045,
+              "total_tokens": 441,
+              "total_seconds": 2.6535176659817807,
+              "sample_variance_tokens_per_second": 1078.6166736334853,
+              "sample_stddev_tokens_per_second": 32.84230006612639,
+              "min_tokens_per_second": 123.89337712789496,
+              "max_tokens_per_second": 198.9063869769273,
+              "coefficient_of_variation_percent": 19.92366912117626
+            },
+            "decode": {
+              "mean_tokens_per_second": 38.15155083497768,
+              "median_tokens_per_second": 39.12224167944623,
+              "aggregate_tokens_per_second": 37.97973612323986,
+              "total_tokens": 635,
+              "total_seconds": 16.719442124071065,
+              "sample_variance_tokens_per_second": 7.548842401891737,
+              "sample_stddev_tokens_per_second": 2.7475156781885226,
+              "min_tokens_per_second": 33.44899905023875,
+              "max_tokens_per_second": 40.40382724309921,
+              "coefficient_of_variation_percent": 7.201583207122411
+            },
+            "generated_tokens": 640,
+            "peak_memory_gb": 5.6217937
+          },
+          "parity": {
+            "status": "passed",
+            "matched_prompts": 5,
+            "total_prompts": 5,
+            "token_position_convention": "zero-based",
+            "per_prompt": [
+              {
+                "index": 0,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 1,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 2,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 3,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              },
+              {
+                "index": 4,
+                "matched": true,
+                "matching_prefix_tokens": 128,
+                "first_mismatch_token_position": null,
+                "baseline_token_id": null,
+                "speculative_token_id": null
+              }
+            ]
+          },
+          "speedup": {
+            "prefill": {
+              "ratio_of_mean_rates": 1.0289288286371994,
+              "ratio_of_aggregate_rates": 0.9975909962947184
+            },
+            "decode": {
+              "ratio_of_mean_rates": 1.3098135299716431,
+              "ratio_of_aggregate_rates": 1.3083022175455754
+            }
+          },
+          "speculation": {
+            "drafted_tokens": 463,
+            "accepted_draft_tokens": 406,
+            "weighted_draft_acceptance_rate": 0.8768898488120951,
+            "speculative_rounds": 233,
+            "committed_decode_tokens": 635,
+            "mean_committed_tokens_per_round": 2.725321888412017,
+            "mean_accepted_draft_tokens_per_round": 1.742489270386266,
+            "accepted_tokens_scope": "all verified matching draft tokens; final length cap may omit accepted tokens from output",
+            "committed_tokens_scope": "decode only; first prefill token excluded"
+          }
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Mean and sample SD (ddof=1) describe variation across different prompts, not a confidence interval or repeated-run variance for one prompt.",
+    "Prefill includes the first output token; decode counts N-1 committed tokens, excluding rejected proposals. Loading and warmup are excluded.",
+    "Runs are sequential on one shared-memory Mac; power, frequencies and temperature are not controlled.",
+    "Original raw artifacts remain local. Original SHA-256 values identify source evidence, not hashes of sanitized derivatives.",
+    "Published sample counts and durations permit recomputation of rates and dispersion. Prompt text and full output IDs are omitted from results bundles; parity was checked directly on original integer-ID arrays.",
+    "Implementation confound: stock MLX-VLM MTP can use fused quantized projection/argmax, whereas the recorded baseline materializes full logits then takes argmax. This compares implementations and does not isolate the MTP algorithm alone.",
+    "Exact token parity is established only for measured prompts, not for arbitrary inputs or floating-point execution paths."
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "count": 100,
+  "max_new_tokens": 128,
+  "max_prompt_tokens": 2048,
+  "prefill_step_size": 512,
+  "warmup": 1,
+  "prompt_mode": "problem",
+  "chain_prefix_tokens": 512,
+  "batch_size": 1,
+  "sampling": "greedy",
+  "ignore_eos": true,
+  "prefix_cache": false
+}

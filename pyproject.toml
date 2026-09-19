@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mac-inference-lab"
+version = "0.1.0"
+description = "Reproducible prefill/decode benchmarks on Apple Silicon"
+requires-python = ">=3.12,<3.14"
+dependencies = ["huggingface-hub", "requests", "mlx-lm"]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

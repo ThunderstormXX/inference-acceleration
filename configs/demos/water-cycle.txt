@@ -1,0 +1,1 @@
+Explain how the water cycle works to a curious twelve-year-old. Write one clear paragraph of about 100 words. Follow a drop of water from the ocean into a cloud, down as rain, and through a river back to the sea. Include evaporation, condensation, precipitation, and collection. Use simple, natural English. Output only the explanation, without a title.

@@ -1,0 +1,1 @@
+Write a vivid, gentle story of about 100 words in one paragraph. At dawn, a lighthouse keeper discovers a small paper boat carrying a handwritten message from his daughter. Include the quiet sea, warm sunlight, and a hopeful ending. Use clear, graceful sentences. Output only the story, without a title or any explanation.
