@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "full_pairs": 7621,
+  "rejected_pairs": 1685,
+  "strict_single_token_mismatches": 0,
+  "word_digit_surface_mismatches": 0,
+  "fraction_of_rejected_pairs": 0.0,
+  "counts": {},
+  "examples": [],
+  "scope": "Calibration only; first mismatch of each verified full pair. Compare numeral prefixes of remaining proposals (up to2tokens) with actual committed continuation (up to12tokens), allowing leading whitespace. Strict one-token count is also reported.",
+  "limits": "Surface heuristic, not semantic equivalence or complete error taxonomy. English number-word prefix or digit prefix only; compound numerals, punctuation and other languages may be missed or only partially read. Equal prefix values do not prove equal complete numbers; actual continuation is shown. Counts do not predict counterfactual speedup.",
+  "provenance": {
+    "policy_sha256": "fd29186026d2fc62cf3f810675984aa27ef9db76535fbf914363060dc98eeb54",
+    "rounds_sha256": "2531a8b9d165ed520a0048058e050f50cda0d717ca272cb27709085293aac9db",
+    "samples_sha256": "87b80d77570e82db2406500997a3d3813feeec94d1e10be5fef577229a235f21",
+    "model_manifest_sha256": "e12769294a538b8154ec1fc87522240d8dfbfb58e18ea756c750ff6602ea9519"
+  }
+}

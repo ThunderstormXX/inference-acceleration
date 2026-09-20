@@ -48,6 +48,26 @@ The [100-prompt framework comparison and five-prompt recheck](docs/results/frame
 
 The **100-prompt × 2048-token comparison is not complete**. Its first attempt was interrupted after confirmed Mac lid sleep and a power-source change; none of those partial results is used for the acceleration claim above. A guarded repeat is prepared and currently deferred. Per-request token/event logging and offline replay are implemented; see the [long-run protocol and interruption record](docs/benchmark-methodology.md#полная-парная-серия-100--2048).
 
+## Long trajectories and confidence gating
+
+The [2026 research survey](docs/inference-acceleration-survey-2026.md) compares 18 directions, including DFlash, diffusion drafting, adaptive speculation, kernels and KV-cache methods, with primary sources and explicit Apple Silicon constraints.
+
+A separate [10-chain calibration + 1 held-out experiment](docs/mtp-confidence-experiment.md) tests a threshold on the product of two native-MTP token probabilities. It records every proposal, acceptance decision and commit timestamp, then plots signed token lead over ordinary decode. Threshold selection, confidence-readout overhead and the final held-out timing are evaluated separately.
+
+On the held-out **2048-token** chain, all five outputs matched exactly:
+
+| Runtime | Decode, tok/s | Total generation, s |
+|---|---:|---:|
+| AR before | 29.83 | 69.264 |
+| **Stock MTP** | **32.44** | **63.769** |
+| MTP + probability collection | 30.11 | 68.662 |
+| MTP + confidence gate, threshold 0.65 | 24.83 | 83.130 |
+| AR after | 29.29 | 70.537 |
+
+Stock MTP improved decode by **8.75%** against the first baseline. The gate **slowed it by 16.77%**, despite increasing acceptance among verified draft tokens to 97.40%: it pays draft/confidence costs before deciding to skip verification. This is one held-out trajectory, not a dataset-wide speed estimate. [Full protocol, threshold validation and rejection examples](docs/mtp-confidence-experiment.md).
+
+![Recorded 2048-token trajectories, signed token lead and same-token latency](docs/assets/mtp-confidence-trajectory.png)
+
 ## How MTP works here
 
 The draft is a separate, pretrained [Qwen3.5 MTP head](https://huggingface.co/mlx-community/Qwen3.5-9B-MTP-4bit), approximately **137 MB** in 4-bit form. It reuses the target model's embedding and output head. This project does not train new weights.

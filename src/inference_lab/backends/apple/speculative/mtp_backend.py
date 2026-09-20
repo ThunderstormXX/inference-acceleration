@@ -228,7 +228,7 @@ round-loop API. Its verification, cache rollback and proposal math are unchanged
                 finally:
                     mx.synchronize()
         decode_seconds = perf_counter() - decode_started if max_new_tokens > 1 else 0.0
-        counters = _acceptance_metrics(self._draft.accept_lens, self._draft.draft_lens, len(generated))
+        counters = self._measurement_counters(len(generated))
         result = {
             "prompt_tokens": len(prompt_tokens), "generated_tokens": len(generated),
             "decode_tokens": len(generated) - 1,
@@ -242,6 +242,9 @@ round-loop API. Its verification, cache rollback and proposal math are unchanged
         if recorder is not None:
             result["generation_trace"] = recorder.finish_measurement(result)
         return result
+
+    def _measurement_counters(self, output_tokens: int) -> dict[str, Any]:
+        return _acceptance_metrics(self._draft.accept_lens, self._draft.draft_lens, output_tokens)
 
     def metadata(self) -> dict[str, Any]:
         metadata = super().metadata()

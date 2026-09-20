@@ -1,0 +1,109 @@
+[
+  {
+    "lane": "mtp",
+    "round": 56,
+    "time_seconds": 5.462654875009321,
+    "context": "4 miles per hour.\n    *   LeRoy's",
+    "context_selection": "last_12_generated_token_pieces",
+    "context_token_count": 12,
+    "context_token_ids": [
+      19,
+      8491,
+      791,
+      6258,
+      13,
+      198,
+      262,
+      348,
+      256,
+      1900,
+      76447,
+      579
+    ],
+    "proposal_token_ids": [
+      1852,
+      25
+    ],
+    "proposal_texts": [
+      " action",
+      ":"
+    ],
+    "confidence": {
+      "p1": 0.7538856561492725,
+      "p2": 0.9160427356631683,
+      "confidence_product": 0.6905914788362021,
+      "decision": "verify"
+    },
+    "proposal_statuses": [
+      "rejected",
+      "discarded_suffix"
+    ],
+    "accepted_count": 0,
+    "committed_token_ids": [
+      292
+    ],
+    "committed_texts": [
+      " b"
+    ],
+    "output_count_before": 156,
+    "committed_origins": [
+      "target_token"
+    ],
+    "note": "First mismatching proposal is rejected; suffix after it is discarded, not independently accepted/rejected on the true continuation."
+  },
+  {
+    "lane": "mtp",
+    "round": 9,
+    "time_seconds": 1.4472500840201974,
+    "context": "  **Understand the Goal:** The objective is to find",
+    "context_selection": "last_12_generated_token_pieces",
+    "context_token_count": 12,
+    "context_token_ids": [
+      220,
+      2972,
+      15771,
+      2598,
+      279,
+      38622,
+      64700,
+      561,
+      16050,
+      369,
+      310,
+      1423
+    ],
+    "proposal_token_ids": [
+      279,
+      7776
+    ],
+    "proposal_texts": [
+      " the",
+      " minimum"
+    ],
+    "confidence": {
+      "p1": 0.9954897854440437,
+      "p2": 0.48632663790708597,
+      "confidence_product": 0.4841332004258481,
+      "decision": "verify"
+    },
+    "proposal_statuses": [
+      "accepted",
+      "rejected"
+    ],
+    "accepted_count": 1,
+    "committed_token_ids": [
+      279,
+      348
+    ],
+    "committed_texts": [
+      " the",
+      " *"
+    ],
+    "output_count_before": 25,
+    "committed_origins": [
+      "accepted_draft",
+      "target_token"
+    ],
+    "note": "First mismatching proposal is rejected; suffix after it is discarded, not independently accepted/rejected on the true continuation."
+  }
+]
