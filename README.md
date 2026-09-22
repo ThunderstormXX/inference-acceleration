@@ -48,6 +48,24 @@ The [100-prompt framework comparison and five-prompt recheck](docs/results/frame
 
 The **100-prompt × 2048-token comparison is not complete**. Its first attempt was interrupted after confirmed Mac lid sleep and a power-source change; none of those partial results is used for the acceleration claim above. A guarded repeat is prepared and currently deferred. Per-request token/event logging and offline replay are implemented; see the [long-run protocol and interruption record](docs/benchmark-methodology.md#полная-парная-серия-100--2048).
 
+## Where DFlash spends its time
+
+A [detailed local profile](docs/dflash-profile-2026-09-22.md) compares three prompts × 128 tokens, two paired repeats, plus a final control pair. Arithmetic mean decode throughput across the six balanced runs is **35.43 tok/s** for ordinary decode, **34.47 tok/s** for DFlash block 3, and **31.93 tok/s** for block 5. Every recorded output matches the baseline token IDs.
+
+For block 3, synchronized phase diagnostics measure **17.6 ms draft + 66.1 ms verification + 1.8 ms acceptance/rollback** per steady-state round. Without profiling, block 3 takes **79.6 ms per round** and emits **2.74 useful tokens** on average; ordinary decode needs **77.4 ms** for the same token count. Block verification saves work, but the saving must also pay for drafting and rejected proposals.
+
+The report includes first-round context setup, all 32 target layers and 6 draft layers, projection/attention/recurrent-update tensor shapes, and a fixed-prefix block-versus-sequential probe. Fine-grained barriers change performance: those diagnostic timings are disclosed separately from normal runtime measurements. This is a short battery-powered experiment, not the deferred 100-prompt long-run benchmark.
+
+```bash
+bash scripts/setup/speculative.sh
+bash scripts/download/draft.sh
+bash scripts/setup/analysis.sh
+bash scripts/benchmark/dflash_profile.sh --output artifacts/profiling/my-dflash-profile
+bash scripts/analysis/dflash_profile_report.sh \
+  --input artifacts/profiling/my-dflash-profile \
+  --output artifacts/reports/my-dflash-profile
+```
+
 ## Long trajectories and confidence gating
 
 The [2026 research survey](docs/inference-acceleration-survey-2026.md) compares 18 directions, including DFlash, diffusion drafting, adaptive speculation, kernels and KV-cache methods, with primary sources and explicit Apple Silicon constraints.
@@ -177,9 +195,10 @@ src/inference_lab/
     transformers/               MPS adapter and Metal kernels
     speculative/                DFlash and native MTP backends
   benchmarking/                 Runners, phase metrics, validation, reports
+  profiling/                    DFlash phase, layer and tensor-level diagnostics
   visualization/                Event recording and GIF rendering
 scripts/
-  setup/ download/ benchmark/ report/ demo/   Paired .sh + .py tasks
+  setup/ download/ benchmark/ report/ analysis/ demo/   Paired .sh + .py tasks
 configs/                        Protocol defaults and demo prompt
 tests/                          Protocol, backend and renderer tests
 docs/
