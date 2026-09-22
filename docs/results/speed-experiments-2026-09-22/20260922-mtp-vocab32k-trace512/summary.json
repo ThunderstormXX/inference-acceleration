@@ -1,0 +1,189 @@
+{
+  "status": "completed",
+  "completed_runs": 6,
+  "expected_runs": 6,
+  "all_token_ids_match": true,
+  "all_runs_awake": true,
+  "by_mode": {
+    "ar_k1": {
+      "tok_s": {
+        "n": 2,
+        "mean": 29.56036487878964,
+        "median": 29.56036487878964,
+        "stdev": 0.20837939966221705,
+        "min": 29.413018392228903,
+        "max": 29.707711365350374
+      },
+      "pooled_tok_s": 29.55963041603213,
+      "ms_per_token": {
+        "n": 2,
+        "mean": 33.82992229353565,
+        "median": 33.82992229353565,
+        "stdev": 0.2384767213480694,
+        "min": 33.6612937867153,
+        "max": 33.99855080035601
+      },
+      "prefill_ms": {
+        "n": 2,
+        "mean": 741.8875620060135,
+        "median": 741.8875620060135,
+        "stdev": 48.592348314122376,
+        "min": 707.5275829993188,
+        "max": 776.2475410127081
+      }
+    },
+    "mtp_k3": {
+      "tok_s": {
+        "n": 1,
+        "mean": 38.208561676886355,
+        "median": 38.208561676886355,
+        "stdev": null,
+        "min": 38.208561676886355,
+        "max": 38.208561676886355
+      },
+      "pooled_tok_s": 38.208561676886355,
+      "ms_per_token": {
+        "n": 1,
+        "mean": 26.172144569496673,
+        "median": 26.172144569496673,
+        "stdev": null,
+        "min": 26.172144569496673,
+        "max": 26.172144569496673
+      },
+      "prefill_ms": {
+        "n": 1,
+        "mean": 851.7150419647805,
+        "median": 851.7150419647805,
+        "stdev": null,
+        "min": 851.7150419647805,
+        "max": 851.7150419647805
+      },
+      "draft_acceptance": {
+        "n": 1,
+        "mean": 0.8590425531914894,
+        "median": 0.8590425531914894,
+        "stdev": null,
+        "min": 0.8590425531914894,
+        "max": 0.8590425531914894
+      },
+      "useful_tokens_per_round": {
+        "n": 1,
+        "mean": 2.7180851063829787,
+        "median": 2.7180851063829787,
+        "stdev": null,
+        "min": 2.7180851063829787,
+        "max": 2.7180851063829787
+      },
+      "paired_speed_ratio": {
+        "n": 1,
+        "mean": 1.2861496197735032,
+        "median": 1.2861496197735032,
+        "stdev": null,
+        "min": 1.2861496197735032,
+        "max": 1.2861496197735032
+      }
+    },
+    "mtp-stock_k3": {
+      "tok_s": {
+        "n": 1,
+        "mean": 34.08203965461495,
+        "median": 34.08203965461495,
+        "stdev": null,
+        "min": 34.08203965461495,
+        "max": 34.08203965461495
+      },
+      "pooled_tok_s": 34.08203965461495,
+      "ms_per_token": {
+        "n": 1,
+        "mean": 29.34096697656394,
+        "median": 29.34096697656394,
+        "stdev": null,
+        "min": 29.34096697656394,
+        "max": 29.34096697656394
+      },
+      "prefill_ms": {
+        "n": 1,
+        "mean": 835.649749962613,
+        "median": 835.649749962613,
+        "stdev": null,
+        "min": 835.649749962613,
+        "max": 835.649749962613
+      },
+      "draft_acceptance": {
+        "n": 1,
+        "mean": 0.8518518518518519,
+        "median": 0.8518518518518519,
+        "stdev": null,
+        "min": 0.8518518518518519,
+        "max": 0.8518518518518519
+      },
+      "useful_tokens_per_round": {
+        "n": 1,
+        "mean": 2.7037037037037037,
+        "median": 2.7037037037037037,
+        "stdev": null,
+        "min": 2.7037037037037037,
+        "max": 2.7037037037037037
+      },
+      "paired_speed_ratio": {
+        "n": 1,
+        "mean": 1.1587399565771743,
+        "median": 1.1587399565771743,
+        "stdev": null,
+        "min": 1.1587399565771743,
+        "max": 1.1587399565771743
+      }
+    }
+  },
+  "pairs": [
+    {
+      "pair_id": "r0-p0-k3-stock",
+      "method": "mtp-stock",
+      "block_size": 3,
+      "prompt_index": 0,
+      "repeat": 0,
+      "order": [
+        "ar",
+        "mtp-stock"
+      ],
+      "decode_speed_ratio": 1.1587399565771743,
+      "pair_token_ids_match": true
+    },
+    {
+      "pair_id": "r0-p0-k3",
+      "method": "mtp",
+      "block_size": 3,
+      "prompt_index": 0,
+      "repeat": 0,
+      "order": [
+        "ar",
+        "mtp"
+      ],
+      "decode_speed_ratio": 1.2861496197735032,
+      "pair_token_ids_match": true
+    }
+  ],
+  "drift_bracket": {
+    "prompt_index": 0,
+    "before_tok_s": 29.85609922466843,
+    "after_tok_s": 34.906768146503964,
+    "after_over_before": 1.1691670731607982
+  },
+  "draft_comparisons": [
+    {
+      "prompt_index": 0,
+      "repeat": 0,
+      "block_size": 3,
+      "shortlist_over_stock": 1.1210761463835293,
+      "token_ids_match": true
+    }
+  ],
+  "shortlist_over_stock": {
+    "n": 1,
+    "mean": 1.1210761463835293,
+    "median": 1.1210761463835293,
+    "stdev": null,
+    "min": 1.1210761463835293,
+    "max": 1.1210761463835293
+  }
+}

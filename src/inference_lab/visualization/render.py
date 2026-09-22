@@ -120,6 +120,23 @@ class Typography:
         return self.cache[key]
 
 
+def mtp_panel_labels(metadata):
+    """Show the recorded draft configuration, preserving legacy demo labels."""
+    block = metadata.get("block_size", 3)
+    if type(block) is not int or not 2 <= block <= 5:
+        raise ValueError("Recorded MTP block size must be in 2..5")
+    title = f"MTP · блок {block}"
+    subtitle = f"{block - 1} draft-токена → проверка target"
+    vocabulary = metadata.get("draft_vocabulary")
+    if vocabulary is not None:
+        size, total = vocabulary.get("shortlist_size"), vocabulary.get("target_vocab_size")
+        if type(size) is not int or type(total) is not int or not 0 < size <= total:
+            raise ValueError("Recorded draft vocabulary sizes are invalid")
+        title = f"MTP · K={block} · словарь {size:,}".replace(",", " ")
+        subtitle = f"До {block - 1} draft-токенов → полный словарь target"
+    return title, subtitle
+
+
 class GenerationReplay:
     BG = "#0b101b"
     PANEL = "#121b2a"
@@ -254,9 +271,10 @@ class GenerationReplay:
             prompt_lines[2] = prompt_lines[2][:110].rstrip() + "…"
         for i, line in enumerate(prompt_lines[:3]):
             self._text(draw, (158, 165 + 21 * i), line, 17, self.INK if i == 0 else self.MUTED)
+        mtp_title, mtp_subtitle = mtp_panel_labels(self.trace.get("metadata", {}))
         for x, title, sub, color in [
             (40, "Обычный decode", "1 токен за шаг большой модели", self.BLUE),
-            (654, "MTP · блок 3", "2 draft-токена → проверка target", self.TEAL),
+            (654, mtp_title, mtp_subtitle, self.TEAL),
         ]:
             draw.rounded_rectangle((x, 254, x + 586, 790), radius=20, fill=self.PANEL)
             draw.rounded_rectangle((x + 22, 278, x + 26, 330), radius=2, fill=color)

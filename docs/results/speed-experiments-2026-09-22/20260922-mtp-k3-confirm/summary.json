@@ -1,0 +1,167 @@
+{
+  "status": "completed",
+  "completed_runs": 14,
+  "expected_runs": 14,
+  "all_token_ids_match": true,
+  "all_runs_awake": true,
+  "by_mode": {
+    "ar_k1": {
+      "tok_s": {
+        "n": 6,
+        "mean": 31.209127076316424,
+        "median": 31.24452670553135,
+        "stdev": 0.13430316323400532,
+        "min": 30.942089710011462,
+        "max": 31.310675945930623
+      },
+      "pooled_tok_s": 31.208642439632552,
+      "ms_per_token": {
+        "n": 6,
+        "mean": 32.042406264044274,
+        "median": 32.00560637256679,
+        "stdev": 0.1387514752053291,
+        "min": 31.937988235286493,
+        "max": 32.31843774521943
+      },
+      "prefill_ms": {
+        "n": 6,
+        "mean": 483.18461782764643,
+        "median": 350.0122914847452,
+        "stdev": 208.5247499528034,
+        "min": 346.75391600467265,
+        "max": 754.1152079938911
+      }
+    },
+    "mtp_k3": {
+      "tok_s": {
+        "n": 6,
+        "mean": 38.37292928380269,
+        "median": 38.30134746857941,
+        "stdev": 0.5436036008910973,
+        "min": 37.74969084436238,
+        "max": 39.33238621757819
+      },
+      "pooled_tok_s": 38.3665778077599,
+      "ms_per_token": {
+        "n": 6,
+        "mean": 26.064352286268893,
+        "median": 26.10884199213401,
+        "stdev": 0.3654780214210929,
+        "min": 25.424341011710247,
+        "max": 26.490283168751894
+      },
+      "prefill_ms": {
+        "n": 6,
+        "mean": 497.27796516769257,
+        "median": 365.65395852085203,
+        "stdev": 213.08370734552383,
+        "min": 353.83283300325274,
+        "max": 779.9208749784157
+      },
+      "draft_acceptance": {
+        "n": 6,
+        "mean": 0.9047901599753787,
+        "median": 0.9065934065934066,
+        "stdev": 0.007039291397279564,
+        "min": 0.8961748633879781,
+        "max": 0.9116022099447514
+      },
+      "useful_tokens_per_round": {
+        "n": 6,
+        "mean": 2.792044911610129,
+        "median": 2.802197802197802,
+        "stdev": 0.015728790464769583,
+        "min": 2.7717391304347827,
+        "max": 2.802197802197802
+      },
+      "paired_speed_ratio": {
+        "n": 6,
+        "mean": 1.2296142932431688,
+        "median": 1.226259926656637,
+        "stdev": 0.02220284264536682,
+        "min": 1.208018376061497,
+        "max": 1.2711612753437274
+      }
+    }
+  },
+  "pairs": [
+    {
+      "pair_id": "r0-p0-k3",
+      "block_size": 3,
+      "prompt_index": 0,
+      "repeat": 0,
+      "order": [
+        "ar",
+        "mtp"
+      ],
+      "decode_speed_ratio": 1.2316080651783103,
+      "pair_token_ids_match": true
+    },
+    {
+      "pair_id": "r0-p1-k3",
+      "block_size": 3,
+      "prompt_index": 1,
+      "repeat": 0,
+      "order": [
+        "mtp",
+        "ar"
+      ],
+      "decode_speed_ratio": 1.2711612753437274,
+      "pair_token_ids_match": true
+    },
+    {
+      "pair_id": "r0-p2-k3",
+      "block_size": 3,
+      "prompt_index": 2,
+      "repeat": 0,
+      "order": [
+        "ar",
+        "mtp"
+      ],
+      "decode_speed_ratio": 1.208018376061497,
+      "pair_token_ids_match": true
+    },
+    {
+      "pair_id": "r1-p0-k3",
+      "block_size": 3,
+      "prompt_index": 0,
+      "repeat": 1,
+      "order": [
+        "mtp",
+        "ar"
+      ],
+      "decode_speed_ratio": 1.2288750953694256,
+      "pair_token_ids_match": true
+    },
+    {
+      "pair_id": "r1-p1-k3",
+      "block_size": 3,
+      "prompt_index": 1,
+      "repeat": 1,
+      "order": [
+        "ar",
+        "mtp"
+      ],
+      "decode_speed_ratio": 1.2236447579438485,
+      "pair_token_ids_match": true
+    },
+    {
+      "pair_id": "r1-p2-k3",
+      "block_size": 3,
+      "prompt_index": 2,
+      "repeat": 1,
+      "order": [
+        "mtp",
+        "ar"
+      ],
+      "decode_speed_ratio": 1.2143781895622041,
+      "pair_token_ids_match": true
+    }
+  ],
+  "drift_bracket": {
+    "prompt_index": 0,
+    "before_tok_s": 31.160464738945326,
+    "after_tok_s": 31.348712427750435,
+    "after_over_before": 1.0060412349553256
+  }
+}

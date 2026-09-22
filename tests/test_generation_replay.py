@@ -247,3 +247,13 @@ def test_sparse_changes_inside_large_rectangle_avoid_reencoding_background(tmp_p
     StreamingGifWriter(target, 20).write(frames)
     assert _decode_gif(target) == _decode_gif(opaque)
     assert target.stat().st_size < opaque.stat().st_size * 0.65
+
+
+def test_replay_labels_show_actual_draft_capacity_and_preserve_legacy():
+    from inference_lab.visualization.render import mtp_panel_labels
+    assert mtp_panel_labels({}) == ("MTP · блок 3", "2 draft-токена → проверка target")
+    title, subtitle = mtp_panel_labels({"block_size": 4, "draft_vocabulary": {"shortlist_size": 32988, "target_vocab_size": 248320}})
+    assert "K=4" in title and "32 988" in title
+    assert "3 draft" in subtitle and "полный словарь target" in subtitle
+    with pytest.raises(ValueError):
+        mtp_panel_labels({"block_size": True})

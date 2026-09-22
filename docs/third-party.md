@@ -7,6 +7,7 @@
 | [MLX](https://github.com/ml-explore/mlx) | GPU runtime; quantized shader headers берутся из установленного пакета | [MIT, Apple](https://github.com/ml-explore/mlx/blob/main/LICENSE) |
 | [MLX-LM](https://github.com/ml-explore/mlx-lm) | Target loading и decode | [MIT](https://github.com/ml-explore/mlx-lm/blob/main/LICENSE) |
 | [MLX-VLM](https://github.com/Blaizzy/mlx-vlm) | Qwen3.5 target и native MTP, измерена версия 0.7.1 | [MIT, Prince Canuma](https://github.com/Blaizzy/mlx-vlm/blob/main/LICENSE) |
+| [ZMLX](https://github.com/Hmbown/ZMLX/tree/d8cd0d88d4299ca6821d706f9d5b4a3520d688f5) | Experimental scoped DeltaNet/SwiGLU fusion; pinned source checkout, not vendored | [MIT, Hunter Bown](https://github.com/Hmbown/ZMLX/blob/d8cd0d88d4299ca6821d706f9d5b4a3520d688f5/LICENSE) |
 | [DFlash](https://github.com/z-lab/dflash/tree/07ebd93db9f472af339b644bb70221ad8428328a) | Официальный MLX runtime, закреплённый commit | [MIT, Z Lab](https://github.com/z-lab/dflash/blob/07ebd93db9f472af339b644bb70221ad8428328a/LICENSE) |
 | [Transformers](https://github.com/huggingface/transformers) | Target architecture и MetalLinear | [Apache-2.0](https://github.com/huggingface/transformers/blob/main/LICENSE) |
 | [PyTorch](https://github.com/pytorch/pytorch) | MPS tensors и runtime Metal compilation | [BSD-style и сопутствующие notices](https://github.com/pytorch/pytorch/blob/main/LICENSE) |

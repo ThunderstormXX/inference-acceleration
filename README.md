@@ -48,6 +48,29 @@ The [100-prompt framework comparison and five-prompt recheck](docs/results/frame
 
 The **100-prompt × 2048-token comparison is not complete**. Its first attempt was interrupted after confirmed Mac lid sleep and a power-source change; none of those partial results is used for the acceleration claim above. A guarded repeat is prepared and currently deferred. Per-request token/event logging and offline replay are implemented; see the [long-run protocol and interruption record](docs/benchmark-methodology.md#полная-парная-серия-100--2048).
 
+## Local tuning experiments · September 22
+
+We tried ZMLX DeltaNet/SwiGLU fusion, MTP depths 2–5, streamed/tiled affine kernels, n-gram drafts, full-vocabulary fused argmax, and smaller vocabularies **only for the MTP drafter**. [Research and local experiment log](docs/local-speed-experiments-2026-09-22.md) · [all results, including failed and drift-affected runs](docs/results/speed-experiments-2026-09-22.md).
+
+**DFlash now beats its matched AR control:** small-block affine projections plus fused argmax raised decode from **35.57 ± 1.44 to 40.16 ± 1.51 tok/s**, versus **36.40 ± 0.30** for AR. This is **+12.9% versus stock DFlash** by mean throughput, **+10.35% versus AR** by mean paired ratio; 3 prompts × 128 tokens × 2 repeats, exact output IDs throughout.
+
+**Stock MTP K=3 remains our working choice.** In a separate 3-prompt × 256-token × 2-repeat comparison, AR / stock MTP / MTP with a 32,988-token draft vocabulary measured **30.40 / 37.36 / 38.02 tok/s**. The shortlist's direct gain over stock MTP was only **1.78% ± 3.97 percentage points**, with a **0.62% median**, largely driven by one run. It remains an opt-in experiment. All outputs matched. SD describes repeated requests, not a confidence interval; absolute speeds across these sessions are not directly comparable.
+
+![Protocol-separated local speed experiments](docs/assets/speed-experiments-2026-09-22.png)
+
+```bash
+# Confirm stock MTP against adjacent AR controls:
+bash scripts/benchmark/mtp_sweep.sh \
+  --block-sizes 3 --prompt-count 3 --tokens 256 --repeats 2
+
+# Compare the optimized DFlash path on the same resident target:
+bash scripts/benchmark/kernel_sweep.sh \
+  --variants ar dflash dflash-all-argmax \
+  --block-size 3 --prompt-count 3 --tokens 128 --repeats 2
+```
+
+Every experiment has paired shell/Python entry points and retains token IDs, phase timings, source hashes and execution conditions. Add `--trace` to an MTP sweep to retain real proposal/commit events; [offline replay instructions](docs/local-speed-experiments-2026-09-22.md#события-и-offline-replay) use those timestamps without another inference run. The long 100 × 2048 benchmark is still deferred.
+
 ## Where DFlash spends its time
 
 A [detailed local profile](docs/dflash-profile-2026-09-22.md) compares three prompts × 128 tokens, two paired repeats, plus a final control pair. Arithmetic mean decode throughput across the six balanced runs is **35.43 tok/s** for ordinary decode, **34.47 tok/s** for DFlash block 3, and **31.93 tok/s** for block 5. Every recorded output matches the baseline token IDs.
@@ -196,6 +219,7 @@ src/inference_lab/
     speculative/                DFlash and native MTP backends
   benchmarking/                 Runners, phase metrics, validation, reports
   profiling/                    DFlash phase, layer and tensor-level diagnostics
+  optimizations/                Scoped kernels, draft experiments, paired sweeps and reports
   visualization/                Event recording and GIF rendering
 scripts/
   setup/ download/ benchmark/ report/ analysis/ demo/   Paired .sh + .py tasks
@@ -207,4 +231,4 @@ docs/
   results/                      Curated measurements and source hashes
 ```
 
-Models, downloaded data, virtual environments, caches and raw machine-specific artifacts stay local and are excluded from Git. Published measurements retain their provenance; cleaned copies have their own hashes. Dependencies and model/data sources are listed in [third-party notes](docs/third-party.md). The [Russian lab guide](docs/guide.ru.md) documents the full workflow and diagnostic commands.
+Models, downloaded data, virtual environments, caches and original machine-specific artifacts stay local and are excluded from Git. Curated measurement logs, including complete token IDs and selected event traces, retain provenance; cleaned copies have their own hashes. Dependencies and model/data sources are listed in [third-party notes](docs/third-party.md). The [Russian lab guide](docs/guide.ru.md) documents the full workflow and diagnostic commands.

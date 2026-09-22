@@ -1,0 +1,268 @@
+{
+  "status": "completed",
+  "completed_runs": 14,
+  "all_token_ids_match": true,
+  "all_runs_awake": true,
+  "by_variant": {
+    "ar": {
+      "tok_s": {
+        "n": 6,
+        "mean": 32.59549392753338,
+        "median": 33.38803731931515,
+        "stdev": 2.428374537729442,
+        "min": 28.737950558312626,
+        "max": 34.81028054525156
+      },
+      "pooled_tok_s": 32.43701473551325,
+      "prefill_ms": {
+        "n": 6,
+        "mean": 730.617243166004,
+        "median": 710.27956251055,
+        "stdev": 49.7220457701255,
+        "min": 689.8603749577887,
+        "max": 810.4104169760831
+      }
+    },
+    "ngram-w1-m2": {
+      "tok_s": {
+        "n": 1,
+        "mean": 28.30990797237512,
+        "median": 28.30990797237512,
+        "stdev": null,
+        "min": 28.30990797237512,
+        "max": 28.30990797237512
+      },
+      "pooled_tok_s": 28.30990797237512,
+      "prefill_ms": {
+        "n": 1,
+        "mean": 816.1973750102334,
+        "median": 816.1973750102334,
+        "stdev": null,
+        "min": 816.1973750102334,
+        "max": 816.1973750102334
+      },
+      "drafted_tokens": 38,
+      "accepted_draft_tokens": 24,
+      "acceptance": 0.631578947368421,
+      "lookup_rounds": 38,
+      "fallback_rounds": 65,
+      "useful_tokens_per_round": 1.233009708737864,
+      "paired_speed_ratio": {
+        "n": 1,
+        "mean": 0.9851053197036804,
+        "median": 0.9851053197036804,
+        "stdev": null,
+        "min": 0.9851053197036804,
+        "max": 0.9851053197036804
+      }
+    },
+    "ngram-w2-m2": {
+      "tok_s": {
+        "n": 1,
+        "mean": 30.779985434343924,
+        "median": 30.779985434343924,
+        "stdev": null,
+        "min": 30.779985434343924,
+        "max": 30.779985434343924
+      },
+      "pooled_tok_s": 30.779985434343924,
+      "prefill_ms": {
+        "n": 1,
+        "mean": 847.3034999915399,
+        "median": 847.3034999915399,
+        "stdev": null,
+        "min": 847.3034999915399,
+        "max": 847.3034999915399
+      },
+      "drafted_tokens": 58,
+      "accepted_draft_tokens": 33,
+      "acceptance": 0.5689655172413793,
+      "lookup_rounds": 29,
+      "fallback_rounds": 65,
+      "useful_tokens_per_round": 1.351063829787234,
+      "paired_speed_ratio": {
+        "n": 1,
+        "mean": 0.9163754048149655,
+        "median": 0.9163754048149655,
+        "stdev": null,
+        "min": 0.9163754048149655,
+        "max": 0.9163754048149655
+      }
+    },
+    "ngram-w4-m2": {
+      "tok_s": {
+        "n": 1,
+        "mean": 8.514202166892822,
+        "median": 8.514202166892822,
+        "stdev": null,
+        "min": 8.514202166892822,
+        "max": 8.514202166892822
+      },
+      "pooled_tok_s": 8.514202166892822,
+      "prefill_ms": {
+        "n": 1,
+        "mean": 696.3892499916255,
+        "median": 696.3892499916255,
+        "stdev": null,
+        "min": 696.3892499916255,
+        "max": 696.3892499916255
+      },
+      "drafted_tokens": 95,
+      "accepted_draft_tokens": 38,
+      "acceptance": 0.4,
+      "lookup_rounds": 24,
+      "fallback_rounds": 65,
+      "useful_tokens_per_round": 1.4269662921348314,
+      "paired_speed_ratio": {
+        "n": 1,
+        "mean": 0.2565505039102541,
+        "median": 0.2565505039102541,
+        "stdev": null,
+        "min": 0.2565505039102541,
+        "max": 0.2565505039102541
+      }
+    },
+    "ngram-w1-m4": {
+      "tok_s": {
+        "n": 1,
+        "mean": 31.77123046578327,
+        "median": 31.77123046578327,
+        "stdev": null,
+        "min": 31.77123046578327,
+        "max": 31.77123046578327
+      },
+      "pooled_tok_s": 31.77123046578327,
+      "prefill_ms": {
+        "n": 1,
+        "mean": 695.6303330371156,
+        "median": 695.6303330371156,
+        "stdev": null,
+        "min": 695.6303330371156,
+        "max": 695.6303330371156
+      },
+      "drafted_tokens": 21,
+      "accepted_draft_tokens": 12,
+      "acceptance": 0.5714285714285714,
+      "lookup_rounds": 21,
+      "fallback_rounds": 94,
+      "useful_tokens_per_round": 1.1043478260869566,
+      "paired_speed_ratio": {
+        "n": 1,
+        "mean": 0.9126967656719204,
+        "median": 0.9126967656719204,
+        "stdev": null,
+        "min": 0.9126967656719204,
+        "max": 0.9126967656719204
+      }
+    },
+    "ngram-w2-m4": {
+      "tok_s": {
+        "n": 1,
+        "mean": 32.51412148132173,
+        "median": 32.51412148132173,
+        "stdev": null,
+        "min": 32.51412148132173,
+        "max": 32.51412148132173
+      },
+      "pooled_tok_s": 32.51412148132173,
+      "prefill_ms": {
+        "n": 1,
+        "mean": 680.9055000194348,
+        "median": 680.9055000194348,
+        "stdev": null,
+        "min": 680.9055000194348,
+        "max": 680.9055000194348
+      },
+      "drafted_tokens": 32,
+      "accepted_draft_tokens": 17,
+      "acceptance": 0.53125,
+      "lookup_rounds": 16,
+      "fallback_rounds": 94,
+      "useful_tokens_per_round": 1.1545454545454545,
+      "paired_speed_ratio": {
+        "n": 1,
+        "mean": 0.9378469418916635,
+        "median": 0.9378469418916635,
+        "stdev": null,
+        "min": 0.9378469418916635,
+        "max": 0.9378469418916635
+      }
+    },
+    "ngram-w4-m4": {
+      "tok_s": {
+        "n": 1,
+        "mean": 11.263131983232665,
+        "median": 11.263131983232665,
+        "stdev": null,
+        "min": 11.263131983232665,
+        "max": 11.263131983232665
+      },
+      "pooled_tok_s": 11.263131983232665,
+      "prefill_ms": {
+        "n": 1,
+        "mean": 717.8599589969963,
+        "median": 717.8599589969963,
+        "stdev": null,
+        "min": 717.8599589969963,
+        "max": 717.8599589969963
+      },
+      "drafted_tokens": 52,
+      "accepted_draft_tokens": 20,
+      "acceptance": 0.38461538461538464,
+      "lookup_rounds": 13,
+      "fallback_rounds": 94,
+      "useful_tokens_per_round": 1.1869158878504673,
+      "paired_speed_ratio": {
+        "n": 1,
+        "mean": 0.36831985086630886,
+        "median": 0.36831985086630886,
+        "stdev": null,
+        "min": 0.36831985086630886,
+        "max": 0.36831985086630886
+      }
+    }
+  },
+  "pairs": [
+    {
+      "pair_id": "r0-p0-w1-m2",
+      "variant": "ngram-w1-m2",
+      "decode_speed_ratio": 0.9851053197036804,
+      "token_ids_match": true
+    },
+    {
+      "pair_id": "r0-p0-w2-m2",
+      "variant": "ngram-w2-m2",
+      "decode_speed_ratio": 0.9163754048149655,
+      "token_ids_match": true
+    },
+    {
+      "pair_id": "r0-p0-w4-m2",
+      "variant": "ngram-w4-m2",
+      "decode_speed_ratio": 0.2565505039102541,
+      "token_ids_match": true
+    },
+    {
+      "pair_id": "r0-p0-w1-m4",
+      "variant": "ngram-w1-m4",
+      "decode_speed_ratio": 0.9126967656719204,
+      "token_ids_match": true
+    },
+    {
+      "pair_id": "r0-p0-w2-m4",
+      "variant": "ngram-w2-m4",
+      "decode_speed_ratio": 0.9378469418916635,
+      "token_ids_match": true
+    },
+    {
+      "pair_id": "r0-p0-w4-m4",
+      "variant": "ngram-w4-m4",
+      "decode_speed_ratio": 0.36831985086630886,
+      "token_ids_match": true
+    }
+  ],
+  "drift_bracket": {
+    "before_tok_s": 28.775931086091557,
+    "after_tok_s": 30.619059213261817,
+    "after_over_before": 1.0640510335410522
+  }
+}
