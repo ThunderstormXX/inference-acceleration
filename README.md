@@ -68,6 +68,14 @@ Stock MTP improved decode by **8.75%** against the first baseline. The gate **sl
 
 ![Recorded 2048-token trajectories, signed token lead and same-token latency](docs/assets/mtp-confidence-trajectory.png)
 
+### Beyond MTP: next local experiments
+
+The [September 22 research roadmap](docs/beyond-mtp-local-roadmap-2026-09-22.md) prioritizes suffix/ngram drafting, DFlash 2 style candidate selection, tree verification, EAGLE3 and semantic step verification. It distinguishes exact token acceleration from MCTS or best-of-N reasoning, and proposes small experiments for this 16 GB Mac. These alternatives are research proposals, not new benchmark results.
+
+### Inspect what the MTP head gets right and wrong
+
+Browse [60 annotated examples](docs/examples/mtp-examples.md), grouped by formatting, numbers, formulas, wording and token boundaries. The [offline interactive catalog](docs/examples/mtp-examples.html) contains **all 8,409 verified pairs**, with context, actual target continuation, confidence, token IDs and filters. Open the HTML locally; GitHub displays its source. [How to use and rebuild it](docs/mtp-examples-guide.md).
+
 ## How MTP works here
 
 The draft is a separate, pretrained [Qwen3.5 MTP head](https://huggingface.co/mlx-community/Qwen3.5-9B-MTP-4bit), approximately **137 MB** in 4-bit form. It reuses the target model's embedding and output head. This project does not train new weights.

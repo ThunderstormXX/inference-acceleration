@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>MTP — примеры поведения модели</title>
+<style>
+:root{--bg:#f5f5f0;--surface:#fff;--surface-soft:#f9faf7;--ink:#242c28;--muted:#66736a;--line:#dce2da;--accent:#365b43;--accent-soft:#e9f0e7;--green:#276744;--green-bg:#e7f3e9;--red:#a43f35;--red-bg:#fbece7;--gray:#6c716d;--gray-bg:#edf0ec;--blue:#355e96;--blue-bg:#eaf0fc;--shadow:0 2px 5px #223c2410;--radius:16px;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-synthesis:none;color:var(--ink);background:var(--bg)}
+*{box-sizing:border-box}
+body{margin:0;font-size:14px;line-height:1.55}
+button,input,select{font:inherit}
+button,a,input,select,summary{-webkit-tap-highlight-color:transparent}
+button,select,summary{cursor:pointer}
+button{color:inherit}
+button:disabled{cursor:default;opacity:.4}
+button,input,select{border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+button{padding:8px 12px;transition:background .15s,border-color .15s}
+button:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,.token:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+a{color:var(--accent);text-underline-offset:3px}
+h1,h2,h3,p{margin:0}
+h1{font-size:clamp(30px,4.5vw,51px);font-weight:650;letter-spacing:-.045em;line-height:1.09;max-width:790px}
+h2{font-size:18px;letter-spacing:-.02em}
+h3{font-size:15px;font-weight:650}
+.wrap{max-width:1400px;padding:0 40px;margin:auto}
+.masthead{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:25px;padding-bottom:21px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.06em}
+.brand-mark{display:flex;gap:3px}
+.brand-mark i{height:17px;width:7px;border-radius:2px;background:var(--accent)}
+.brand-mark i:last-child{background:#8aa387;transform:translateY(4px)}
+.masthead-note{font-size:12px;color:var(--muted)}
+.hero{padding:36px 0 28px;display:grid;grid-template-columns:minmax(0,1fr) 295px;gap:50px;align-items:end}
+.eyebrow{font-size:11px;font-weight:750;letter-spacing:.12em;color:var(--accent);margin-bottom:15px;text-transform:uppercase}
+.intro{color:var(--muted);font-size:16px;max-width:730px;margin-top:19px;line-height:1.6}
+.hero-note{border-left:2px solid #9baf97;padding:5px 0 5px 18px;color:var(--muted);font-size:13px}
+.hero-note strong{display:block;color:var(--ink);font-size:14px;margin-bottom:7px}
+.stats{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+.stat{padding:20px 24px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat-top{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}
+.stat-value{font-size:31px;letter-spacing:-.04em;font-weight:650;line-height:1.25;margin:7px 0 3px}
+.stat-sub{font-size:12px;color:var(--muted)}
+.dot{width:7px;height:7px;display:inline-block;flex:none;border-radius:50%}
+.dot.green,.segment.outcome-2{background:#76a87b}
+.dot.red,.segment.outcome-0{background:#cf8b77}
+.dot.partial,.segment.outcome-1{background:#c6be87}
+.guide{margin:20px 0 28px;padding:15px 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface-soft)}
+.guide>summary{font-weight:600;font-size:13px}
+.guide-body{display:grid;grid-template-columns:1fr 1fr;gap:20px 35px;margin-top:16px}
+.guide-body p{font-size:13px;color:var(--muted)}
+.guide-body strong{color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:11px}
+.legend span{padding:3px 8px;border-radius:5px;font-size:12px}
+.accepted{color:var(--green);background:var(--green-bg)}
+.rejected{color:var(--red);background:var(--red-bg)}
+.discarded_suffix{color:var(--gray);background:var(--gray-bg)}
+.target{color:var(--blue);background:var(--blue-bg)}
+.overview{margin-bottom:28px}
+.section-title{display:flex;justify-content:space-between;gap:15px;align-items:baseline;margin-bottom:12px}
+.section-title p{font-size:12px;color:var(--muted)}
+.chain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:7px}
+.chain-button{padding:10px 9px;text-align:left;min-width:0;background:var(--surface);border-radius:10px}
+.chain-button[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
+.chain-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:650}
+.chain-split{font-size:9px;color:var(--muted);font-weight:450}
+.chain-strip{display:flex;width:100%;height:7px;border-radius:3px;overflow:hidden;margin:10px 0 6px;background:var(--gray-bg)}
+.segment{height:100%}
+.chain-count{font-size:10px;color:var(--muted)}
+.filter-panel{border:1px solid var(--line);background:var(--surface);border-radius:var(--radius);padding:21px 23px;box-shadow:var(--shadow)}
+.filter-top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px}
+.reset{font-size:12px;padding:4px 8px;border-color:transparent;color:var(--muted)}
+.presets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.preset{font-size:12px;padding:6px 10px;border-radius:7px}
+.preset[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.filter-grid{display:grid;grid-template-columns:1.25fr 1fr 1.25fr 1.55fr;gap:14px}
+.field label,.field-title{display:block;color:var(--muted);font-size:11px;font-weight:600;margin-bottom:5px}
+.field select,.field input{width:100%;height:38px;padding:6px 9px;color:var(--ink);min-width:0}
+.score-inputs{display:flex;align-items:center;gap:6px}
+.score-inputs span{color:var(--muted)}
+.filter-note{font-size:11px;color:var(--muted);margin-top:12px}
+.results-toolbar{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:24px 1px 13px}
+.result-count{font-size:14px}
+.result-count strong{font-weight:650}
+.result-detail{color:var(--muted);font-size:12px;margin-top:2px}
+.view-controls{display:flex;align-items:center;gap:17px}
+.whitespace{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);white-space:nowrap;cursor:pointer}
+.whitespace input{accent-color:var(--accent);width:15px;height:15px;margin:0}
+.sort-label{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px}
+.sort-label select{font-size:12px;padding:6px 8px;color:var(--ink);max-width:155px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;align-items:start}
+.example{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);scroll-margin-top:20px}
+.example:target{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:18px 20px 13px}
+.card-kicker{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:11px}
+.split-badge{font-size:9px;font-weight:600;letter-spacing:.01em;padding:1px 5px;border:1px solid var(--line);border-radius:4px}
+.split-badge.heldout{background:var(--blue-bg);border-color:transparent;color:var(--blue)}
+.card-heading{display:flex;align-items:center;gap:8px;margin-top:5px}
+.outcome-pill{font-weight:650;font-size:11px;white-space:nowrap;border-radius:6px;padding:4px 7px}
+.outcome-pill.two{background:var(--green-bg);color:var(--green)}
+.outcome-pill.one{background:var(--gray-bg);color:var(--ink)}
+.outcome-pill.zero{background:var(--red-bg);color:var(--red)}
+.score-box{text-align:right;white-space:nowrap}
+.score-label{color:var(--muted);font-size:10px}
+.score-value{font-variant-numeric:tabular-nums;font-size:22px;line-height:1.25;letter-spacing:-.03em;font-weight:600}
+.card-body{padding:0 20px 16px}
+.context-label,.row-label{font-size:10px;color:var(--muted);font-weight:650;letter-spacing:.07em;text-transform:uppercase}
+.context-label{margin-bottom:6px;display:flex;justify-content:space-between;gap:8px}
+.context-label span:last-child{font-size:9px;letter-spacing:0;text-transform:none;font-weight:450}
+.context{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;background:var(--surface-soft);border:1px solid var(--line);border-radius:8px;padding:10px 12px;max-height:220px;overflow:auto;margin:0 0 15px}
+.context-empty{font-family:inherit;color:var(--muted);font-style:italic}
+.token-row{display:grid;grid-template-columns:58px minmax(0,1fr);gap:9px;align-items:start;margin-top:9px}
+.row-label{padding-top:6px}
+.tokens{display:flex;align-items:flex-start;gap:4px;flex-wrap:wrap;min-width:0}
+.token{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.5;display:inline-block;padding:4px 7px;border-radius:5px;white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%;position:relative;border:1px solid transparent}
+.token.accepted{border-color:#8fbe9a45}
+.token.rejected{border-color:#d29c8845}
+.token.discarded_suffix{border:1px dashed #929d9560}
+.token.target{border-color:#9dafcf50}
+.token.empty{font-style:italic}
+.round-explainer{font-size:11px;color:var(--muted);margin-top:11px;line-height:1.5}
+.annotation{margin-top:12px;padding:9px 11px;border-left:2px solid #9baf97;background:var(--accent-soft);border-radius:0 5px 5px 0;font-size:12px;line-height:1.55}
+.probabilities{font-size:10px;color:var(--muted);margin-top:8px;font-variant-numeric:tabular-nums}
+.tag-list{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.tag{font-size:10px;border-radius:5px;padding:3px 6px;background:var(--surface-soft);color:var(--muted);border:1px solid var(--line)}
+.card-bottom{border-top:1px solid var(--line);padding:10px 20px 13px;background:var(--surface-soft)}
+.disclosure{font-size:12px;margin-top:6px}
+.disclosure:first-child{margin-top:0}
+.disclosure summary{color:var(--muted);width:fit-content}
+.disclosure[open] summary{color:var(--ink);margin-bottom:8px}
+.disclosure pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin:0;padding:10px;border:1px solid var(--line);border-radius:7px;background:var(--surface);max-height:380px;overflow:auto}
+.disclosure p{color:var(--muted);font-size:11px;margin:5px 0}
+.technical-table{width:100%;border-collapse:collapse;font-size:10px;margin-top:8px}
+.technical-table th{text-align:left;color:var(--muted);font-weight:500}
+.technical-table th,.technical-table td{padding:5px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+.technical-table td:last-child{overflow-wrap:anywhere;white-space:pre-wrap}
+.card-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:9px;color:var(--muted);font-size:10px}
+.permalink{border:0;background:transparent;font-size:10px;color:var(--muted);padding:3px 0;min-width:80px;text-align:right}
+.pagination{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:24px 0 33px}
+.pagination-copy{font-size:12px;color:var(--muted)}
+.pagination-buttons{display:flex;gap:5px;align-items:center}
+.page-button{font-size:12px;min-width:35px;height:35px;padding:5px 9px}
+.page-button[aria-current=page]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ellipsis{color:var(--muted);padding:0 3px}
+.empty-state{grid-column:1/-1;text-align:center;padding:65px 24px;background:var(--surface);border:1px dashed var(--line);border-radius:var(--radius)}
+.empty-state p{color:var(--muted);margin:9px 0 18px}
+.footnote{border-top:1px solid var(--line);padding:20px 0 35px;color:var(--muted);font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.footnote strong{font-weight:600;color:var(--ink)}
+.source-details{margin-top:9px}
+.source-details pre{white-space:pre-wrap;overflow-wrap:anywhere;font:10px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.load-error{padding:30px;color:var(--red)}
+[hidden]{display:none!important}
+@media(prefers-color-scheme:dark){:root{--bg:#171c19;--surface:#212823;--surface-soft:#1d241f;--ink:#e1e8e0;--muted:#a1afa2;--line:#374139;--accent:#9cbb9b;--accent-soft:#2b3b2d;--green:#b2d8b6;--green-bg:#294031;--red:#edb1a3;--red-bg:#472e29;--gray:#b3bdb3;--gray-bg:#333c35;--blue:#a9c7ed;--blue-bg:#283950;--shadow:none}
+.preset[aria-pressed=true],.page-button[aria-current=page]{color:#172018}
+.chain-strip{opacity:.9}
+.hero-note{border-color:#60785e}
+}
+@media(min-width:1500px){.wrap{max-width:1450px}
+.cards{gap:20px}
+.card-body{padding-right:24px;padding-left:24px}
+.card-top{padding-right:24px;padding-left:24px}
+}
+@media(max-width:1000px){.wrap{padding:0 25px}
+.hero{grid-template-columns:1fr;gap:23px;padding-top:28px}
+.hero-note{max-width:740px}
+.stat{padding:17px}
+.filter-grid{grid-template-columns:1fr 1fr}
+.results-toolbar{align-items:flex-start}
+.view-controls{gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.chain-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+.cards{gap:12px}
+.card-top{padding:15px}
+.card-body{padding:0 15px 15px}
+.card-bottom{padding:10px 15px}
+.token-row{grid-template-columns:52px minmax(0,1fr);gap:6px}
+.token{font-size:12px}
+.score-value{font-size:20px}
+}
+@media(max-width:720px){.wrap{padding:0 17px}
+.masthead{padding-top:17px;padding-bottom:16px}
+.masthead-note{max-width:120px;text-align:right;font-size:10px}
+.hero{padding:27px 0 23px}
+.intro{font-size:14px;margin-top:15px}
+.hero-note{font-size:12px}
+.hero-note strong{font-size:13px}
+.stats{grid-template-columns:1fr 1fr}
+.stat{padding:15px 17px}
+.stat:nth-child(3){border-left:0;border-top:1px solid var(--line)}
+.stat:nth-child(4){border-top:1px solid var(--line)}
+.stat-value{font-size:27px}
+.guide{margin:16px 0 23px}
+.guide-body{grid-template-columns:1fr;gap:13px}
+.section-title{align-items:flex-start}
+.section-title p{max-width:150px;text-align:right;font-size:10px}
+.chain-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.chain-button{padding:8px}
+.chain-split{font-size:8px}
+.filter-panel{padding:17px 14px}
+.filter-grid{gap:11px}
+.field select,.field input{font-size:12px}
+.presets{gap:5px}
+.preset{font-size:11px;padding:6px 8px}
+.results-toolbar{display:block;padding-top:20px}
+.view-controls{justify-content:space-between;margin-top:12px}
+.cards{grid-template-columns:1fr;gap:15px}
+.card-top{padding:17px}
+.card-body{padding:0 17px 16px}
+.card-bottom{padding:11px 17px}
+.token{font-size:13px}
+.score-value{font-size:22px}
+.pagination{flex-direction:column;gap:12px}
+.footnote{grid-template-columns:1fr;gap:12px}
+.page-button{min-width:32px}
+.context{max-height:230px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="masthead"><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i></span>MTP / EXAMPLES</div><span class="masthead-note">Локальный атлас токенных решений</span></header>
+<main>
+<section class="hero" aria-labelledby="title"><div><p class="eyebrow">Два токена вперёд · реальные трассы</p><h1 id="title">Где драфт совпадает.<br>Где модель его меняет.</h1><p class="intro">Конкретные моменты генерации: что модель уже написала, какие два токена предложил MTP и что осталось после проверки.</p></div><aside class="hero-note"><strong>Смотрите на точное продолжение</strong>Здесь «успех» — совпадение токенов с проверкой целевой модели. Это не оценка правильности рассуждения или ответа.</aside></section>
+<section class="stats" aria-label="Статистика полного корпуса"><div class="stat"><div class="stat-top">Проверенных пар</div><div class="stat-value" id="total-stat">—</div><div class="stat-sub" id="corpus-sub">Загрузка корпуса</div></div><div class="stat"><div class="stat-top"><span class="dot green"></span>Приняты оба</div><div class="stat-value" id="two-stat">—</div><div class="stat-sub" id="two-sub">—</div></div><div class="stat"><div class="stat-top"><span class="dot partial"></span>Принят один</div><div class="stat-value" id="one-stat">—</div><div class="stat-sub" id="one-sub">—</div></div><div class="stat"><div class="stat-top"><span class="dot red"></span>Не принят ни один</div><div class="stat-value" id="zero-stat">—</div><div class="stat-sub" id="zero-sub">—</div></div></section>
+<details class="guide"><summary>Как читать примеры и вероятности</summary><div class="guide-body"><div><div class="legend"><span class="accepted">Принят</span><span class="rejected">Отклонён</span><span class="discarded_suffix">Не проверен</span><span class="target">Токен целевой модели</span></div><p><strong>Читаем сверху вниз:</strong> контекст → два токена драфта → выданные токены. Если первый токен отклонён, второй показан серым: он предложен на неверном префиксе и <strong>не проверен на истинном контексте</strong>.</p></div><div><p><strong>p₁ × p₂ — score драфта.</strong> p₁ и p₂ — вероятности предложенных токенов у драфта. Их произведение не является уверенностью целевой модели и не гарантирует принятие. Метки описывают наблюдаемые признаки примера, а не причины успеха или ошибки.</p><p style="margin-top:8px">Границы цветных блоков — границы токенов. «Пробелы ·» показывает пробелы, переводы строк ↵ и табуляцию ⇥. ID и вероятность доступны в подсказке токена и в технических деталях.</p></div></div></details>
+<section class="overview" aria-labelledby="chains-title"><div class="section-title"><h2 id="chains-title">По цепочкам генерации</h2><p>Доли исходов: 2 / 1 / 0 принятых.<br>Нажмите цепочку, чтобы отфильтровать.</p></div><div class="chain-grid" id="chain-grid"></div></section>
+<section class="filter-panel" aria-labelledby="filter-title"><div class="filter-top"><h2 id="filter-title">Выберите, что исследовать</h2><button type="button" class="reset" id="reset">Сбросить фильтры</button></div><div class="presets" id="presets" role="group" aria-label="Наборы примеров"></div><div class="filter-grid"><div class="field"><label for="chain-filter">Цепочка</label><select id="chain-filter"><option value="">Все цепочки</option></select></div><div class="field"><label for="tag-filter">Наблюдаемый признак</label><select id="tag-filter"><option value="">Любой признак</option></select></div><div class="field"><span class="field-title" id="score-range-label">Диапазон score · p₁ × p₂</span><div class="score-inputs" role="group" aria-labelledby="score-range-label"><input id="score-min" type="number" min="0" max="1" step="0.01" placeholder="0" aria-label="Минимальный score"><span aria-hidden="true">—</span><input id="score-max" type="number" min="0" max="1" step="0.01" placeholder="1" aria-label="Максимальный score"></div></div><div class="field"><label for="search">Поиск в тексте и токенах</label><input id="search" type="search" placeholder="Например: answer, 42, \\boxed" autocomplete="off" spellcheck="false"></div></div><p class="filter-note" id="filter-note">Фильтры применяются вместе. Статистика выше всегда относится ко всему корпусу.</p></section>
+<section aria-label="Примеры"><div class="results-toolbar" id="results-top"><div><p class="result-count" id="result-count" aria-live="polite" aria-atomic="true"></p><p class="result-detail" id="result-detail"></p></div><div class="view-controls"><label class="whitespace"><input type="checkbox" id="whitespace">Пробелы ·</label><label class="sort-label" for="sort">Порядок<select id="sort"><option value="source">По ходу генерации</option><option value="high">Score: высокий → низкий</option><option value="low">Score: низкий → высокий</option></select></label></div></div><div class="cards" id="cards"></div><nav class="pagination" id="pagination" aria-label="Страницы примеров"></nav></section>
+</main>
+<footer class="footnote"><div><strong>Корпус, не объяснение причин.</strong> Примеры показывают поведение в записанных запусках. Частоты в подборке могут отличаться от частот во всём корпусе. Calibration и heldout помечены отдельно.<details class="source-details"><summary>Происхождение данных</summary><pre id="provenance"></pre></details></div><div><strong>Контекст и продолжение.</strong> Над драфтом — доступный хвост уже сгенерированного текста. В раскрывающихся блоках — исходная задача и фактическое продолжение с этой позиции. Никаких новых запусков модели: всё взято из трасс.</div></footer>
+<p class="sr-only" aria-live="polite" id="action-status"></p>
+</div>
+<script type="application/json" id="example-data">__MTP_EXAMPLE_DATA__</script>
+<script>
+'use strict';
+(() => {
+  const $ = id => document.getElementById(id);
+  const node = (tag, className, text) => { const el = document.createElement(tag); if (className) el.className = className; if (text !== undefined) el.textContent = String(text); return el; };
+  const button = (text, className, action) => { const el = node('button', className, text); el.type = 'button'; el.addEventListener('click', action); return el; };
+  let data;
+  try { data = JSON.parse($('example-data').textContent); if (!Array.isArray(data.examples)) throw new Error('В данных отсутствует массив examples.'); }
+  catch (error) { $('cards').append(node('p', 'load-error', 'Не удалось загрузить данные примеров. ' + error.message)); $('corpus-sub').textContent = 'Данные недоступны'; return; }
+  const examples = data.examples;
+  const chains = Array.isArray(data.chains) ? data.chains : [];
+  const chainMap = new Map(chains.map(chain => [String(chain.index), chain]));
+  const curated = new Set(data.curated_ids || []);
+  const tagLabels = data.tag_labels || {};
+  const labels = { accepted:'Принят драфт', rejected:'Отклонён', discarded_suffix:'Суффикс не проверен на истинном контексте', target:'Токен целевой модели' };
+  const format = new Intl.NumberFormat('ru-RU');
+  const percentage = value => new Intl.NumberFormat('ru-RU', {maximumFractionDigits:1}).format(value) + '%';
+  const probability = value => Number.isFinite(Number(value)) ? Number(value).toFixed(4) : '—';
+  const total = examples.length;
+  const counts = [0, 0, 0];
+  examples.forEach(example => { if ([0, 1, 2].includes(example.accepted)) counts[example.accepted]++; });
+  $('total-stat').textContent = format.format(total);
+  $('corpus-sub').textContent = format.format(chains.length) + ' цепочек · 2 токена в паре';
+  [[2,'two'], [1,'one'], [0,'zero']].forEach(([outcome, id]) => {
+    $(id + '-stat').textContent = percentage(total ? counts[outcome] / total * 100 : 0);
+    $(id + '-sub').textContent = format.format(counts[outcome]) + ' пар во всём корпусе';
+  });
+  $('provenance').textContent = JSON.stringify(data.provenance || {schema_version:data.schema_version}, null, 2);
+  const presetDefinitions = [
+    {id:'curated', label:'Подборка', title:'Разнообразные примеры для первого знакомства', match:example => curated.has(example.id)},
+    {id:'all', label:'Весь корпус', title:'Все проверенные пары', match:() => true},
+    {id:'two', label:'2 приняты', title:'Оба токена драфта приняты', match:example => example.accepted === 2},
+    {id:'one', label:'1 принят', title:'Первый токен принят, второй отклонён', match:example => example.accepted === 1},
+    {id:'zero', label:'0 приняты', title:'Первый токен отклонён; второй не проверен на истинном контексте', match:example => example.accepted === 0},
+    {id:'high-failure', label:'Высокий score, отказ', title:'Score ≥ 0.9, хотя бы один токен отклонён', match:example => example.score >= .9 && example.accepted < 2},
+    {id:'low-success', label:'Низкий score, успех', title:'Score ≤ 0.3, оба токена приняты', match:example => example.score <= .3 && example.accepted === 2}
+  ];
+  const state = {preset:curated.size ? 'curated' : 'all', chain:'', tag:'', min:'', max:'', query:'', sort:'source', whitespace:false, page:1};
+  const pageSize = 16;
+  const searchCache = new Map();
+  const sourceOrder = new Map(examples.map((example, index) => [example.id, index]));
+  const presetButtons = new Map();
+  presetDefinitions.forEach(preset => {
+    const el = button(preset.label, 'preset', () => { state.preset = preset.id; state.page = 1; render(); });
+    el.title = preset.title; el.dataset.preset = preset.id; presetButtons.set(preset.id, el); $('presets').append(el);
+  });
+  const chainButtons = new Map();
+  chains.forEach(chain => {
+    const key = String(chain.index);
+    const list = examples.filter(example => String(example.chain) === key);
+    const outcomes = [0,0,0]; list.forEach(example => outcomes[example.accepted]++);
+    const option = node('option', '', '#' + key + ' · ' + chain.split); option.value = key; $('chain-filter').append(option);
+    const el = button('', 'chain-button', () => { state.chain = state.chain === key ? '' : key; state.page = 1; syncControls(); render(); });
+    const top = node('span', 'chain-top'); top.append(node('span', '', '#' + key), node('span', 'chain-split', chain.split));
+    const strip = node('span', 'chain-strip'); strip.setAttribute('aria-hidden', 'true');
+    [2,1,0].forEach(outcome => { const segment = node('span', 'segment outcome-' + outcome); segment.style.width = (list.length ? outcomes[outcome] / list.length * 100 : 0) + '%'; strip.append(segment); });
+    const description = '#' + key + ', ' + chain.split + ': ' + list.length + ' пар. Оба приняты: ' + outcomes[2] + ', один: ' + outcomes[1] + ', ни одного: ' + outcomes[0] + '.';
+    el.title = description; el.setAttribute('aria-label', description); el.append(top, strip, node('span', 'chain-count', format.format(list.length) + ' пар')); chainButtons.set(key, el); $('chain-grid').append(el);
+  });
+  const allTags = [...new Set(examples.flatMap(example => example.tags || []))].sort((a,b) => (tagLabels[a] || a).localeCompare(tagLabels[b] || b, 'ru'));
+  allTags.forEach(tag => { const option = node('option', '', tagLabels[tag] || tag); option.value = tag; $('tag-filter').append(option); });
+  const controlMappings = [['chain-filter','chain'], ['tag-filter','tag'], ['score-min','min'], ['score-max','max'], ['search','query'], ['sort','sort']];
+  controlMappings.forEach(([id, key]) => $(id).addEventListener(id === 'search' || id.startsWith('score-') ? 'input' : 'change', () => { state[key] = $(id).value; state.page = 1; render(); }));
+  $('whitespace').addEventListener('change', () => { state.whitespace = $('whitespace').checked; render(); });
+  const syncControls = () => { controlMappings.forEach(([id, key]) => { $(id).value = state[key]; }); $('whitespace').checked = state.whitespace; };
+  const reset = () => { Object.assign(state, {preset:curated.size ? 'curated' : 'all', chain:'', tag:'', min:'', max:'', query:'', sort:'source', page:1}); syncControls(); render(); };
+  $('reset').addEventListener('click', reset);
+  const visibleText = text => state.whitespace ? String(text).replace(/ /g, '·').replace(/\t/g, '⇥\t').replace(/\r/g, '␍').replace(/\n/g, '↵\n') : String(text);
+  const searchableText = example => {
+    if (!searchCache.has(example.id)) searchCache.set(example.id, [example.id, example.context, example.actual_next, ...(example.proposal || []).map(token => token.text), ...(example.committed || []).map(token => token.text), ...(example.tags || []).map(tag => tagLabels[tag] || tag)].join('\n').toLocaleLowerCase('ru'));
+    return searchCache.get(example.id);
+  };
+  const filteredExamples = () => {
+    const preset = presetDefinitions.find(item => item.id === state.preset) || presetDefinitions[1];
+    const query = state.query.trim().toLocaleLowerCase('ru');
+    const min = state.min === '' ? 0 : Number(state.min), max = state.max === '' ? 1 : Number(state.max);
+    const result = examples.filter(example => preset.match(example) && (!state.chain || String(example.chain) === state.chain) && (!state.tag || (example.tags || []).includes(state.tag)) && example.score >= min && example.score <= max && (!query || searchableText(example).includes(query)));
+    if (state.sort === 'high') result.sort((a,b) => b.score - a.score || sourceOrder.get(a.id) - sourceOrder.get(b.id));
+    else if (state.sort === 'low') result.sort((a,b) => a.score - b.score || sourceOrder.get(a.id) - sourceOrder.get(b.id));
+    return result;
+  };
+  const makeToken = (token, status, p) => {
+    const raw = token.text == null ? '' : token.text;
+    const el = node('span', 'token ' + status + (raw === '' ? ' empty' : ''), raw === '' ? '∅' : visibleText(raw));
+    const description = (labels[status] || status) + ' · ID ' + token.id + (p === undefined ? '' : ' · p = ' + probability(p)) + (raw === '' ? ' · пустая строка при декодировании' : '');
+    el.title = description; el.tabIndex = 0; el.setAttribute('aria-label', JSON.stringify(raw) + '. ' + description); return el;
+  };
+  const disclosure = (label, text, raw) => { const details = node('details', 'disclosure'); details.append(node('summary', '', label), node('pre', '', raw ? String(text) : visibleText(text))); return details; };
+  const explanations = {
+    2:'Оба токена драфта прошли проверку. Синий токен, если он есть, добавила целевая модель.',
+    1:'Первый токен принят. Второй отклонён и заменён токеном целевой модели.',
+    0:'Первый токен отклонён. Серый второй токен на истинном контексте не проверялся.'
+  };
+  const makeCard = example => {
+    const card = node('article', 'example'); card.id = String(example.id);
+    const top = node('div', 'card-top');
+    const heading = node('div'); const kicker = node('div', 'card-kicker');
+    kicker.append(node('span', '', 'Цепочка ' + example.chain), node('span', 'split-badge ' + (example.split === 'heldout' ? 'heldout' : ''), example.split));
+    const title = node('div', 'card-heading');
+    title.append(node('h3', '', 'Раунд ' + example.round), node('span', 'outcome-pill ' + ['zero','one','two'][example.accepted], example.accepted + ' / 2 приняты'));
+    heading.append(kicker, title);
+    const score = node('div', 'score-box'); score.append(node('div', 'score-label', 'score · p₁ × p₂'), node('div', 'score-value', probability(example.score))); top.append(heading, score); card.append(top);
+    const body = node('div', 'card-body');
+    const contextLabel = node('div', 'context-label'); contextLabel.append(node('span', '', 'Перед этим'), node('span', '', 'хвост контекста · позиция ' + example.position));
+    const context = node('pre', 'context' + (example.context ? '' : ' context-empty'), example.context ? visibleText(example.context) : 'Начало генерации — предыдущего текста нет.'); body.append(contextLabel, context);
+    [['Драфт', example.proposal || [], false], ['Выдано', example.committed || [], true]].forEach(([label, tokens, committed]) => {
+      const row = node('div', 'token-row'); const tokenList = node('div', 'tokens');
+      tokens.forEach((token, index) => { const status = committed ? (token.origin === 'accepted_draft' ? 'accepted' : 'target') : (['accepted','rejected','discarded_suffix'].includes(token.status) ? token.status : 'discarded_suffix'); tokenList.append(makeToken(token, status, committed ? undefined : (index === 0 ? example.p1 : example.p2))); });
+      if (!tokens.length) tokenList.append(node('span', 'round-explainer', 'Нет токенов в записи'));
+      row.append(node('div', 'row-label', label), tokenList); body.append(row);
+    });
+    body.append(node('p', 'round-explainer', explanations[example.accepted] || ''), node('p', 'probabilities', 'Драфт: p₁ = ' + probability(example.p1) + ' · p₂ = ' + probability(example.p2)));
+    if (example.annotation) body.append(node('p', 'annotation', example.annotation));
+    if ((example.tags || []).length) {
+      const tags = node('div', 'tag-list');
+      example.tags.forEach(tag => { const tagButton = button(tagLabels[tag] || tag, 'tag', () => { state.tag = tag; state.page = 1; syncControls(); render(); $('results-top').scrollIntoView({block:'start'}); }); tagButton.title = 'Фильтр по признаку: ' + (tagLabels[tag] || tag); tags.append(tagButton); }); body.append(tags);
+    }
+    card.append(body);
+    const bottom = node('div', 'card-bottom');
+    if (example.actual_next !== undefined) { const next = disclosure('Фактическое продолжение с этой позиции', example.actual_next); next.append(node('p', '', 'Включает токены текущего раунда и следующий текст из итоговой генерации.')); bottom.append(next); }
+    const chain = chainMap.get(String(example.chain));
+    if (chain && chain.problem) bottom.append(disclosure('Исходная задача целиком', chain.problem, true));
+    const technical = node('details', 'disclosure'); technical.append(node('summary', '', 'Технические детали и ID токенов'));
+    technical.append(node('p', '', 'ID контекста: ' + (example.context_ids || []).join(', ')));
+    const table = node('table', 'technical-table'); const thead = node('thead'); const headRow = node('tr'); ['Поток', 'ID', 'p драфта', 'Статус / текст'].forEach(label => { const th = node('th', '', label); th.scope = 'col'; headRow.append(th); }); thead.append(headRow); table.append(thead); const tbody = node('tbody');
+    [['Драфт', example.proposal || [], false], ['Выдано', example.committed || [], true]].forEach(([label, tokens, committed]) => tokens.forEach((token, index) => {
+      const row = node('tr'); const status = committed ? (token.origin === 'accepted_draft' ? 'accepted' : 'target') : token.status;
+      [label + ' ' + (index + 1), token.id, committed ? '—' : probability(index === 0 ? example.p1 : example.p2), (labels[status] || status) + '\n' + JSON.stringify(token.text)].forEach(value => row.append(node('td', '', value))); tbody.append(row);
+    })); table.append(tbody); technical.append(table);
+    if (example.actual_next_ids) technical.append(node('p', '', 'ID фактического продолжения: ' + example.actual_next_ids.join(', ')));
+    if (example.corrected_context_chars > 0) {
+      technical.append(node('p', '', 'При декодировании байтового фрагмента уточнены символы на конце контекста: ' + example.corrected_context_chars + '. Для точного сопоставления используйте ID токенов.'));
+      if (example.proposal_context !== undefined) technical.append(disclosure('Контекст записи драфта', example.proposal_context));
+      if (example.committed_context !== undefined) technical.append(disclosure('Контекст записи выдачи', example.committed_context));
+    }
+    bottom.append(technical);
+    const footer = node('div', 'card-footer'); footer.append(node('span', '', example.id));
+    const link = button('↗ Ссылка', 'permalink', async () => {
+      const url = new URL(location.href); url.hash = example.id;
+      history.replaceState(null, '', url.href);
+      try { if (!navigator.clipboard) throw new Error('Clipboard unavailable'); await navigator.clipboard.writeText(url.href); $('action-status').textContent = 'Ссылка на ' + example.id + ' скопирована.'; link.textContent = 'Скопировано'; }
+      catch (_) { $('action-status').textContent = 'Ссылка на ' + example.id + ' открыта в адресной строке. Можно скопировать адрес страницы.'; link.textContent = 'В адресной строке'; }
+    }); link.title = 'Скопировать постоянную ссылку на пример ' + example.id; footer.append(link); bottom.append(footer); card.append(bottom); return card;
+  };
+  const changePage = page => { state.page = page; render(); $('results-top').scrollIntoView({block:'start'}); const first = $('cards').querySelector('h3'); if (first) { first.tabIndex = -1; first.focus({preventScroll:true}); } };
+  const renderPagination = (count, pageCount) => {
+    const pagination = $('pagination'); pagination.replaceChildren(); if (!count) return;
+    const start = (state.page - 1) * pageSize + 1, end = Math.min(state.page * pageSize, count);
+    pagination.append(node('span', 'pagination-copy', format.format(start) + '–' + format.format(end) + ' из ' + format.format(count) + ' · по ' + pageSize + ' на странице'));
+    const buttons = node('div', 'pagination-buttons');
+    const previous = button('← Назад', 'page-button', () => changePage(state.page - 1)); previous.disabled = state.page === 1; buttons.append(previous);
+    const pages = [...new Set([1, state.page - 1, state.page, state.page + 1, pageCount].filter(page => page >= 1 && page <= pageCount))].sort((a,b) => a-b);
+    let last = 0; pages.forEach(page => { if (last && page > last + 1) buttons.append(node('span', 'ellipsis', '…')); const el = button(String(page), 'page-button', () => changePage(page)); el.setAttribute('aria-label', 'Страница ' + page); if (page === state.page) el.setAttribute('aria-current', 'page'); buttons.append(el); last = page; });
+    const next = button('Далее →', 'page-button', () => changePage(state.page + 1)); next.disabled = state.page === pageCount; buttons.append(next); pagination.append(buttons);
+  };
+  function render() {
+    presetButtons.forEach((el, key) => el.setAttribute('aria-pressed', String(state.preset === key)));
+    chainButtons.forEach((el, key) => el.setAttribute('aria-pressed', String(state.chain === key)));
+    const filtered = filteredExamples(); const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize)); state.page = Math.min(Math.max(1,state.page), pageCount);
+    const preset = presetDefinitions.find(item => item.id === state.preset);
+    const count = $('result-count'); count.replaceChildren(node('strong', '', format.format(filtered.length) + ' примеров'), document.createTextNode(' / ' + format.format(total) + ' в корпусе'));
+    $('result-detail').textContent = preset.label + ' · страница ' + state.page + ' из ' + pageCount + (state.chain ? ' · цепочка ' + state.chain : '');
+    $('filter-note').textContent = state.min !== '' && state.max !== '' && Number(state.min) > Number(state.max) ? 'Минимальный score больше максимального. Исправьте диапазон, чтобы увидеть примеры.' : state.preset === 'high-failure' ? 'В этом наборе: score ≥ 0.9 и принято меньше двух токенов. Остальные фильтры применяются вместе.' : state.preset === 'low-success' ? 'В этом наборе: score ≤ 0.3 и приняты оба токена. Остальные фильтры применяются вместе.' : 'Фильтры применяются вместе. Статистика выше всегда относится ко всему корпусу.';
+    const cards = $('cards'); cards.replaceChildren();
+    if (!filtered.length) { const empty = node('div', 'empty-state'); empty.append(node('h3', '', 'По этим условиям примеров нет'), node('p', '', 'Расширьте диапазон score, измените набор или сбросьте фильтры.'), button('Сбросить фильтры', '', reset)); cards.append(empty); }
+    else { const fragment = document.createDocumentFragment(); filtered.slice((state.page-1) * pageSize, state.page * pageSize).forEach(example => fragment.append(makeCard(example))); cards.append(fragment); }
+    renderPagination(filtered.length, pageCount);
+  }
+  const openHash = () => {
+    let id; try { id = decodeURIComponent(location.hash.slice(1)); } catch (_) { return false; }
+    if (!id) return false; const index = examples.findIndex(example => example.id === id); if (index < 0) return false;
+    Object.assign(state, {preset:'all', chain:'', tag:'', min:'', max:'', query:'', sort:'source', page:Math.floor(index / pageSize)+1}); syncControls(); render();
+    requestAnimationFrame(() => { const card = document.getElementById(id); if (card) card.scrollIntoView({block:'start'}); }); return true;
+  };
+  window.addEventListener('hashchange', openHash);
+  syncControls(); if (!openHash()) render();
+})();
+</script>
+</body>
+</html>

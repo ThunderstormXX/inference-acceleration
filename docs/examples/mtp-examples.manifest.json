@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "summary": {
+    "total": 8409,
+    "by_outcome": {
+      "0": 800,
+      "1": 1111,
+      "2": 6498
+    },
+    "by_split": {
+      "calibration": {
+        "total": 7621,
+        "by_outcome": {
+          "0": 709,
+          "1": 976,
+          "2": 5936
+        }
+      },
+      "heldout": {
+        "total": 788,
+        "by_outcome": {
+          "0": 91,
+          "1": 135,
+          "2": 562
+        }
+      }
+    }
+  },
+  "curated_count": 60,
+  "provenance": {
+    "policy_sha256": "fd29186026d2fc62cf3f810675984aa27ef9db76535fbf914363060dc98eeb54",
+    "calibration_samples_sha256": "87b80d77570e82db2406500997a3d3813feeec94d1e10be5fef577229a235f21",
+    "heldout_samples_sha256": "e8a2753ff58b0ced579295290ee195399b7308a6e953b7abf9a620b08d82afdc",
+    "model_manifest_sha256": "e12769294a538b8154ec1fc87522240d8dfbfb58e18ea756c750ff6602ea9519",
+    "selection_sha256": "3f5bc06cd72b25cb0e27b1d65a57db457265877cbc430a21486973a31dd06d37",
+    "builder_sha256": "3e19f202583ed270a52d67936d5903e75ac276cb76fce642465ff4dea8e6a68f"
+  },
+  "template_sha256": "305187f343f395cb04621c8540759fef762bb8f18a810f7d3e8ce2c8e3fbfe8d",
+  "files": {
+    "mtp-examples.json.gz": "355cbfebcaf882ef9d2c243ba22cb1f8de14bb982c56722833f2c3ff9108d0db",
+    "mtp-examples.html": "fd53465e4dd7416e8f0cf9c1765c826bc33b411a30e39e18c9f9424a211ea64a",
+    "mtp-examples.md": "d5f3e23a7bb97f7c32426e081a4080e7170c97a421068d01d54448b07a29aefa"
+  }
+}
